@@ -1,7 +1,7 @@
 # Case Management App
 
 ## Overview
-The Case Management App is a web-based application designed to streamline legal case handling by providing an intuitive platform for users, lawyers, and administrators. Built using **React.js**, **Spring Boot**, and **PostgreSQL**, and hosted on **Render**, this application ensures secure and efficient case management.
+The Case Management App is a web-based application designed to streamline legal case handling by providing an intuitive platform for users, lawyers, and administrators. Built using **React.js**, **Spring Boot**, and **MySQL**, and hosted on **Render**, this application ensures secure and efficient case management.
 
 ## Features
 ### 1. User Roles
@@ -34,7 +34,7 @@ The Case Management App is a web-based application designed to streamline legal 
 ## Tech Stack
 - **Frontend**: React.js
 - **Backend**: Spring Boot
-- **Database**: PostgreSQL
+- **Database**: MySQL
 - **Hosting**: Render
 
 ## Security & Authentication
