@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPhone(phone);
         user.setProfilePictureUrl(profilePictureUrl);
-        user.setRole(Role.USER);
+        user.setRole(Role.LAWYER);
         userRepository.save(user);
         createCredentials(user, password);
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPhone(phone);
         user.setProfilePictureUrl(profilePictureUrl);
-        user.setRole(Role.USER);
+        user.setRole(Role.ADMIN);
         userRepository.save(user);
         createCredentials(user, password);
 

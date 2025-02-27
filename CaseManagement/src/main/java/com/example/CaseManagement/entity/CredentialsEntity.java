@@ -8,7 +8,7 @@ import java.util.UUID;
 public class CredentialsEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long credentialsId;
 
     @OneToOne
