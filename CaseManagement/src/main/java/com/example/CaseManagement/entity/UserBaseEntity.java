@@ -2,11 +2,12 @@ package com.example.CaseManagement.entity;
 
 import com.example.CaseManagement.enumaration.Role;
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user_base")
@@ -23,5 +24,5 @@ public abstract class UserBaseEntity {
     private boolean twoStepVerification = false;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // New field to track the role
+    private Role role;
 }
