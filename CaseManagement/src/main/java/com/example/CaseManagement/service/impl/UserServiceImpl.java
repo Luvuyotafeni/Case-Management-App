@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserEntity user = new UserEntity();
+        // Access methods from parent class
         user.setName(name);
         user.setEmail(email);
         user.setPhone(phone);

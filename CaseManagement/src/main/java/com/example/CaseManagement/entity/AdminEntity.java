@@ -1,22 +1,45 @@
 package com.example.CaseManagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "admins")
 public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID adminId;
+    private Long  adminId;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    private UserBaseEntity user;  // Changed to UserBaseEntity
+    private UserBaseEntity user;
 
     private String adminSpecificColumn;
+
+    // Getters
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public UserBaseEntity getUser() {
+        return user;
+    }
+
+    public String getAdminSpecificColumn() {
+        return adminSpecificColumn;
+    }
+
+    // Setters
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
+    }
+
+    public void setUser(UserBaseEntity user) {
+        this.user = user;
+    }
+
+    public void setAdminSpecificColumn(String adminSpecificColumn) {
+        this.adminSpecificColumn = adminSpecificColumn;
+    }
 }
