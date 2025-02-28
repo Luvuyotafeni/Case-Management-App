@@ -96,6 +96,24 @@ public class UserServiceImpl implements UserService {
         return admin;
     }
 
+    @Override
+    public UserBaseEntity authenticateUser(String email, String password) {
+        UserBaseEntity user = userBaseRepository.findByEmail(email);
+        if (user == null){
+            throw new RuntimeException("User not found");
+        }
+
+        CredentialsEntity credentials = credentialsRepository.findByUser(user);
+        if (credentials == null){
+            throw new RuntimeException("creadentials not found");
+        }
+
+        if (!credentials.getPassword().equals(password)){
+            throw new RuntimeException("Invalid password");
+        }
+        return user;
+    }
+
 
     private CredentialsEntity createCredentials(UserBaseEntity user, String password){
         CredentialsEntity credentials = new CredentialsEntity();

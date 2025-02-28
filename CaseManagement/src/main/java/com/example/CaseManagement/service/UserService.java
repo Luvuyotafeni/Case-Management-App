@@ -10,4 +10,7 @@ public interface UserService {
     UserEntity createUser(String name, String email, String phone, String profilePictureUrl, String password);
     LawyerEntity createLawyer(String name, String email, String phone, String profilePictureUrl, String specialization,String password );
     AdminEntity createAdmin(String name, String email, String phone, String profilePictureUrl, String adminSpecificColumn,String password);
+
+    //login
+    UserBaseEntity authenticateUser(String email, String password);
 }
