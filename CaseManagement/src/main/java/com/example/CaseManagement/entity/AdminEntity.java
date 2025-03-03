@@ -1,8 +1,13 @@
 package com.example.CaseManagement.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "admins")
 public class AdminEntity {
@@ -17,29 +22,5 @@ public class AdminEntity {
 
     private String adminSpecificColumn;
 
-    // Getters
-    public Long getAdminId() {
-        return adminId;
-    }
 
-    public UserBaseEntity getUser() {
-        return user;
-    }
-
-    public String getAdminSpecificColumn() {
-        return adminSpecificColumn;
-    }
-
-    // Setters
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
-    }
-
-    public void setUser(UserBaseEntity user) {
-        this.user = user;
-    }
-
-    public void setAdminSpecificColumn(String adminSpecificColumn) {
-        this.adminSpecificColumn = adminSpecificColumn;
-    }
 }

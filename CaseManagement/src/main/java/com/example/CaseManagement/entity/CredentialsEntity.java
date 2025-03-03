@@ -1,8 +1,13 @@
 package com.example.CaseManagement.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "credentials")
 public class CredentialsEntity {
@@ -18,29 +23,4 @@ public class CredentialsEntity {
     @Column(nullable = false)
     private String password;
 
-    // Getters
-    public Long getCredentialsId() {
-        return credentialsId;
-    }
-
-    public UserBaseEntity getUser() {
-        return user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    // Setters
-    public void setCredentialsId(Long credentialsId) {
-        this.credentialsId = credentialsId;
-    }
-
-    public void setUser(UserBaseEntity user) {
-        this.user = user;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
