@@ -19,15 +19,17 @@ public class LoginResponse {
     private String phone;
     private String profilePictureUrl;
     private String role;
+    private String token;
 
     //constructor
-    public LoginResponse(UserBaseEntity user){
+    public LoginResponse(UserBaseEntity user, String token){
         this.userId = user.getUserId().toString();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
         this.profilePictureUrl = user.getProfilePictureUrl();
         this.role = user.getRole().toString();
+        this.token = token;
     }
 
 }

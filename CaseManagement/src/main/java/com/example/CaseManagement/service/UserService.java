@@ -13,4 +13,5 @@ public interface UserService {
 
     //login
     UserBaseEntity authenticateUser(String email, String password);
+    UserBaseEntity getUserByEmail(String email);
 }
