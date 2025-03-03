@@ -6,6 +6,7 @@ import com.example.CaseManagement.repository.*;
 import com.example.CaseManagement.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -97,19 +101,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserBaseEntity authenticateUser(String email, String password) {
+    public UserBaseEntity getUserByEmail(String email) {
         UserBaseEntity user = userBaseRepository.findByEmail(email);
         if (user == null){
-            throw new RuntimeException("User not found");
-        }
-
-        CredentialsEntity credentials = credentialsRepository.findByUser(user);
-        if (credentials == null){
-            throw new RuntimeException("creadentials not found");
-        }
-
-        if (!credentials.getPassword().equals(password)){
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("User not found with email: "+ email);
         }
         return user;
     }
@@ -118,7 +113,7 @@ public class UserServiceImpl implements UserService {
     private CredentialsEntity createCredentials(UserBaseEntity user, String password){
         CredentialsEntity credentials = new CredentialsEntity();
         credentials.setUser(user);
-        credentials.setPassword(password);
+        credentials.setPassword(passwordEncoder.encode(password));
         credentialsRepository.save(credentials);
         return credentials;
     }
