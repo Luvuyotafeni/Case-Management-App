@@ -31,7 +31,7 @@ public class JwtTokenUtil {
     public String generateToken(String email, Long userId, String role){
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
-        claims.put("role", role);
+        claims.put("role", "ROLE_" + role);  // Add the ROLE_ prefix here
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -68,7 +68,7 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    public Boolean isTokenExpired(String token){
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

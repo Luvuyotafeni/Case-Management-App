@@ -35,11 +35,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("credentials not found for user: " + email);
         }
 
+        // Make sure to add 'ROLE_' prefix to the role
         return new User(
                 user.getEmail(),
                 credentials.getPassword(),
-                Collections.singletonList( new SimpleGrantedAuthority("ROLE" + user.getRole().name()))
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
-
     }
+
 }

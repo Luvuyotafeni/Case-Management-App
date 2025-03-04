@@ -3,6 +3,8 @@ package com.example.CaseManagement.service.impl;
 import com.example.CaseManagement.entity.*;
 import com.example.CaseManagement.enumaration.Role;
 import com.example.CaseManagement.repository.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.CaseManagement.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +53,24 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     @Transactional
     public LawyerEntity createLawyer(String name, String email, String phone, String profilePictureUrl, String specialization, String password) {
-        if(password == null || password.isEmpty()){
-            throw new RuntimeException("password cannot be null");
+        if (password == null || password.isEmpty()) {
+            throw new RuntimeException("Password cannot be null");
         }
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Check if the user has the 'ADMIN' role
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            throw new RuntimeException("Only admins can create lawyers");
+        }
+
+        // Create lawyer user
         UserEntity user = new UserEntity();
         user.setName(name);
         user.setEmail(email);
@@ -68,13 +80,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         createCredentials(user, password);
 
+        // Create lawyer entity
         LawyerEntity lawyer = new LawyerEntity();
         lawyer.setUser(user);
         lawyer.setSpecialization(specialization);
         lawyerRepository.save(lawyer);
 
         return lawyer;
-
     }
 
     @Override
