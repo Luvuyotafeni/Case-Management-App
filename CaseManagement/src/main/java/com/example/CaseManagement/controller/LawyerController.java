@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/lawyers")
@@ -36,11 +38,27 @@ public class LawyerController {
         return ResponseEntity.ok(lawyer);
     }
 
-    @GetMapping("/{laywerId}")
+    @GetMapping("/{lawyerId}")
     public ResponseEntity<LawyerEntity> getLawyerById(@PathVariable Long lawyerId){
         LawyerEntity lawyer = lawyerService.getLawyerById(lawyerId);
         return ResponseEntity.ok(lawyer);
     }
 
+    @GetMapping
+    public ResponseEntity<List<LawyerEntity>> getAllLawyers(){
+        List<LawyerEntity> lawyer = lawyerService.getAllLawyers();
+        return ResponseEntity.ok(lawyer);
+    }
 
+    @PutMapping("/update/{lawyerId}")
+    public ResponseEntity<LawyerEntity> updateLawyer(@PathVariable Long lawyerId, @RequestBody LawyerEntity updatedLayer){
+        LawyerEntity lawyer = lawyerService.updateLawyer(lawyerId, updatedLayer);
+        return ResponseEntity.ok(lawyer);
+    }
+
+    @DeleteMapping("/delete/{lawyerId}")
+    public ResponseEntity<Void> deleteLawyer(@PathVariable Long lawyerId){
+        lawyerService.deleteLawyer(lawyerId);
+        return ResponseEntity.noContent().build();
+    }
 }
