@@ -45,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
 
             return  adminRepository.save(existingAdmin);
         } catch (Exception e) {
-            throw new RuntimeException("Error updating admin: " + e.getMessage())
+            throw new RuntimeException("Error updating admin: " + e.getMessage());
         }
     }
 
