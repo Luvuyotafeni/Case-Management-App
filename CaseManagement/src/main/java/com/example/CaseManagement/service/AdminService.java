@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AdminService {
     AdminEntity getAdminById(Long adminId);
-    AdminEntity updateAdmin(Long adminId, AdminEntity updateAdmin);
+    AdminEntity updateAdmin(Long adminId, AdminEntity updatedAdmin);
     List<AdminEntity> getAllAdmin();
     void deleteAdmin(Long adminId);
 }
