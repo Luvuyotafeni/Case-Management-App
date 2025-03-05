@@ -2,14 +2,12 @@ package com.example.CaseManagement.controller;
 
 import com.example.CaseManagement.Dto.CreateLawyerRequest;
 import com.example.CaseManagement.entity.LawyerEntity;
+import com.example.CaseManagement.service.LawyerService;
 import com.example.CaseManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -19,6 +17,9 @@ public class LawyerController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LawyerService lawyerService;
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
@@ -34,4 +35,12 @@ public class LawyerController {
 
         return ResponseEntity.ok(lawyer);
     }
+
+    @GetMapping("/{laywerId}")
+    public ResponseEntity<LawyerEntity> getLawyerById(@PathVariable Long lawyerId){
+        LawyerEntity lawyer = lawyerService.getLawyerById(lawyerId);
+        return ResponseEntity.ok(lawyer);
+    }
+
+
 }
