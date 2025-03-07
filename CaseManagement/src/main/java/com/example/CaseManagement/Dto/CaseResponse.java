@@ -19,4 +19,8 @@ public class CaseResponse {
     private String province;
     private String officerName;
     private String officerContact;
+    private String userName;
+    private String lawyerName;
+    private String creationDate;
+    private String lastUpdated;
 }
