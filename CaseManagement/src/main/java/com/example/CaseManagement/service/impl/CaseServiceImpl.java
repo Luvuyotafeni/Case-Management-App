@@ -1,3 +1,4 @@
+
 package com.example.CaseManagement.service.impl;
 
 import com.example.CaseManagement.entity.CaseEntity;
@@ -13,7 +14,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -25,26 +25,28 @@ public class CaseServiceImpl implements CaseService {
     private CaseRepository caseRepository;
 
     @Autowired
-    private LawyerRepository lawyerRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private LawyerRepository lawyerRepository;
 
     @Autowired
     private DocumentRepository documentRepository;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
     @Override
     @Transactional
-    public CaseEntity createCase(String caseName, String CaseNumber, String caseType, String description, String stationName, String province, String officerName, String officerContact, String occurrenceDate, Long userId) {
+    public CaseEntity createCase(String caseName, String caseNumber, String caseType, String description,
+                                 String stationName, String province, String officerName, String officerContact,
+                                 String occurrenceDate, Long userId) {
+
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(()-> new RuntimeException("user not found with ID: " + userId));
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         CaseEntity caseEntity = new CaseEntity();
         caseEntity.setCaseName(caseName);
-        caseEntity.setCaseNumber(caseName);
+        caseEntity.setCaseNumber(caseNumber);
         caseEntity.setCaseType(caseType);
         caseEntity.setDescription(description);
         caseEntity.setStationName(stationName);
@@ -65,10 +67,10 @@ public class CaseServiceImpl implements CaseService {
     @Transactional
     public CaseEntity assignLawyer(Long caseId, Long lawyerId) {
         CaseEntity caseEntity = caseRepository.findById(caseId)
-                .orElseThrow(()-> new RuntimeException("Case not found with ID: "+ caseId));
+                .orElseThrow(() -> new RuntimeException("Case not found with ID: " + caseId));
 
         LawyerEntity lawyer = lawyerRepository.findById(lawyerId)
-                .orElseThrow(()->new RuntimeException("Lawyer Not found with ID: " + lawyerId));
+                .orElseThrow(() -> new RuntimeException("Lawyer not found with ID: " + lawyerId));
 
         caseEntity.setAssignedlawyer(lawyer);
         caseEntity.setLastUpdated(LocalDateTime.now().format(formatter));
@@ -78,14 +80,14 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     @Transactional
-    public DocumentEntity addDocument(Long caseId, String fileName, String filterUrl) {
+    public DocumentEntity addDocument(Long caseId, String fileName, String fileUrl) {
         CaseEntity caseEntity = caseRepository.findById(caseId)
-                .orElseThrow(()-> new RuntimeException("Case not found with Id "+ caseId));
+                .orElseThrow(() -> new RuntimeException("Case not found with ID: " + caseId));
 
         DocumentEntity document = new DocumentEntity();
         document.setCaseName(caseEntity.getCaseName());
         document.setFileName(fileName);
-        document.setFileUrl(filterUrl);
+        document.setFileUrl(fileUrl);
         document.setRelatedCase(caseEntity);
 
         caseEntity.setLastUpdated(LocalDateTime.now().format(formatter));
@@ -96,17 +98,17 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<CaseEntity> getCasesByUserId(Long userId) {
-        return caseRepository.findByUserId(userId);
+        return caseRepository.findByUser_UserId(userId);
     }
 
     @Override
     public CaseEntity getCaseById(Long caseId) {
         return caseRepository.findById(caseId)
-                .orElseThrow(()-> new RuntimeException("Case not found with Id: " + caseId));
+                .orElseThrow(() -> new RuntimeException("Case not found with ID: " + caseId));
     }
 
     @Override
     public List<DocumentEntity> getDocumentsByCaseId(Long caseId) {
-        return documentRepository.findByRelatedCaseId(caseId);
+        return documentRepository.findByRelatedCase_CaseId(caseId);
     }
 }

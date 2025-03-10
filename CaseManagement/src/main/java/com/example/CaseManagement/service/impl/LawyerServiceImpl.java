@@ -7,9 +7,11 @@ import com.example.CaseManagement.repository.UserBaseRepository;
 import com.example.CaseManagement.repository.UserRepository;
 import com.example.CaseManagement.service.LawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class LawyerServiceImpl implements LawyerService {
 
     @Autowired

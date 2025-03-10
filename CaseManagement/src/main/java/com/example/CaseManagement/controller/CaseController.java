@@ -27,9 +27,11 @@ public class CaseController {
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> createCase(@RequestBody CreateCaseRequest request,
-                                        @RequestHeader("Authorization") String authHeader){
-        String token = authHeader.substring(7);
+                                        @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7); // Remove "Bearer " prefix
         String role = jwtTokenUtil.extractRole(token);
+
+        // Optionally, you can add additional validation here based on role
 
         CaseEntity createdCase = caseService.createCase(
                 request.getCaseName(),
@@ -43,44 +45,46 @@ public class CaseController {
                 request.getOccurrenceDate(),
                 request.getUserId()
         );
+
         return ResponseEntity.ok(createdCase);
     }
 
     @PostMapping("/assign-lawyer")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> assignLawyer(@RequestBody AssignLawyerRequest request){
-        CaseEntity updatedCase = caseService.assignLawyer(
-                request.getCaseId(),
-                request.getLawyerId());
-
+    public ResponseEntity<?> assignLawyer(@RequestBody AssignLawyerRequest request) {
+        CaseEntity updatedCase = caseService.assignLawyer(request.getCaseId(), request.getLawyerId());
         return ResponseEntity.ok(updatedCase);
     }
 
     @PostMapping("/add-document")
     @PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
-    public ResponseEntity<?> addDocument(@RequestBody AddDocumentRequest request){
+    public ResponseEntity<?> addDocument(@RequestBody AddDocumentRequest request) {
         DocumentEntity document = caseService.addDocument(
                 request.getCaseId(),
                 request.getFileName(),
                 request.getFileUrl()
         );
-
         return ResponseEntity.ok(document);
+    }
+
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> getCasesByUserId(@PathVariable Long userId) {
+        List<CaseEntity> cases = caseService.getCasesByUserId(userId);
+        return ResponseEntity.ok(cases);
     }
 
     @GetMapping("/{caseId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'LAWYER')")
-    public ResponseEntity<?> getCaseById(@PathVariable Long caseId){
+    public ResponseEntity<?> getCaseById(@PathVariable Long caseId) {
         CaseEntity caseEntity = caseService.getCaseById(caseId);
         return ResponseEntity.ok(caseEntity);
     }
 
     @GetMapping("/{caseId}/documents")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'Lawyer')")
-    public ResponseEntity<?> getDocumentsByCaseId(@PathVariable Long caseId){
-        List<DocumentEntity> documents = caseService.getDocumentsByCaseId(caseId);;
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'LAWYER')")
+    public ResponseEntity<?> getDocumentsByCaseId(@PathVariable Long caseId) {
+        List<DocumentEntity> documents = caseService.getDocumentsByCaseId(caseId);
         return ResponseEntity.ok(documents);
     }
-
-
 }

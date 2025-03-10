@@ -23,31 +23,33 @@ public class SecurityConfig {
     private JwtRequestFilter jwtRequestFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-       return http
-                .csrf(csrf ->csrf.disable())
-                .authorizeHttpRequests( authz-> authz
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/create").permitAll()
-                        .requestMatchers("/api/admins/**").permitAll()
+                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
                         .requestMatchers("/api/lawyers/create").hasRole("ADMIN")
-                        .requestMatchers("/api/lawyers/**").hasAnyRole("ADMIN","LAWYER")
+                        .requestMatchers("/api/cases/assign-lawyer").hasRole("ADMIN")
+                        .requestMatchers("/api/cases/add-document").hasAnyRole("ADMIN", "LAWYER")
+                        .requestMatchers("/api/cases/create").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/cases/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-               .build();
-
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws  Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 }
