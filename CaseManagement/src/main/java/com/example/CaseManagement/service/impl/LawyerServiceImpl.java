@@ -41,7 +41,7 @@ public class LawyerServiceImpl implements LawyerService {
         user.setName(updatedLawyer.getUser().getName());
         user.setEmail(updatedLawyer.getUser().getEmail());
         user.setPhone(updatedLawyer.getUser().getPhone());
-        user.setProfilePictureUrl(updatedLawyer.getSpecialization());
+        user.setProfilePictureUrl(updatedLawyer.getUser().getProfilePictureUrl());
 
         userBaseRepository.save(user);
 
