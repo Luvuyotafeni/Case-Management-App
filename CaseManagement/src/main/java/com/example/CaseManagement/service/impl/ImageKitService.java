@@ -28,29 +28,23 @@ public class ImageKitService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public String uploadFile(MultipartFile file, Long caseId) throws IOException {
-        // Generate a unique filename
+    /**
+     * Uploads a file to ImageKit and returns the URL.
+     */
+    public ImageUploadResponse uploadFile(MultipartFile file, Long caseId) throws IOException {
         String fileName = "case_" + caseId + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
 
-        // Encode private key for Basic Authentication
-        String authHeader = "Basic " + Base64.getEncoder()
-                .encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
-
-        // Set up headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.set("Authorization", authHeader);
 
-        // Set up request body
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", file.getResource()); // Send file directly
+        body.add("file", file.getResource());
         body.add("fileName", fileName);
         body.add("folder", "/cases/" + caseId);
 
-        // Create request entity
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        // Send request to ImageKit API
         ResponseEntity<String> response = restTemplate.exchange(
                 "https://upload.imagekit.io/api/v1/files/upload",
                 HttpMethod.POST,
@@ -58,19 +52,40 @@ public class ImageKitService {
                 String.class
         );
 
-        // Parse response
         if (response.getStatusCode() == HttpStatus.OK) {
             ImageKitResponse imageKitResponse = objectMapper.readValue(response.getBody(), ImageKitResponse.class);
-            return imageKitResponse.getUrl();
+            return new ImageUploadResponse(imageKitResponse.getUrl(), imageKitResponse.getFileId());
         } else {
             throw new RuntimeException("Failed to upload image: " + response.getBody());
         }
     }
 
-    // Response class for ImageKit
-    @JsonIgnoreProperties(ignoreUnknown = true) // Ignore unrecognized fields
-    private static class ImageKitResponse {
+    /**
+     * Deletes a file from ImageKit using the file ID.
+     */
+    public String deleteFile(String fileId) {
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://api.imagekit.io/v1/files/" + fileId,
+                HttpMethod.DELETE,
+                requestEntity,
+                String.class
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return "File deleted successfully";
+        } else {
+            throw new RuntimeException("Failed to delete file: " + response.getBody());
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class ImageKitResponse {
         @JsonProperty("url")
         private String url;
 
@@ -85,4 +100,23 @@ public class ImageKitService {
             return fileId;
         }
     }
+
+    public class ImageUploadResponse {
+        private String fileUrl;
+        private String fileId;
+
+        public ImageUploadResponse(String fileUrl, String fileId) {
+            this.fileUrl = fileUrl;
+            this.fileId = fileId;
+        }
+
+        public String getFileUrl() {
+            return fileUrl;
+        }
+
+        public String getFileId() {
+            return fileId;
+        }
+    }
+
 }

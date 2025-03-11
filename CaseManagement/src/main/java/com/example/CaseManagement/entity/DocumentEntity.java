@@ -18,6 +18,7 @@ public class DocumentEntity {
     private String caseName;
     private String fileName;
     private String fileUrl;
+    private String fileId; // Add this field
 
     @ManyToOne
     @JoinColumn(name = "case_id")

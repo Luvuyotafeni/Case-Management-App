@@ -80,21 +80,20 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     @Transactional
-    public DocumentEntity addDocument(Long caseId, String fileName, String fileUrl) {
+    public DocumentEntity addDocument(Long caseId, String fileName, String fileUrl, String fileId) {
         CaseEntity caseEntity = caseRepository.findById(caseId)
-                .orElseThrow(() -> new RuntimeException("Case not found with ID: " + caseId));
+                .orElseThrow(() -> new RuntimeException("Case not found"));
 
         DocumentEntity document = new DocumentEntity();
         document.setCaseName(caseEntity.getCaseName());
         document.setFileName(fileName);
         document.setFileUrl(fileUrl);
+        document.setFileId(fileId); // Store fileId
+
         document.setRelatedCase(caseEntity);
-
-        caseEntity.setLastUpdated(LocalDateTime.now().format(formatter));
-        caseRepository.save(caseEntity);
-
         return documentRepository.save(document);
     }
+
 
     @Override
     public List<CaseEntity> getCasesByUserId(Long userId) {

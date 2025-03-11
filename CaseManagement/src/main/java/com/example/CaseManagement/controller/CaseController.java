@@ -62,7 +62,8 @@ public class CaseController {
         DocumentEntity document = caseService.addDocument(
                 request.getCaseId(),
                 request.getFileName(),
-                request.getFileUrl()
+                request.getFileUrl(),
+                request.getFileId()
         );
         return ResponseEntity.ok(document);
     }

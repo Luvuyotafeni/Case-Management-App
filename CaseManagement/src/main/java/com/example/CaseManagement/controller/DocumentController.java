@@ -37,18 +37,30 @@ public class DocumentController {
             String role = jwtTokenUtil.extractRole(token);
 
             // Upload file to ImageKit
-            String fileUrl = imageKitService.uploadFile(file, caseId);
+            ImageKitService.ImageUploadResponse uploadResponse = imageKitService.uploadFile(file, caseId);
 
             // Store document info in database
             DocumentEntity document = caseService.addDocument(
                     caseId,
                     file.getOriginalFilename(),
-                    fileUrl
+                    uploadResponse.getFileUrl(),
+                    uploadResponse.getFileId() // Store the fileId
             );
 
             return ResponseEntity.ok(document);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Failed to upload file: " + e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/delete/{fileId}")
+    public ResponseEntity<String> deleteFile(@PathVariable String fileId) {
+        try {
+            String response = imageKitService.deleteFile(fileId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error deleting file: " + e.getMessage());
         }
     }
 }

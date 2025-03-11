@@ -13,4 +13,5 @@ public class AddDocumentRequest {
     private Long caseId;
     private String fileName;
     private String fileUrl;
+    private String fileId;
 }

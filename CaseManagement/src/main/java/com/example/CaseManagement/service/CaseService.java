@@ -11,7 +11,7 @@ public interface CaseService {
 
     CaseEntity assignLawyer(Long caseId, Long lawyerId);
 
-    DocumentEntity addDocument(Long caseId, String fileName, String fileUrl);
+    DocumentEntity addDocument(Long caseId, String fileName, String fileUrl, String fileId);
 
     List<CaseEntity> getCasesByUserId(Long userId);
 
