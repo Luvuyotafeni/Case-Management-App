@@ -54,13 +54,14 @@ public class DocumentController {
     }
 
 
-    @DeleteMapping("/delete/{fileId}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileId) {
+    @DeleteMapping("/delete/{documentId}")
+    public ResponseEntity<String> deleteFile(@PathVariable Long documentId) {
         try {
-            String response = imageKitService.deleteFile(fileId);
+            String response = imageKitService.deleteFile(documentId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error deleting file: " + e.getMessage());
         }
     }
+
 }

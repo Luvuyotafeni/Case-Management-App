@@ -1,8 +1,11 @@
 package com.example.CaseManagement.service.impl;
 
+import com.example.CaseManagement.entity.DocumentEntity;
+import com.example.CaseManagement.repository.DocumentRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,9 @@ public class ImageKitService {
 
     @Value("${imagekit.url.endpoint}")
     private String imageKitEndpoint;
+
+    @Autowired
+    private  DocumentRepository documentRepository;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -63,7 +69,14 @@ public class ImageKitService {
     /**
      * Deletes a file from ImageKit using the file ID.
      */
-    public String deleteFile(String fileId) {
+    public String deleteFile(Long documentId) {
+        // Retrieve the document from the database
+        DocumentEntity document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document not found with ID: " + documentId));
+
+        String fileId = document.getFileId(); // Get fileId from DB
+
+        // Delete file from ImageKit
         String authHeader = "Basic " + Base64.getEncoder().encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
 
         HttpHeaders headers = new HttpHeaders();
@@ -77,12 +90,12 @@ public class ImageKitService {
                 String.class
         );
 
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return "File deleted successfully";
-        } else {
-            throw new RuntimeException("Failed to delete file: " + response.getBody());
-        }
+        documentRepository.delete(document);
+
+        return "File deleted successfully from ImageKit and database";
+
     }
+
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class ImageKitResponse {
