@@ -1,5 +1,6 @@
 package com.example.CaseManagement.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,9 @@ public class ImageKitService {
     @Value("${imagekit.private.key}")
     private String privateKey;
 
+    @Value("${imagekit.url.endpoint}")
+    private String imageKitEndpoint;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -28,13 +32,13 @@ public class ImageKitService {
         // Generate a unique filename
         String fileName = "case_" + caseId + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
+        // Encode private key for Basic Authentication
+        String authHeader = "Basic " + Base64.getEncoder()
+                .encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
+
         // Set up headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        // Use only the private key for authentication
-        String authHeader = "Basic " + Base64.getEncoder()
-                .encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
         headers.set("Authorization", authHeader);
 
         // Set up request body
@@ -64,11 +68,13 @@ public class ImageKitService {
     }
 
     // Response class for ImageKit
+    @JsonIgnoreProperties(ignoreUnknown = true) // Ignore unrecognized fields
     private static class ImageKitResponse {
+
         @JsonProperty("url")
         private String url;
 
-        @JsonProperty("fileId") // Handle fileId if necessary
+        @JsonProperty("fileId")
         private String fileId;
 
         public String getUrl() {

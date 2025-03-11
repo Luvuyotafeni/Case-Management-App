@@ -1,9 +1,9 @@
 package com.example.CaseManagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,8 @@ public class CaseEntity {
     @JoinColumn(name = "lawyer_id")
     private LawyerEntity assignedlawyer;
 
-    @OneToMany(mappedBy = "relatedCase", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "relatedCase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Manages serialization
     private List<DocumentEntity> documents = new ArrayList<>();
 
     @Column(name = "creation_date")

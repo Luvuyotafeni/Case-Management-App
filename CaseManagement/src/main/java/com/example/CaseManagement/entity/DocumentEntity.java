@@ -1,5 +1,6 @@
 package com.example.CaseManagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class DocumentEntity {
 
     @ManyToOne
     @JoinColumn(name = "case_id")
+    @JsonIgnore // Prevent infinite recursion
     private CaseEntity relatedCase;
 }
