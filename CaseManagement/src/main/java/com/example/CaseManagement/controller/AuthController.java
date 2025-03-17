@@ -1,9 +1,7 @@
 package com.example.CaseManagement.controller;
 
 
-import com.example.CaseManagement.Dto.ForgotPasswordRequest;
-import com.example.CaseManagement.Dto.LoginRequest;
-import com.example.CaseManagement.Dto.LoginResponse;
+import com.example.CaseManagement.Dto.*;
 import com.example.CaseManagement.entity.UserBaseEntity;
 import com.example.CaseManagement.service.UserService;
 import com.example.CaseManagement.service.impl.PasswordResetService;
@@ -66,6 +64,34 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "if you email is registered, you will receive and otp shortly");
         return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> validateOtp(@RequestBody ValidateOtpRequest request){
+        boolean isValid = passwordResetService.validateOtp(request.getEmail(), request.getOtp());
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("valid", isValid);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request){
+        try{
+            passwordResetService.resetPassword(
+                    request.getEmail(),
+                    request.getOtp(),
+                    request.getNewPassword()
+            );
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "password reset successfully");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e){
+            Map<String, String> response = new HashMap<>();
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
 }
