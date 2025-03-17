@@ -89,16 +89,14 @@ public class PasswordResetService {
         PasswordResetTokenEntity token = tokenOtp.get();
         UserBaseEntity user = userService.getUserByEmail(email);
 
-
-        var credentials = credentialsRepository.findByUserId(user.getUserId())
+        // Update this line to use the correct method name
+        var credentials = credentialsRepository.findByUser_UserId(user.getUserId())
                 .orElseThrow(()-> new RuntimeException("credentials not found"));
 
         credentials.setPassword(passwordEncoder.encode(newPassword));
         credentialsRepository.save(credentials);
 
-
         token.setUsed(true);
         tokenRepository.save(token);
-
     }
 }

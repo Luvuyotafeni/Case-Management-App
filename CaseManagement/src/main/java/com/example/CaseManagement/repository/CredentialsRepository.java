@@ -5,9 +5,10 @@ import com.example.CaseManagement.entity.UserBaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface CredentialsRepository extends JpaRepository<CredentialsEntity, Long> {
     CredentialsEntity findByUser(UserBaseEntity user);
-    Optional<CredentialsEntity> findByUserId(Long userId);
+
+    // Change this method to use the correct property navigation
+    Optional<CredentialsEntity> findByUser_UserId(Long userId);
 }
