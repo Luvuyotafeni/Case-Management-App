@@ -18,6 +18,9 @@ public class UserServiceImpl implements UserService {
     private UserBaseRepository userBaseRepository;
 
     @Autowired
+    private EmailVerificationService emailVerificationService;
+
+    @Autowired
     private LawyerRepository lawyerRepository;
 
     @Autowired
@@ -49,6 +52,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         createCredentials(user, password);
+
+        emailVerificationService.sendVerificationEmail(user);
         return user;
     }
 
@@ -80,6 +85,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         createCredentials(user, password);
 
+        emailVerificationService.sendVerificationEmail(user);
+
         // Create lawyer entity
         LawyerEntity lawyer = new LawyerEntity();
         lawyer.setUser(user);
@@ -103,6 +110,8 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
         createCredentials(user, password);
+
+        emailVerificationService.sendVerificationEmail(user);
 
         AdminEntity admin = new AdminEntity();
         admin.setUser(user);
@@ -139,6 +148,8 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("You can only update your own profile");
         }
 
+        String oldEmail = existingUser.getEmail();
+
         if (updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
         if (updatedUser.getEmail() != null) existingUser.setEmail(updatedUser.getEmail());
         if (updatedUser.getPhone() != null ) existingUser.setPhone(updatedUser.getPhone());
@@ -149,8 +160,16 @@ public class UserServiceImpl implements UserService {
             existingUser.setRole(updatedUser.getRole());
         }
 
+        UserEntity savedUser = userRepository.save(existingUser);
+
+
+
+        if (updatedUser.getEmail() != null && !oldEmail.equals(updatedUser.getEmail())){
+            emailVerificationService.handleEmailUpdate(savedUser, oldEmail, updatedUser.getEmail());
+        }
+
         //save and return the updated User
-        return userRepository.save(existingUser);
+        return savedUser;
     }
 
 

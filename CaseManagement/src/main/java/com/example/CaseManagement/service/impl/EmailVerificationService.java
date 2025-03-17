@@ -75,4 +75,13 @@ public class EmailVerificationService {
 
         return false;
     }
+
+    @Transactional
+    public void handleEmailUpdate(UserBaseEntity user, String oldEmail, String newEmail){
+        if (!oldEmail.equals(newEmail)){
+            user.setEmailVerified(false);
+            userBaseRepository.save(user);
+            sendVerificationEmail(user);
+        }
+    }
 }
