@@ -12,4 +12,5 @@ public interface UserService {
     AdminEntity createAdmin(String name, String email, String phone, String profilePictureUrl, String adminSpecificColumn,String password);
 
     UserBaseEntity getUserByEmail(String email);
+    UserEntity updateUser(Long userId, UserEntity updatedUser);
 }

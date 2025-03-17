@@ -121,6 +121,38 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public UserEntity updateUser(Long userId, UserEntity updatedUser) {
+
+        UserEntity existingUser = userRepository.findById(userId)
+                .orElseThrow(()-> new RuntimeException("User not found: "+ userId));
+
+        //get the authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserBaseEntity currentUser = userBaseRepository.findByEmail(authentication.getName());
+
+        //checking id the current user is the same as the one being updated
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin  && !existingUser.getUserId().equals(currentUser.getUserId())){
+            throw new RuntimeException("You can only update your own profile");
+        }
+
+        if (updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
+        if (updatedUser.getEmail() != null) existingUser.setEmail(updatedUser.getEmail());
+        if (updatedUser.getPhone() != null ) existingUser.setPhone(updatedUser.getPhone());
+        if (updatedUser.getProfilePictureUrl() != null) existingUser.setProfilePictureUrl(updatedUser.getProfilePictureUrl());
+
+        // updating role only if role is admin
+        if (isAdmin && updatedUser.getRole() != null){
+            existingUser.setRole(updatedUser.getRole());
+        }
+
+        //save and return the updated User
+        return userRepository.save(existingUser);
+    }
+
 
     private CredentialsEntity createCredentials(UserBaseEntity user, String password){
         CredentialsEntity credentials = new CredentialsEntity();
