@@ -26,4 +26,15 @@ public class EmailService {
 
         sendEmail(to, subject, body);
     }
+
+    public void sendVerificationEmail(String to, String name, String verificationCode){
+        String subject = "Welcome to Case Management App - Email Verification";
+        String body = "Dear " + name + ",\n\n" +
+                "Welcome to the Case Management App! We're excited to have you on board.\n\n" +
+                "To verify your email address, please use the following verification code: " + verificationCode + "\n\n" +
+                "This code is valid for 24 hours. If you did not create an account with us, please ignore this email.\n\n" +
+                "Best regards,\n" +
+                "The Case Management App Team";
+        sendEmail(to, subject,body);
+    }
 }
