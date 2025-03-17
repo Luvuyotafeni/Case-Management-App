@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/create").permitAll()
-                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/**").permitAll()
                         .requestMatchers("/api/lawyers/create").hasRole("ADMIN")
                         .requestMatchers("/api/cases/assign-lawyer").hasRole("ADMIN")
                         .requestMatchers("/api/cases/add-document").hasAnyRole("ADMIN", "LAWYER")
