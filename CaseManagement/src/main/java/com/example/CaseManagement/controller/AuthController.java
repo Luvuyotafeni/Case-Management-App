@@ -1,10 +1,12 @@
 package com.example.CaseManagement.controller;
 
 
+import com.example.CaseManagement.Dto.ForgotPasswordRequest;
 import com.example.CaseManagement.Dto.LoginRequest;
 import com.example.CaseManagement.Dto.LoginResponse;
 import com.example.CaseManagement.entity.UserBaseEntity;
 import com.example.CaseManagement.service.UserService;
+import com.example.CaseManagement.service.impl.PasswordResetService;
 import com.example.CaseManagement.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -25,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private PasswordResetService passwordResetService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -50,4 +58,14 @@ public class AuthController {
             throw new RuntimeException("Invalid email or password");
         }
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request){
+        passwordResetService.requestPasswordReset(request.getEmail());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "if you email is registered, you will receive and otp shortly");
+        return ResponseEntity.ok(response);
+    }
+
 }
