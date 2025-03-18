@@ -1,4 +1,9 @@
+import Dashboard from "@/components/Dashboard.vue";
+import ForgotPassword from "@/components/ForgotPassword.vue";
+import LogIn from "@/components/LogIn.vue";
+import Register from "@/components/Register.vue";
 import Welcome from "@/components/Welcome.vue";
+import { compile } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -6,6 +11,26 @@ const routes = [
         path: "/",
         name: "welcome",
         component: Welcome
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: LogIn
+    },
+    {
+        path: "/register",
+        name: "login",
+        component: Register
+    },
+    {
+        path: "/forgot-password",
+        name: "forgot-password",
+        component: ForgotPassword
+    },
+    {
+        path: "/dashboard",
+        name: "dashboard",
+        component: Dashboard
     }
 ];
 
