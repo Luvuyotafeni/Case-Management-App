@@ -33,6 +33,9 @@ public class CaseServiceImpl implements CaseService {
     @Autowired
     private DocumentRepository documentRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -60,7 +63,16 @@ public class CaseServiceImpl implements CaseService {
         caseEntity.setCreationDate(now);
         caseEntity.setLastUpdated(now);
 
-        return caseRepository.save(caseEntity);
+        CaseEntity savedCase = caseRepository.save(caseEntity);
+
+        //sending the confirmation email to the user
+        emailService.sendCaseCreationConfirmation(
+                user.getEmail(),
+                user.getName(),
+                savedCase.getCaseName(),
+                savedCase.getCaseNumber()
+        );
+        return savedCase;
     }
 
     @Override

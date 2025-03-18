@@ -32,9 +32,21 @@ public class EmailService {
         String body = "Dear " + name + ",\n\n" +
                 "Welcome to the Case Management App! We're excited to have you on board.\n\n" +
                 "To verify your email address, please use the following verification code: " + verificationCode + "\n\n" +
-                "This code is valid for 24 hours. If you did not create an account with us, please ignore this email.\n\n" +
+                "This code is valid for 10 minutes. If you did not create an account with us, please ignore this email.\n\n" +
                 "Best regards,\n" +
                 "The Case Management App Team";
         sendEmail(to, subject,body);
+    }
+
+    public void sendCaseCreationConfirmation(String to, String userName,String caseName, String caseNumber){
+        String subject = "Case Creation Confirmation - Case Number: " + caseNumber;
+        String body = "Dear "+ userName + "\n\n"+
+                "Thank you for submitting your case \""+ caseName+"\"(Casenumber: "+ caseNumber + "). \n\n "+
+                "We want to assure you that your case has been received and will be handled with the utmost responsibility and care.\n\n" +
+                "To proceed with the case processing, please upload all relevant documents and link them to this case through the 'Open Cases' section of your account.\n\n" +
+                "If you have any questions or need assistance, please don't hesitate to contact our support team.\n\n" +
+                "Best regards,\n" +
+                "The Case Management Team";
+        sendEmail(to, subject, body);
     }
 }
