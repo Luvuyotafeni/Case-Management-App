@@ -1,4 +1,31 @@
 <script setup>
+
+    import AuthServices from '@/services/AuthService';
+    import { ref } from 'vue';
+
+    const formData = ref({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+    });
+
+    const user = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password
+    }
+
+
+    const handleRegister = async ()=> {
+        try{
+            const response = await AuthServices.registerUser(user);
+            return response;
+        } catch(error){
+            console.log(error)
+        }
+    };
 </script>
 
 <template>
@@ -6,18 +33,18 @@
         <div class="register-container">
             <!-- Right Section -->
             <div class="register-left">
-                <form class="register-form">
+                <form class="register-form" @submit.prevent="handleRegister">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your Full name">
+                    <input type="text" id="name" placeholder="Enter your Full name" v-model="formData.name">
 
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email">
+                    <input type="email" id="email" placeholder="Enter your email" v-model="formData.email">
 
                     <label for="phone">Phone</label>
-                    <input type="text" id="phone" placeholder="Enter your contact number">
+                    <input type="text" id="phone" placeholder="Enter your contact number" v-model="formData.phone">
 
                     <label for="password">Create password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
+                    <input type="password" id="password" placeholder="Enter your password" v-model="formData.password">
 
                     <button type="submit">Register</button>
                     <div class="links">

@@ -17,9 +17,9 @@ class AuthServices{
     static async login(email, password){
         try{
             const response = await axios.post(`${AuthServices.BASE_URL}api/auth/login`,{email, password});
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("userName", response.data.name);
-            localStorage.setItem("userId", response.data.userId);
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userName", response.data.name);
+            sessionStorage.setItem("userId", response.data.userId);
             return response.data;
         } catch (err){
             throw err;
