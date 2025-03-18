@@ -15,6 +15,17 @@ class AuthServices{
             throw err;
         }
     }
+
+    static async registerUser(user){
+        try{
+            const response = await axios.post(`${AuthServices.BASE_URL}api/users/create`, user);
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+    }
+
+    static async createAdmin()
 }
 
 export default AuthServices;
