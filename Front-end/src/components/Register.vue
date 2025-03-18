@@ -54,7 +54,8 @@
             </div>
             <!-- Left Section -->
             <div class="register-right">
-                <h1>Register</h1>
+                <img src="../assets/LawIcon.jpeg"/>
+                <h2>Register</h2>
             </div>
 
             
@@ -77,6 +78,7 @@
     width: 600px;
     height: 500px;
     border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 /* Left Section */
@@ -88,19 +90,24 @@
     align-items: center;
     flex-direction: column;
     padding: 20px;
-
+    border-radius: 10px;
 }
 
 /* Right Section */
 .register-right {
-    
+    border-radius: 10px;
     flex: 1;
+    flex-direction: column;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
     font-weight: bold;
+}
+
+.register-right img{
+    width: 150px;
 }
 
 /* Form Styling */
@@ -133,11 +140,11 @@
     cursor: pointer;
 }
 
-.links{
+.links a{
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
+    color: white;
 }
 </style>

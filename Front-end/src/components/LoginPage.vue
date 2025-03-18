@@ -25,7 +25,8 @@
         <div class="login-container">
             <!-- Left Section -->
             <div class="login-left">
-                <h1>Log In</h1>
+                <img src="../assets/LawIcon.jpeg"/>
+                <h2>Log In</h2>
             </div>
 
             <!-- Right Section -->
@@ -55,6 +56,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    
 }
 
 /* Container Styling */
@@ -63,6 +65,7 @@
     width: 600px;
     height: 500px;
     border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 /* Left Section */
@@ -70,10 +73,16 @@
     flex: 1;
     background-color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 24px;
     font-weight: bold;
+    border-radius: 10px;
+}
+
+.login-left img{
+    width: 150px;
 }
 
 /* Right Section */
@@ -85,6 +94,7 @@
     align-items: center;
     flex-direction: column;
     padding: 20px;
+    border-radius: 10px;
 }
 
 /* Form Styling */
@@ -123,5 +133,12 @@
     flex-direction: column;
     justify-content: space-between;
     
+}
+.links a{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
 }
 </style>
