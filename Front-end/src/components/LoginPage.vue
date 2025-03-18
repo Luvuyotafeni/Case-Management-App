@@ -1,4 +1,23 @@
 <script setup>
+
+    import AuthServices from '@/services/AuthService';
+    import { ref } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
+
+    const email = ref("");
+    const password = ref("");
+
+    const handleLogIn = async () => {
+        try{
+            const response = await AuthServices.login(email.value, password.value);
+            router.push('/dashboard')
+        } catch (error){
+            console.log(error)
+        }
+
+    };
 </script>
 
 <template>
@@ -11,12 +30,12 @@
 
             <!-- Right Section -->
             <div class="login-right">
-                <form class="login-form">
+                <form class="login-form" @submit.prevent="handleLogIn">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email">
+                    <input type="email" id="email" placeholder="Enter your email" v-model="email">
 
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
+                    <input type="password" id="password" placeholder="Enter your password" v-model="password">
 
                     <button type="submit">Login</button>
                     <div class="links">
