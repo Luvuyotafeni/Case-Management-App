@@ -21,7 +21,7 @@
 
                     <button type="submit">Register</button>
                     <div class="links">
-                        <div><RouterLink to="/register">Have an account? Login</RouterLink></div>                      
+                        <div><RouterLink to="/login">Have an account? Login</RouterLink></div>                      
                     </div>
                 </form>
             </div>
