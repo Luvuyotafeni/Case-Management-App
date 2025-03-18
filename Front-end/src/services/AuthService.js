@@ -4,6 +4,16 @@ class AuthServices{
 
     static BASE_URL ="http://localhost:8080/";
 
+    static getAuthHeaders(){
+        const token = localStorage.getItem("token");
+        return {
+            headers:{
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    }
+    
+
     static async login(email, password){
         try{
             const response = await axios.post(`${AuthServices.BASE_URL}api/auth/login`,{email, password});
@@ -25,7 +35,6 @@ class AuthServices{
         }
     }
 
-    static async createAdmin()
 }
 
 export default AuthServices;
