@@ -58,41 +58,41 @@ import Header from './Header.vue';
     }
 
     .profile-header {
-    display: flex;
-    align-items: center;
+        display: flex;
+        align-items: center;
     }
 
     .profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 15px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 15px;
     }
 
     .profile-info h2 {
-    font-size: 20px;
+        font-size: 20px;
     }
 
     .verified {
-    color: green;
-    font-weight: bold;
-    margin-left: 10px;
+        color: green;
+        font-weight: bold;
+        margin-left: 10px;
     }
 
     .profile-details p {
-    margin: 10px 0;
+        margin: 10px 0;
     }
 
     .update-btn {
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: #d1d5db;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        margin-top: 15px;
+        padding: 10px 15px;
+        background-color: #d1d5db;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
 
     .update-btn:hover {
-    background-color: #b0b3b8;
+        background-color: #b0b3b8;
     }
 </style>
