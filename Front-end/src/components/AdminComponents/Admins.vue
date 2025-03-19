@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: row;
     padding: 0%;
+    background-color: #F9FAFB;
   }
 
   .dashboard{

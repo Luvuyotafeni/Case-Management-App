@@ -11,6 +11,12 @@ import Documents from "@/components/AdminComponents/Documents.vue";
 import AdminUsers from "@/components/AdminComponents/AdminUsers.vue";
 import Lawyers from "@/components/AdminComponents/Lawyers.vue";
 import Admins from "@/components/AdminComponents/Admins.vue";
+import LawyerProfile from "@/components/LawyerComponents/Profile.vue"
+import LawyerDasboard from "@/components/LawyerComponents/LawyerDasboard.vue";
+import LawyerCases from "@/components/LawyerComponents/Cases.vue";
+import AddUserCase from "@/components/UserComponents/AddUserCase.vue";
+import UserDocuments from "@/components/UserComponents/Documents.vue";
+import UserProfile from "@/components/UserComponents/Profile.vue";
 
 const routes = [
     {
@@ -79,29 +85,39 @@ const routes = [
         component: Admins
     },
     {
-        path: "/admin-users",
-        name: "admin-users",
+        path: "/lawyer-profile",
+        name: "lawyer-profile",
+        component: LawyerProfile
+    },
+    {
+        path: "/lawyer-dashboard",
+        name: "lawyer-dashboard",
+        component: LawyerDasboard
+    },
+    {
+        path: "/lawyer-cases",
+        name: "lawyer-cases",
+        component: LawyerCases
+    },
+    {
+        path: "/lawyer-consultations",
+        name: "lawyer-consultations",
         component: AdminUsers
     },
     {
-        path: "/admin-users",
-        name: "admin-users",
-        component: AdminUsers
+        path: "/user-cases",
+        name: "user-cases",
+        component: AddUserCase
     },
     {
-        path: "/admin-users",
-        name: "admin-users",
-        component: AdminUsers
+        path: "/user-documents",
+        name: "user-documents",
+        component: UserDocuments
     },
     {
-        path: "/admin-users",
-        name: "admin-users",
-        component: AdminUsers
-    },
-    {
-        path: "/admin-users",
-        name: "admin-users",
-        component: AdminUsers
+        path: "/user-profile",
+        name: "user-profile",
+        component: UserProfile
     }
 
 ];
