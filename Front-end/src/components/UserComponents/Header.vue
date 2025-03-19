@@ -17,7 +17,7 @@
                             Profile
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/user-dashboard')">
+                    <li class="nav-item" @click="navigateTo('/dashboard')">
                         <button>
                             Dashboard
                         </button>
@@ -86,13 +86,17 @@
         background-color: white;
     }
     .nav-item button {
-    background: none;
-    border: none;
-    color: #000428;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 10px;
-    text-align: left;
-  }
+        background: none;
+        border: none;
+        color: #000428;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px;
+        text-align: left;
+    }
+    .nav-item:hover {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.2s ease-in-out;
+    }
     
 </style>

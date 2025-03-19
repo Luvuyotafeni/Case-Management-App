@@ -5,7 +5,9 @@
     <div class="container">
         <Header/>
         <div class="dashboard">
-            <p> Hello world</p>
+            <div>
+                
+            </div>>
         </div>
     </div>
 </template>
