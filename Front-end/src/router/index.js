@@ -1,4 +1,4 @@
-import Dashboard from "@/components/Dashboard.vue";
+import Dashboard from "@/components/UserComponents/Dashboard.vue";
 import ForgotPassword from "@/components/ForgotPassword.vue";
 import LoginPage from "@/components/LoginPage.vue";
 import Register from "@/components/Register.vue";
