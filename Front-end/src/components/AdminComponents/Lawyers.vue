@@ -9,7 +9,7 @@
     try{
       lawyers.value = await LawyersService.getAllLawyers();    
     } catch (error){
-      throw error;
+      console.log("error fetching lawyers", error);
     }
   } ;
 
