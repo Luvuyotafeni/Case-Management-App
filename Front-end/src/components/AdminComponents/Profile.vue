@@ -38,13 +38,16 @@ onMounted(fetchAdminDetails);
             <div class="profile-info">
               <h2>
                 {{ admin.name }}
-                <span class="verified" v-if="admin.verified">Verified</span>
+                <span
+                  :class="admin.emailVerified ? 'verified' : 'not-verified'"
+                >
+                  {{ admin.emailVerified ? "Verified" : "Not Verified" }}
+                </span>
               </h2>
             </div>
           </div>
           <hr />
           <div class="profile-details">
-            <p><strong>ID No:</strong> {{ admin.id }}</p>
             <p><strong>Email:</strong> {{ admin.email }}</p>
             <p><strong>Phone:</strong> {{ admin.phone }}</p>
             <p><strong>Role:</strong> {{ admin.role }}</p>
@@ -68,15 +71,15 @@ onMounted(fetchAdminDetails);
   display: flex;
   flex-direction: row;
   padding: 0%;
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
 }
 
 .dashboard {
   flex: 1;
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 80vh;
 }
@@ -104,10 +107,18 @@ onMounted(fetchAdminDetails);
 
 .profile-info h2 {
   font-size: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .verified {
   color: green;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.not-verified {
+  color: red;
   font-weight: bold;
   margin-left: 10px;
 }
