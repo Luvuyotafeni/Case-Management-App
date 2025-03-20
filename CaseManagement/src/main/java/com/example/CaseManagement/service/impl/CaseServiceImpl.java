@@ -122,4 +122,13 @@ public class CaseServiceImpl implements CaseService {
     public List<DocumentEntity> getDocumentsByCaseId(Long caseId) {
         return documentRepository.findByRelatedCase_CaseId(caseId);
     }
+
+    @Override
+    public List<CaseEntity> getAllCases() {
+        try {
+            return caseRepository.findAll();
+        } catch (Exception e){
+            throw new RuntimeException("error fetching cases"+ e.getMessage());
+        }
+    }
 }

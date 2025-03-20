@@ -88,4 +88,11 @@ public class CaseController {
         List<DocumentEntity> documents = caseService.getDocumentsByCaseId(caseId);
         return ResponseEntity.ok(documents);
     }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllCases(){
+        List<CaseEntity> cases = caseService.getAllCases();
+        return ResponseEntity.ok(cases);
+    }
 }

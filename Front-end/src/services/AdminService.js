@@ -20,6 +20,14 @@ class AdminServices {
             throw err;
         }
     }
+    static async getAllAdminCases(){
+        try{
+            const response = await axios.get(`${AdminServices.BASE_URL}api/cases`, this.getAuthHeaders());
+            return response.data;
+        } catch(err){
+            throw err;
+        }
+    }
 }
 
 export default AdminServices;

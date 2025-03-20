@@ -18,4 +18,5 @@ public interface CaseService {
     CaseEntity getCaseById(Long caseId);
 
     List<DocumentEntity> getDocumentsByCaseId(Long caseId);
+    List<CaseEntity> getAllCases();
 }
