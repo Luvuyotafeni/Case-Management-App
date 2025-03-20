@@ -172,6 +172,12 @@ public class UserServiceImpl implements UserService {
         return savedUser;
     }
 
+    @Override
+    public UserBaseEntity getUserBaseById(Long userId) {
+        return userBaseRepository.findById(userId)
+                .orElseThrow(()-> new RuntimeException("User not found with user id: "+ userId));
+    }
+
 
     private CredentialsEntity createCredentials(UserBaseEntity user, String password){
         CredentialsEntity credentials = new CredentialsEntity();

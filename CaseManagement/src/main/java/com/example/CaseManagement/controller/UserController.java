@@ -1,6 +1,7 @@
 package com.example.CaseManagement.controller;
 
 import com.example.CaseManagement.Dto.CreateUserRequest;
+import com.example.CaseManagement.entity.UserBaseEntity;
 import com.example.CaseManagement.entity.UserEntity;
 import com.example.CaseManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,12 @@ public class UserController {
             @PathVariable Long userId,
             @RequestBody UserEntity updatedUser){
         UserEntity user = userService.updateUser(userId, updatedUser);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserBaseEntity> getUserBaseById(@PathVariable Long userId){
+        UserBaseEntity user = userService.getUserBaseById(userId);
         return ResponseEntity.ok(user);
     }
 }

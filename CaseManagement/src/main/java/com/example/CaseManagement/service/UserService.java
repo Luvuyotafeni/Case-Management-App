@@ -13,4 +13,5 @@ public interface UserService {
 
     UserBaseEntity getUserByEmail(String email);
     UserEntity updateUser(Long userId, UserEntity updatedUser);
+    UserBaseEntity getUserBaseById(Long userId);
 }

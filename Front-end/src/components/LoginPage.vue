@@ -1,7 +1,7 @@
 <script setup>
 
     import AuthServices from '@/services/AuthService';
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useRouter } from 'vue-router';
 
     const router = useRouter();
@@ -18,6 +18,13 @@
         }
 
     };
+    onMounted(()=> {
+        sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userName");
+      sessionStorage.removeItem("role",); // Save role in session
+      sessionStorage.removeItem("userId");
+      localStorage.removeItem("token")
+    });
 </script>
 
 <template>
