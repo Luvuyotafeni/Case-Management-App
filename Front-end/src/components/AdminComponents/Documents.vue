@@ -1,5 +1,9 @@
 <script setup>
+  import { ref } from 'vue';
 import Header from './Header.vue';
+
+  const documents = ref([]);
+  
 </script>
 <template>
     <div class="container">
