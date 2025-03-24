@@ -4,6 +4,8 @@
     import AdminServices from '@/services/AdminService';
 
     const cases = ref([]);
+    const selectedCase = ref([]);
+    const showModal = ref (false);
     const fetchCases = async() => {
         try{
             cases.value = await AdminServices.getAllAdminCases();
@@ -11,6 +13,10 @@
             console.log("Error fetching cases: ", error);
         }
     };
+
+    const openModal = (caseItem) => {
+      selectedCase.value
+    }
 
     onMounted(fetchCases);
 </script>

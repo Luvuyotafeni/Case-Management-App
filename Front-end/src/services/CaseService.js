@@ -21,6 +21,14 @@ class CaseService {
         }
     }
     
+    static async getCaseById(caseId){
+        try{
+            const response = await axios.get(`${CaseService.BASE_URL}api/cases/${caseId}`, this.getAuthHeader());
+            return response.data;
+        } catch(err){
+            throw err;
+        }
+    }
 }
 
 export default CaseService;

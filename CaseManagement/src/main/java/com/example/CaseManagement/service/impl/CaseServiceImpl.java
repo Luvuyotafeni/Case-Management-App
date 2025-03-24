@@ -109,6 +109,7 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<CaseEntity> getCasesByUserId(Long userId) {
+
         return caseRepository.findByUser_UserId(userId);
     }
 

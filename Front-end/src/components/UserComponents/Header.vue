@@ -27,11 +27,11 @@
                             Cases
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/user-documents')">
+                    <!-- <li class="nav-item" @click="navigateTo('/user-documents')">
                         <button>
                             Documents
                         </button>
-                    </li>
+                    </li> -->
                     <li class="nav-item" @click="navigateTo('/user-consultations')">
                         <button>
                             Consultations

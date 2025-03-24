@@ -4,7 +4,6 @@ import com.example.CaseManagement.entity.LawyerEntity;
 import com.example.CaseManagement.entity.UserBaseEntity;
 import com.example.CaseManagement.repository.LawyerRepository;
 import com.example.CaseManagement.repository.UserBaseRepository;
-import com.example.CaseManagement.repository.UserRepository;
 import com.example.CaseManagement.service.LawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
