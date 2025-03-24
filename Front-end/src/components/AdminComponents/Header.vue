@@ -6,6 +6,10 @@
     const navigateTo = (path) => {
         router.push(path);
     };
+
+    const handlelogOut= () =>{
+        router.push('/login');
+    };
 </script>
 <template>
     <div class="header-wrapper">
@@ -47,7 +51,7 @@
                             Admin
                         </button>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" @click="handlelogOut">
                         <button>
                             Logout
                         </button>

@@ -1,5 +1,24 @@
 <script setup>
+    import { onMounted, ref } from 'vue';
     import Header from './Header.vue';
+    import UsersServices from '@/services/UserService';
+
+    const lawyer = ref(null);
+    const userId = sessionStorage.getItem("userId")
+
+    const fetchUser = async ()=> {
+        try{
+            if (userId){
+                const response = await UsersServices.getUserById(userId);
+                console.log(response)
+                lawyer.value = response;
+            }
+        } catch( error){
+            console.log("Error fetching Lawyer", error);
+        }
+    }
+
+    onMounted(fetchUser);
 </script>
 
 <template>
@@ -7,20 +26,27 @@
         <Header/>
         <div class="dashboard">
             <main class="dashboard">
-                <div class="profile-card">
+                <div class="profile-card" v-if="lawyer">
                     <div class="profile-header">
                     <img src="" alt="User Avatar" class="profile-img" />
-                    <div class="profile-info">
-                        <h2>Luvuyo Tafeni <span class="verified">Verified</span></h2>
-                    </div>
+                    <h2>
+                        {{ lawyer.name }}
+                        <span
+                        :class="lawyer.emailVerified ? 'verified' : 'not-verified'"
+                        >
+                        {{ lawyer.emailVerified ? "Verified" : "Not Verified" }}
+                        </span>
+                    </h2>
                     </div>
                     <hr />
                     <div class="profile-details">
-                    <p><strong>ID No:</strong> 0012256785080</p>
-                    <p><strong>Email:</strong> luvuyotafeni012@gmail.com</p>
-                    <p><strong>Phone:</strong> 0792950603</p>
-                    <p><strong>Role:</strong> User</p>
-                    <p><strong>Two-step Verification:</strong> Enabled</p>
+                    <p><strong>Email:</strong> {{ lawyer.email }}</p>
+                    <p><strong>Phone:</strong> {{ lawyer.phone }}</p>
+                    <p><strong>Role:</strong> {{ lawyer.role }}</p>
+                    <p>
+                    <strong>Two-step Verification:</strong>
+                    {{ lawyer.twoStepVerification ? "Enabled" : "Disabled" }}
+                    </p>
                     <button class="update-btn">Update User</button>
                     </div>
                 </div>

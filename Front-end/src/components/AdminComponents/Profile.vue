@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import AdminServices from "@/services/AdminService";
 import Header from "./Header.vue";
 import UsersServices from "@/services/UserService";
 

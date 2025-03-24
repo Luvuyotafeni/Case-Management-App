@@ -12,22 +12,22 @@
         <header class="header">
             <nav class="nav">
                 <ul class="nav-list">
-                    <li class="nav-item" @click="navigateTo('/admin-profile')">
+                    <li class="nav-item" @click="navigateTo('/lawyer-profile')">
                         <button>
                             Profile
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/admin-dashboard')">
+                    <li class="nav-item" @click="navigateTo('/lawyer-dashboard')">
                         <button>
                             Dashboard
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/admin-cases')">
+                    <li class="nav-item" @click="navigateTo('/lawyer-cases')">
                         <button>
                             Cases
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/admin-documents')">
+                    <li class="nav-item" @click="navigateTo('/lawyer-documents')">
                         <button>
                             Consultations
                         </button>
