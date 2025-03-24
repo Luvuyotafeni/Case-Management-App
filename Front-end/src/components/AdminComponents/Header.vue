@@ -34,11 +34,11 @@
                             Cases
                         </button>
                     </li>
-                    <li class="nav-item" @click="navigateTo('/admin-documents')">
+                    <!-- <li class="nav-item" @click="navigateTo('/admin-documents')">
                         <button>
                             Documents
                         </button>
-                    </li>
+                    </li> -->
                     <li class="nav-item" @click="navigateTo('/admin-users')">
                         <button>
                             Users
