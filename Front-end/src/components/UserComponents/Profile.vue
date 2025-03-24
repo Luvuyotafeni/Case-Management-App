@@ -1,5 +1,22 @@
 <script setup>
+    import { onMounted, ref } from 'vue';
     import Header from './Header.vue';
+import UsersServices from '@/services/UserService';
+
+    const user = ref(null);
+    const userId = sessionStorage.getItem("userId");
+
+    const fetchUser = async() => {
+        try{
+            const response = await UsersServices.getUserById(userId);
+            user.value = response;
+        } catch (error){
+            console.log("Error fetching user", error);
+        }
+    };
+
+    onMounted(fetchUser);
+
 </script>
 <template>
     <div class="container">
@@ -8,17 +25,20 @@
             <main class="dashboard">
                 <div class="profile-card">
                     <div class="profile-header">
-                    <img src="" alt="User Avatar" class="profile-img" />
+                        <img
+                        :src="user.profilePictureUrl|| 'https://example.com/default-avatar.png'"
+                        alt="User Profile"
+                        class="profile-img"
+                        />
                     <div class="profile-info">
-                        <h2>Luvuyo Tafeni <span class="verified">Verified</span></h2>
+                        <h2>{{ user.name }} <span class="verified">Verified</span></h2>
                     </div>
                     </div>
                     <hr />
                     <div class="profile-details">
-                    <p><strong>ID No:</strong> 0012256785080</p>
-                    <p><strong>Email:</strong> luvuyotafeni012@gmail.com</p>
-                    <p><strong>Phone:</strong> 0792950603</p>
-                    <p><strong>Role:</strong> User</p>
+                    <p><strong>Email:</strong>{{ user.email }}</p>
+                    <p><strong>Phone:</strong>{{ user.phone }}</p>
+                    <p><strong>Role:</strong> {{ user.role }}</p>
                     <p><strong>Two-step Verification:</strong> Enabled</p>
                     <button class="update-btn">Update User</button>
                     </div>
@@ -40,11 +60,12 @@
   .dashboard{
     flex: 1;
     display: flex;
-    flex-direction: row;
-    margin-top: 20px;
+    flex-direction: column;
+    /* margin-top: 20px; */
     justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 80vh;
+    height: 50vh;
   }
 
     /* Profile Card */
@@ -53,7 +74,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        width: 700px;
+        width: 500px;
     }
 
     .profile-header {

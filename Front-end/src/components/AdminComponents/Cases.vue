@@ -87,7 +87,7 @@
           <!-- User Info Section -->
           <div class="user-info">
             <img
-              :src="selectedCase?.user?.profilePictureUrl"
+              :src="selectedCase?.user?.profilePictureUrl || 'https://example.com/default-avatar.png'"
               alt="User Profile"
               class="profile-picture"
             />

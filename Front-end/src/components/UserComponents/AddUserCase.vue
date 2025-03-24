@@ -7,7 +7,8 @@
         <div class="dashboard">
             <div>
                 
-            </div>>
+            </div>
+            
         </div>
     </div>
 </template>
