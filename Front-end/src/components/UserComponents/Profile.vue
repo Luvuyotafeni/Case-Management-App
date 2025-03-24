@@ -23,7 +23,7 @@
         <Header/>
         <div class="dashboard">
             <main class="dashboard">
-                <div class="profile-card">
+                <div class="profile-card" v-if="user">
                     <div class="profile-header">
                         <img
                         :src="user.profilePictureUrl|| 'https://example.com/default-avatar.png'"

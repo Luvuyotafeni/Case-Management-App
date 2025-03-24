@@ -32,11 +32,11 @@
                             Documents
                         </button>
                     </li> -->
-                    <li class="nav-item" @click="navigateTo('/user-consultations')">
+                    <!-- <li class="nav-item" @click="navigateTo('/user-consultations')">
                         <button>
                             Consultations
                         </button>
-                    </li>
+                    </li> -->
                     
                     <li class="nav-item">
                         <button>
