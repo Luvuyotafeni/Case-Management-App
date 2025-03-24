@@ -1,7 +1,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
     import Header from './Header.vue';
-import UsersServices from '@/services/UserService';
+    import UsersServices from '@/services/UserService';
 
     const user = ref(null);
     const userId = sessionStorage.getItem("userId");
