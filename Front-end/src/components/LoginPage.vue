@@ -10,14 +10,23 @@
     const password = ref("");
 
     const handleLogIn = async () => {
-        try{
-            const response = await AuthServices.login(email.value, password.value);
-            router.push('/dashboard')
-        } catch (error){
-            console.log(error)
-        }
+    try {
+        const response = await AuthServices.login(email.value, password.value);
+        const role = response.role; // Get the role from response
 
-    };
+        // Route based on role
+        if (role === "ADMIN") {
+            router.push('/admin-dashboard');
+        } else if (role === "LAWYER") {
+            router.push('/lawyer-dashboard');
+        } else {
+            router.push('/dashboard'); // Default user dashboard
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
     onMounted(()=> {
         sessionStorage.removeItem("token");
       sessionStorage.removeItem("userName");

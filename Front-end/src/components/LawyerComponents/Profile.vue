@@ -43,6 +43,7 @@
                     <p><strong>Email:</strong> {{ lawyer.email }}</p>
                     <p><strong>Phone:</strong> {{ lawyer.phone }}</p>
                     <p><strong>Role:</strong> {{ lawyer.role }}</p>
+                    <p><strong>Role:</strong> {{ lawyer.role }}</p>
                     <p>
                     <strong>Two-step Verification:</strong>
                     {{ lawyer.twoStepVerification ? "Enabled" : "Disabled" }}

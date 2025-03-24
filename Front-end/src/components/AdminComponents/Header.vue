@@ -9,6 +9,9 @@
 
     const handlelogOut= () =>{
         router.push('/login');
+        sessionStorage.removeItem("role");
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("token");
     };
 </script>
 <template>

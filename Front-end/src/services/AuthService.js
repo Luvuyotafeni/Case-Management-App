@@ -20,7 +20,7 @@ class AuthServices {
       // Store token
       sessionStorage.setItem("token", response.data.token);
       // sessionStorage.setItem("userName", response.data.name);
-      // sessionStorage.setItem("role", response.data.role); // Save role in session
+      sessionStorage.setItem("role", response.data.role); // Save role in session
       sessionStorage.setItem("userId", response.data.userId)
       return response.data;
     } catch (err) {
