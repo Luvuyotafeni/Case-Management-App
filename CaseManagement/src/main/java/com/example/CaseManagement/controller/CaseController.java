@@ -100,12 +100,24 @@ public class CaseController {
     @PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
     public ResponseEntity<?> getCaseByLawyerId(@PathVariable Long lawyerId){
         try{
-            List<CaseEntity> cases = caseService.getCasesByLawyerId(lawyerId);
+            List<CaseEntity> cases = caseService.getCasesByLawyerUserId(lawyerId);
             return ResponseEntity.ok(cases);
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e){
             return ResponseEntity.internalServerError().body("An unexpected Error occurred");
+        }
+    }
+    @GetMapping("/lawyer-user/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
+    public ResponseEntity<?> getCasesByLawyerUserId(@PathVariable Long userId) {
+        try {
+            List<CaseEntity> cases = caseService.getCasesByLawyerUserId(userId);
+            return ResponseEntity.ok(cases);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred");
         }
     }
 }

@@ -5,6 +5,7 @@ import com.example.CaseManagement.entity.CaseEntity;
 import com.example.CaseManagement.entity.DocumentEntity;
 import com.example.CaseManagement.entity.LawyerEntity;
 import com.example.CaseManagement.entity.UserEntity;
+import com.example.CaseManagement.enumaration.Role;
 import com.example.CaseManagement.repository.CaseRepository;
 import com.example.CaseManagement.repository.DocumentRepository;
 import com.example.CaseManagement.repository.LawyerRepository;
@@ -141,6 +142,24 @@ public class CaseServiceImpl implements CaseService {
             return caseRepository.findByAssignedlawyer_LawyerId(lawyerId);
         } catch (Exception e) {
             throw new RuntimeException(("Error fetching cases for lawyer: " + e.getMessage()));
+        }
+    }
+
+    @Override
+    public List<CaseEntity> getCasesByLawyerUserId(Long userId) {
+        try {
+            // Verify the user exists
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+            // Check if the user is a lawyer
+            if (!user.getRole().equals(Role.LAWYER)) {
+                throw new RuntimeException("User with ID: " + userId + " is not a lawyer");
+            }
+
+            return caseRepository.findByAssignedlawyer_User_UserId(userId);
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching cases for lawyer user: " + e.getMessage());
         }
     }
 }

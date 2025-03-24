@@ -1,5 +1,7 @@
 <script setup>
- import Header from './Header.vue';
+ import { ref } from 'vue';
+import Header from './Header.vue';
+ const cases = ref([]);
 </script>
 <template>
      <div class="container">

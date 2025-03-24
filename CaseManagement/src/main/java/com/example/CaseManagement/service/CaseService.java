@@ -21,4 +21,7 @@ public interface CaseService {
     List<CaseEntity> getAllCases();
 
     List<CaseEntity> getCasesByLawyerId(Long lawyerId);
+
+    List<CaseEntity> getCasesByLawyerUserId(Long userId);
+
 }
