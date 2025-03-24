@@ -21,6 +21,15 @@ class UsersServices {
         }
     }
 
+    static async getUserByRole(){
+        try{
+            const response = await axios.get(`${UsersServices.BASE_URL}api/users/role/USER`, this.getAuthHeaders());
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+    }
+
 }
 
 export default UsersServices;

@@ -6,6 +6,13 @@
     const navigateTo = (path) => {
         router.push(path);
     };
+
+    const logOut = ()=> {
+        router.push("/login");
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("role");
+    };
 </script>
 <template>
     <div class="header-wrapper">
@@ -39,7 +46,7 @@
                     </li> -->
                     
                     <li class="nav-item">
-                        <button>
+                        <button @click="logOut">
                             Logout
                         </button>
                     </li>

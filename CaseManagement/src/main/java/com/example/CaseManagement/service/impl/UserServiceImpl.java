@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -176,6 +178,11 @@ public class UserServiceImpl implements UserService {
     public UserBaseEntity getUserBaseById(Long userId) {
         return userBaseRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("User not found with user id: "+ userId));
+    }
+
+    @Override
+    public List<UserBaseEntity> getUsersByRole(Role role) {
+        return userBaseRepository.findByRole(role);
     }
 
 

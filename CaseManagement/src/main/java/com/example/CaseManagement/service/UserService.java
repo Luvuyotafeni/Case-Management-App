@@ -4,6 +4,9 @@ import com.example.CaseManagement.entity.AdminEntity;
 import com.example.CaseManagement.entity.LawyerEntity;
 import com.example.CaseManagement.entity.UserBaseEntity;
 import com.example.CaseManagement.entity.UserEntity;
+import com.example.CaseManagement.enumaration.Role;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -14,4 +17,5 @@ public interface UserService {
     UserBaseEntity getUserByEmail(String email);
     UserEntity updateUser(Long userId, UserEntity updatedUser);
     UserBaseEntity getUserBaseById(Long userId);
+    List<UserBaseEntity> getUsersByRole(Role role);
 }
