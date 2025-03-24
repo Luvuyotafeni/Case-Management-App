@@ -55,6 +55,7 @@
             <th>Station Name</th>
             <th>Occurrence Date</th>
             <th>Province</th>
+            <th>Assigned Lawyer</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -66,6 +67,7 @@
             <td>{{ caseItem.stationName }}</td>
             <td>{{ caseItem.occurrenceDate }}</td>
             <td>{{ caseItem.province }}</td>
+            <td>{{ caseItem.assignedlawyer?.user?.name || 'No Lawyer Assigned' }}</td>
             <td>
               <button class="see-button" @click="openModal(caseItem.caseId)">See</button>
             </td>
@@ -73,6 +75,9 @@
         </tbody>
       </table>
     </div>
+
+
+    
     <!-- Modal for Case Details -->
   <teleport to="body">
     <div v-if="showModal" class="modal-overlay">
@@ -84,7 +89,7 @@
 
         <div v-else>
           <!-- User Info Section -->
-          <div class="user-info">
+          <!-- <div class="user-info">
             <img
               :src="selectedCase?.user?.profilePictureUrl || 'https://example.com/default-avatar.png'"
               alt="User Profile"
@@ -95,7 +100,7 @@
               <p><strong>Email:</strong> {{ selectedCase?.user?.email }}</p>
               <p><strong>Phone:</strong> {{ selectedCase?.user?.phone }}</p>
             </div>
-          </div>
+          </div> -->
 
           <hr />
 
@@ -110,6 +115,16 @@
             <p><strong>Officer:</strong> {{ selectedCase?.officerName }} ({{ selectedCase?.officerContact }})</p>
           </div>
 
+          <hr />
+          <div class="lawyer-info">
+            <h3> Assigned Lawyer</h3>
+            <div v-if="selectedCase?.assignedlawyer">
+                <p><strong>Name: </strong>{{ selectedCase.assignedlawyer.user.name  }}</p>
+                <p><strong>Email: </strong>{{ selectedCase.assignedlawyer.user.email  }}</p>
+                <p><strong>Phone: </strong>{{ selectedCase.assignedlawyer.user.phone  }}</p>
+                <p><strong>Specialization: </strong>{{ selectedCase.assignedlawyer.specialization }}</p>
+            </div>
+          </div>
           <hr />
 
           <!-- Documents Section -->
@@ -161,6 +176,7 @@
   border-radius: 8px;
   width: 50%;
   height: 700px;
+  overflow-y: auto;
   max-width: 600px;
 }
 
