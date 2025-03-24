@@ -132,4 +132,15 @@ public class CaseServiceImpl implements CaseService {
             throw new RuntimeException("error fetching cases"+ e.getMessage());
         }
     }
+
+    @Override
+    public List<CaseEntity> getCasesByLawyerId(Long lawyerId) {
+        try{
+            LawyerEntity lawyer = lawyerRepository.findById(lawyerId)
+                    .orElseThrow(()-> new RuntimeException("lawyer not found with ID: " + lawyerId));
+            return caseRepository.findByAssignedlawyer_LawyerId(lawyerId);
+        } catch (Exception e) {
+            throw new RuntimeException(("Error fetching cases for lawyer: " + e.getMessage()));
+        }
+    }
 }

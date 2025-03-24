@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
     // Change this to match the actual ID property name in UserBaseEntity
-    List<CaseEntity> findByUser_UserId(Long userId); // Assuming the ID field in UserBaseEntity is 'userId'
+    List<CaseEntity> findByUser_UserId(Long userId);
+    List<CaseEntity> findByAssignedlawyer_LawyerId(Long LawyerId);// Assuming the ID field in UserBaseEntity is 'userId'
 }

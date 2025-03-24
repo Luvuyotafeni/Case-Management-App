@@ -95,4 +95,17 @@ public class CaseController {
         List<CaseEntity> cases = caseService.getAllCases();
         return ResponseEntity.ok(cases);
     }
+
+    @GetMapping("/lawyer/{lawyerId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
+    public ResponseEntity<?> getCaseByLawyerId(@PathVariable Long lawyerId){
+        try{
+            List<CaseEntity> cases = caseService.getCasesByLawyerId(lawyerId);
+            return ResponseEntity.ok(cases);
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body("An unexpected Error occurred");
+        }
+    }
 }

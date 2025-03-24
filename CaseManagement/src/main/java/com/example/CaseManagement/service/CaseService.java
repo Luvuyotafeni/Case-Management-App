@@ -19,4 +19,6 @@ public interface CaseService {
 
     List<DocumentEntity> getDocumentsByCaseId(Long caseId);
     List<CaseEntity> getAllCases();
+
+    List<CaseEntity> getCasesByLawyerId(Long lawyerId);
 }
