@@ -1,10 +1,30 @@
 <script setup>
- import { onMounted, ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import Header from './Header.vue';
-import CaseService from '@/services/CaseService';
+  import CaseService from '@/services/CaseService';
  const cases = ref([]);
 
  const userId = sessionStorage.getItem("userId");
+ const selectedCase = ref([]);
+ const loadingCase = ref(false);
+ const showModal = ref(false);
+ 
+ const openModal = async (caseId) => {
+  try{
+    loadingCase.value = true;
+    selectedCase.value = await CaseService.getCaseById(caseId);
+    showModal.value =true;
+  } catch (error){
+    console.log("Error fetching the case details", error);
+  } finally{
+    loadingCase.value = false;
+  }
+};
+const closeModal =()=> {
+  showModal.value = false;
+  selectedCase.value = null;
+}
+
 
  const fetchAssignedCases = async ()=>{
   try{
@@ -49,6 +69,75 @@ import CaseService from '@/services/CaseService';
         </tbody>
       </table>
     </div>
+
+
+    <!-- Modal for Case Details -->
+    <teleport to="body">
+      <div v-if="showModal" class="modal-overlay">
+        <div class="modal-content">
+          <h2>Case Details</h2>
+
+          <!-- Loading State -->
+          <div v-if="loadingCase">Loading case details...</div>
+
+          <div v-else>
+            <!-- User Info Section -->
+            <div class="user-info">
+              <img
+                :src="selectedCase?.user?.profilePictureUrl || 'https://example.com/default-avatar.png'"
+                alt="User Profile"
+                class="profile-picture"
+              />
+              <div>
+                <h3>{{ selectedCase?.user?.name }}</h3>
+                <p><strong>Email:</strong> {{ selectedCase?.user?.email }}</p>
+                <p><strong>Phone:</strong> {{ selectedCase?.user?.phone }}</p>
+              </div>
+            </div>
+
+            <hr />
+
+            <!-- Case Details Section -->
+            <div class="case-details">
+              <p><strong>Case Name:</strong> {{ selectedCase?.caseName }}</p>
+              <p><strong>Case Number:</strong> {{ selectedCase?.caseNumber }}</p>
+              <p><strong>Type:</strong> {{ selectedCase?.caseType }}</p>
+              <p><strong>Description:</strong> {{ selectedCase?.description || "No description provided" }}</p>
+              <p><strong>Occurrence Date:</strong> {{ selectedCase?.occurrenceDate }}</p>
+              <p><strong>Station:</strong> {{ selectedCase?.stationName }} ({{ selectedCase?.province }})</p>
+              <p><strong>Officer:</strong> {{ selectedCase?.officerName }} ({{ selectedCase?.officerContact }})</p>
+            </div>
+
+            <!-- <hr />
+            <div class="lawyer-info">
+              <h3> Assigned Lawyer</h3>
+              <div v-if="selectedCase?.assignedlawyer">
+                  <p><strong>Name: </strong>{{ selectedCase.assignedlawyer.user.name  }}</p>
+                  <p><strong>Email: </strong>{{ selectedCase.assignedlawyer.user.email  }}</p>
+                  <p><strong>Phone: </strong>{{ selectedCase.assignedlawyer.user.phone  }}</p>
+                  <p><strong>Specialization: </strong>{{ selectedCase.assignedlawyer.specialization }}</p>
+              </div>
+            </div> -->
+            <hr />
+
+            <!-- Documents Section -->
+            <div class="documents">
+              <h3>Documents</h3>
+              <p v-if="!selectedCase?.documents?.length">No documents available.</p>
+              <ul v-else>
+                <li v-for="doc in selectedCase?.documents" :key="doc.id">
+                  <a :href="doc.fileUrl" target="_blank">
+                    <i class="bx bx-file"></i> {{ doc.fileName }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <button class="close-button" @click="closeModal">Close</button>
+          </div>
+        </div>
+      </div>
+    </teleport>
     </div>
 </template>
 <style scoped>
@@ -59,6 +148,95 @@ import CaseService from '@/services/CaseService';
     flex-direction: row;
     padding: 0%;
     background-color: #F9FAFB;
+  }
+
+   /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    height: 700px;
+    overflow-y: auto;
+    max-width: 600px;
+  }
+
+  /* User Info */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .profile-picture {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+  }
+
+  /* Case Details */
+  .case-details {
+    margin-top: 10px;
+  }
+
+  /* Documents Section */
+  .documents {
+    margin-top: 15px;
+  }
+
+  .documents ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .documents li {
+    margin-bottom: 5px;
+  }
+
+  .documents a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .documents a:hover {
+    text-decoration: underline;
+  }
+
+  .bx-file {
+    font-size: 108px;
+  }
+
+  /* Close Button */
+  .close-button {
+    display: block;
+    width: 50%;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
   }
 
   .header{

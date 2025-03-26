@@ -45,8 +45,8 @@
                         </button>
                     </li> -->
                     
-                    <li class="nav-item">
-                        <button @click="logOut">
+                    <li class="nav-item" @click="logOut">
+                        <button >
                             Logout
                         </button>
                     </li>
