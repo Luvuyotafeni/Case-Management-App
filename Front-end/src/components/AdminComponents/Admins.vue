@@ -4,6 +4,16 @@
     import AdminServices from '@/services/AdminService';
 
     const admins = ref([]);
+    const showAddAdminModal = ref(false);
+    const isloading = ref(false);
+    const adminData = ref({
+      name: '',
+      email: '',
+      phone: '',
+      adminSpecificColumn: '',
+      profilePictureUrl: '',
+      password: ''
+    });
 
     const fetchAdmins = async() => {
       try{
@@ -14,6 +24,36 @@
       }
     };
 
+    const openAddAdminModel = () => {
+      showAddAdminModal.value = true;
+    };
+
+    const closeAddAdminModal = () => {
+      showAddAdminModal.value = false;
+      //resetting the form values
+      adminData.value = {
+        name: '',
+        email: '',
+        phone: '',
+        adminSpecificColumn: '',
+        profilePictureUrl: '',
+        password: ''
+      }
+    };
+    const createAdmin = async () =>{
+      try{
+        isloading.value= true;
+        const newAdmin = await AdminServices.createAdmin(adminData.value);
+        admins.value.push(newAdmin);
+        closeAddAdminModal();
+
+      } catch (error){
+        console.log("Error creating lawyer:", error);
+      } finally{
+        isloading.value= false;
+      }
+    }
+
     onMounted(fetchAdmins);
 </script>
 <template>
@@ -22,7 +62,7 @@
         <div class="dashboard">
             <div class="header">
               <h2>Admins</h2>
-              <buttonv class="add-admin">Add an Admin</buttonv>
+              <buttonv class="add-admin" @click="openAddAdminModel">Add an Admin</buttonv>
             </div>
             <table>
               <thead>
@@ -43,6 +83,85 @@
               </tbody>
             </table>
         </div>
+
+        <!-- create lawyer modal -->
+        <teleport to="body">
+          <div v-if="showAddAdminModal" class="modal-overlay">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2> Add new Lawyer</h2>
+              </div>
+              <form @submit.prevent="createAdmin">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input
+                    v-model="adminData.name"
+                    type="text"
+                    required
+                    placeholder="Enter Admins full name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input
+                    v-model="adminData.email"
+                    type="email"
+                    required
+                    placeholder="Enter Admin's email"
+                  />
+                  
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input
+                    v-model="adminData.phone"
+                    type="text"
+                    required
+                    placeholder="Enter Admin's Phone number"
+                  />
+                  
+                </div>
+                <div class="form-group">
+                  <label for="specialization">Specialization</label>
+                  <select
+                    v-model="adminData.adminSpecificColumn"
+                    required
+                  >
+                    <option value="" disabled>Select Specialization</option>
+                    
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input
+                    v-model="adminData.password"
+                    type="password"
+                    required
+                    placeholder="set initial password"
+                  />
+                </div>
+                <div class="modal-actions">
+                  <button
+                    type="submit"
+                    class="submit-btn"
+                    :disabled="isloading"
+                  >
+                    {{ isloading? 'Creating...':'Create Admin' }}
+                  </button>
+                  <button
+                    type="button"
+                    class="cancel-btn"
+                    @click="closeAddAdminModal"
+                    :disabled="isloading"
+                  > 
+                  Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </teleport>
     </div>
 </template>
 <style scoped>
@@ -92,4 +211,86 @@
     border: 1px solid #ccc;
     text-align: left;
   }
+    /* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>

@@ -6,6 +6,7 @@ import UsersServices from "@/services/UserService";
 // Reactive state to store admin details
 const admin = ref(null);
 const userId = sessionStorage.getItem("userId");
+const showProfileModal = ref(false);
 
 // Fetch admin details on mount
 const fetchAdminDetails = async () => {
@@ -17,6 +18,13 @@ const fetchAdminDetails = async () => {
   } catch (error) {
     console.error("Error fetching admin details:", error);
   }
+};
+
+const openProfileModal = async (userId)=>{
+  showProfileModal.value=true
+}
+const closeProfileModal = () => {
+  showProfileModal.value = false;
 };
 
 onMounted(fetchAdminDetails);
@@ -54,12 +62,55 @@ onMounted(fetchAdminDetails);
               <strong>Two-step Verification:</strong>
               {{ admin.twoStepVerification ? "Enabled" : "Disabled" }}
             </p>
-            <button class="update-btn">Update User</button>
+            <button class="update-btn" @click="openProfileModal">Update User</button>
           </div>
         </div>
         <div v-else class="loading">Loading profile...</div>
       </main>
     </div>
+
+
+    <teleport to="body" v-if="showProfileModal">
+      <div class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Edit Admin</h2>
+          </div>
+          <div class="form-group">
+            <label>Name:</label>
+            <input
+              
+            />
+          </div>
+          <div class="form-group">
+            <label>Email:</label>
+            <input
+              
+            />
+          </div>
+          <div class="form-group">
+            <label>Phone:</label>
+            <input
+              
+            />
+          </div>
+          <div class="form-group">
+            <label>Role:</label>
+            <input
+              
+            />
+          </div>
+          <div class="form-group">
+            <label>Two step Verification:</label>
+            
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="submit-btn">Save</button>
+            <button @click="closeProfileModal" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -143,5 +194,87 @@ onMounted(fetchAdminDetails);
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+}
+ /* Modal Styles */
+ .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

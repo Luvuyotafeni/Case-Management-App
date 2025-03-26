@@ -51,7 +51,7 @@
                     </li>
                     <li class="nav-item" @click="navigateTo('/admins')">
                         <button>
-                            Admin
+                            Admins
                         </button>
                     </li>
                     <li class="nav-item" @click="handlelogOut">
