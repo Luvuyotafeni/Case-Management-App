@@ -111,6 +111,17 @@
             <p><strong>Officer:</strong> {{ selectedCase?.officerName }} ({{ selectedCase?.officerContact }})</p>
           </div>
 
+
+          <hr />
+          <div class="lawyer-info">
+            <h3> Assigned Lawyer</h3>
+            <div v-if="selectedCase?.assignedlawyer">
+                <p><strong>Name: </strong>{{ selectedCase.assignedlawyer.user.name  }}</p>
+                <p><strong>Email: </strong>{{ selectedCase.assignedlawyer.user.email  }}</p>
+                <p><strong>Phone: </strong>{{ selectedCase.assignedlawyer.user.phone  }}</p>
+                <p><strong>Specialization: </strong>{{ selectedCase.assignedlawyer.specialization }}</p>
+            </div>
+          </div>
           <hr />
 
           <!-- Documents Section -->
@@ -165,6 +176,7 @@
   width: 50%;
   height: 700px;
   max-width: 600px;
+  overflow-y: auto;
 }
 
 /* User Info */

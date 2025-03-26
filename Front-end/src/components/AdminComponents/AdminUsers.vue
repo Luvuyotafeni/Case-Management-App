@@ -22,7 +22,6 @@
         <div class="dashboard">
             <div class="header">
               <h2>Users</h2>
-              <button class="add-User">Add A User</button>
             </div>
             <table>
               <thead>
@@ -70,7 +69,7 @@
     justify-content: space-between;
     margin-bottom: 20px;
   }
-  .add-admin{
+  .add-User{
     padding: 10px 15px;
     background-color: #ddd;
     color: black;
