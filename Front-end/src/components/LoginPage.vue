@@ -57,7 +57,7 @@
                     <button type="submit">Login</button>
                     <div class="links">
                         <div><RouterLink to="/register">Don't have an account? Register</RouterLink></div>
-                        <div><RouterLink to="/forgot-paswword">Forgot Password?</RouterLink></div>                       
+                        <div><RouterLink to="/forgot-password">Forgot Password?</RouterLink></div>                       
                     </div>
                 </form>
             </div>
