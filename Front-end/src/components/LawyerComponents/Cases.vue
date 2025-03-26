@@ -23,7 +23,6 @@ import CaseService from '@/services/CaseService';
         <div class="dashboard">
       <div class="header">
         <h2>Cases</h2>
-        <button class="add-case">Add Case</button>
       </div>
       <table>
         <thead>
