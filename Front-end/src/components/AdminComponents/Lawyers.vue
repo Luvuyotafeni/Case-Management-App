@@ -111,6 +111,17 @@ import AdminServices from '@/services/AdminService';
                     required
                     placeholder="Enter lawyer's email"
                   />
+                  
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input
+                    v-model="lawyerData.phone"
+                    type="text"
+                    required
+                    placeholder="Enter lawyer's Phone number"
+                  />
+                  
                 </div>
                 <div class="form-group">
                   <label for="specialization">Specialization</label>
