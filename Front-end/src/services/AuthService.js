@@ -55,11 +55,15 @@ class AuthServices {
     }
   }
 
-  static async resendVerification(email){
-    try{
-      const response = await axios.post(`${AuthServices.BASE_URL}api/auth/resend`, email, this.getAuthHeaders());
+  static async resendVerification(email) {
+    try {
+      const response = await axios.post(
+        `${AuthServices.BASE_URL}api/verification/resend`,
+         email , 
+        this.getAuthHeaders()
+      );
       return response.data;
-    } catch (err){
+    } catch (err) {
       throw err;
     }
   }
