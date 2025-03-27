@@ -62,7 +62,7 @@
         <div class="dashboard">
             <div class="header">
               <h2>Admins</h2>
-              <buttonv class="add-admin" @click="openAddAdminModel">Add an Admin</buttonv>
+              <button class="add-admin" @click="openAddAdminModel">Add an Admin</button>
             </div>
             <table>
               <thead>
@@ -89,7 +89,7 @@
           <div v-if="showAddAdminModal" class="modal-overlay">
             <div class="modal-content">
               <div class="modal-header">
-                <h2> Add new Lawyer</h2>
+                <h2> Add new Admin</h2>
               </div>
               <form @submit.prevent="createAdmin">
                 <div class="form-group">
@@ -128,7 +128,7 @@
                     required
                   >
                     <option value="" disabled>Select Specialization</option>
-                    
+                    <option value="System Administrator" >System Administrator</option>
                   </select>
                 </div>
                 <div class="form-group">

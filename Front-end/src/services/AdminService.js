@@ -14,7 +14,7 @@ class AdminServices {
 
     static async createAdmin(adminData){
         try{
-            const response = await axios.post(`${AdminServices.BASE_URL}api/admin/create`, adminData, this.getAuthHeaders());
+            const response = await axios.post(`${AdminServices.BASE_URL}api/admins/create`, adminData, this.getAuthHeaders());
             return response.data;
         } catch(err){
             throw err
