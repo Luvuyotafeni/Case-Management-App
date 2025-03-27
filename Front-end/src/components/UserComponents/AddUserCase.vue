@@ -10,6 +10,7 @@
     const showModal = ref (false);
     const loadingCase = ref(false);
     const openEditModal = ref(false);
+    const fileToUpload = ref(null);
 
     const fetchUserCases = async ()=> {
         try{
@@ -35,7 +36,45 @@
     const closeModal = () => {
       showModal.value = false;
       selectedCase.value = null;
+    };
+    
+
+    const closeEditModal = () => {
+      openEditModal.value = false;
+      selectedCase.value = null;
+    };
+
+
+    const openFileUploadModal = (caseId) => {
+      selectedCase.value = {caseId};
+      openEditModal.value = true;
+    };
+
+    const handleFileChange = (event) => {
+      fileToUpload.value = event.target.files[0];
+    };
+
+    const uploadFile = async () => {
+    if (!fileToUpload.value) {
+        alert('Please select a file to upload');
+        return;
     }
+
+    try {
+        await CaseService.addFile(selectedCase.value.caseId, fileToUpload.value);
+        alert('File uploaded successfully');
+        
+        // Refresh the case details
+        selectedCase.value = await CaseService.getCaseById(selectedCase.value.caseId);
+        
+        // Close the upload modal
+        openEditModal.value = false;
+        fileToUpload.value = null;
+    } catch (error) {
+        console.error('Error uploading file', error);
+        alert('Failed to upload file');
+    }
+};
 
     onMounted(fetchUserCases);
 </script>
@@ -71,7 +110,7 @@
             <td>{{ caseItem.assignedlawyer?.user?.name || 'No Lawyer Assigned' }}</td>
             <td>
               <i class="bx bx-show" @click="openModal(caseItem.caseId)"></i>
-              <i class='bx bx-edit'></i>
+              <i class='bx bx-edit' @click="openFileUploadModal(caseItem.caseId)"></i>
             </td>
           </tr>
         </tbody>
@@ -147,6 +186,41 @@
       </div>
     </div>
   </teleport>
+
+  <!-- file upload modal -->
+       <!-- File Upload Modal -->
+       <teleport to="body">
+            <div v-if="openEditModal" class="modal-overlay">
+                <div class="modal-content">
+                    <h2>Upload Document</h2>
+                    <div class="file-upload-section">
+                        <input 
+                            type="file" 
+                            @change="handleFileChange"
+                            class="file-input"
+                        />
+                        <div v-if="fileToUpload" class="file-preview">
+                            <p>Selected File: {{ fileToUpload.name }}</p>
+                        </div>
+                        <div class="upload-actions">
+                            <button 
+                                @click="uploadFile" 
+                                class="upload-button"
+                                :disabled="!fileToUpload"
+                            >
+                                Upload File
+                            </button>
+                            <button 
+                                @click="closeEditModal" 
+                                class="cancel-button"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </teleport>
     </div>
 </template>
 <style scoped>
@@ -286,4 +360,56 @@
     border: 1px solid #ccc;
     text-align: left;
   }
+  .file-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.file-input {
+    width: 90%;
+    padding: 10px;
+    margin:10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.file-preview {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.upload-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.upload-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 </style>
