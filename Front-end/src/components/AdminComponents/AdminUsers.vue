@@ -2,9 +2,15 @@
   import { onMounted, ref } from 'vue';
   import Header from './Header.vue';
   import UsersServices from '@/services/UserService';
+  import AdminServices from '@/services/AdminService';
 
 
   const users = ref(null);
+  const showModal = ref (false);
+  const loadingUser= ref(false);
+  const selectedUser = ref([]);
+
+
   const fetchUsers = async ()=> {
     try{
       const response = await UsersServices.getUserByRole();
@@ -13,6 +19,18 @@
       console.log("error fetching the Users", err);
     }
   };
+
+  const openModal = async (userId) => {
+      try{
+        loadingUser.value = true;
+        selectedUser.value = await AdminServices.getUserByIdAdmin(userId);
+        showModal.value =true;
+      } catch (error){
+        console.log("Error fetching the user details", error);
+      } finally{
+        loadingUser .value = false;
+      }
+    };
 
   onMounted(fetchUsers);
 </script>
@@ -37,11 +55,18 @@
                   <td>{{ user.name }}</td>
                   <td>{{ user.phone }}</td>
                   <td>{{ user.email }}</td>
-                  <td><button>See</button></td>
+                  <td><button @click="openModal">See</button></td>
                 </tr>
               </tbody>
             </table>
         </div>
+        <teleport to="body">
+          <div v-if="showModal" class="modal-overlay">
+            <div class="modal-content">
+              <h2>Case Details</h2>
+            </div>
+          </div>
+        </teleport>
     </div>
 </template>
 <style scoped>
