@@ -9,6 +9,7 @@
     const selectedCase = ref([]);
     const showModal = ref (false);
     const loadingCase = ref(false);
+    const openEditModal = ref(false);
 
     const fetchUserCases = async ()=> {
         try{
@@ -56,7 +57,7 @@
             <th>Occurrence Date</th>
             <th>Province</th>
             <th>Assigned Lawyer</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -69,7 +70,8 @@
             <td>{{ caseItem.province }}</td>
             <td>{{ caseItem.assignedlawyer?.user?.name || 'No Lawyer Assigned' }}</td>
             <td>
-              <button class="see-button" @click="openModal(caseItem.caseId)">See</button>
+              <i class="bx bx-show" @click="openModal(caseItem.caseId)"></i>
+              <i class='bx bx-edit'></i>
             </td>
           </tr>
         </tbody>

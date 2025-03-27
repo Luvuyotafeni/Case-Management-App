@@ -8,6 +8,7 @@
     const selectedCase = ref([]);
     const showModal = ref (false);
     const loadingCase = ref(false);
+    const openEditModal = ref(false);
 
     
     const fetchCases = async() => {
@@ -66,7 +67,7 @@
             <td>{{ caseItem.stationName }}</td>
             <td>{{ caseItem.province }}</td>
             <td>
-              <button class="see-button" @click="openModal(caseItem.caseId)">See</button>
+              <i class="bx bx-show" @click="openModal(caseItem.caseId)"></i>
             </td>
           </tr>
         </tbody>

@@ -38,6 +38,23 @@ class CaseService {
             throw err;
         }
     }
+    static async AddFile(caseId, file){
+        try{
+            const formData= new FormData();
+            formData.append('file', file);
+            formData.append('caseId', caseId);
+
+            const response = await axios.post(`${CaseService.BASE_URL}api/documents/upload`, formData,{
+                ...this.getAuthHeader(),
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response.data; 
+        } catch (err){
+            throw err;
+        }
+    }
 }
 
 export default CaseService;
