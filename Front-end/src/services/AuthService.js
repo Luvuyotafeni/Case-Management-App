@@ -64,6 +64,15 @@ class AuthServices {
     }
   }
 
+  static async verifyOtp(data){
+    try{
+      const response = await axios.post(`${AuthServices.BASE_URL}api/auth/verify`, data, this.getAuthHeaders());
+      return response.data;
+    } catch (err){
+      throw err;
+    }
+  }
+
   
 }
 
