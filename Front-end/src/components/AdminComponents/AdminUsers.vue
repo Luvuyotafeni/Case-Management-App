@@ -32,6 +32,11 @@
       }
     };
 
+    const closeModal = () => {
+      showModal.value = false;
+      selectedUser.value = null;
+    }
+
   onMounted(fetchUsers);
 </script>
 <template>
@@ -55,7 +60,7 @@
                   <td>{{ user.name }}</td>
                   <td>{{ user.phone }}</td>
                   <td>{{ user.email }}</td>
-                  <td><button @click="openModal">See</button></td>
+                  <td><button @click="openModal(user.userId)">See</button></td>
                 </tr>
               </tbody>
             </table>
@@ -64,6 +69,26 @@
           <div v-if="showModal" class="modal-overlay">
             <div class="modal-content">
               <h2>Case Details</h2>
+              <!-- Loading State -->
+              <div v-if="loadingUser">Loading case details...</div>
+
+              <div v-else>
+                <!-- User Info Section -->
+                <div class="user-info">
+                  <img
+                    :src="selectedUser?.profilePictureUrl || 'https://example.com/default-avatar.png'"
+                    alt="User Profile"
+                    class="profile-picture"
+                  />
+                  <div>
+                    <h3>{{ selectedUser?.name }}</h3>
+                    <p><strong>Email:</strong> {{ selectedUser?.email }}</p>
+                    <p><strong>Phone:</strong> {{ selectedUser?.phone }}</p>
+                    <p><strong>Role:</strong> {{ selectedUser.role }}</p>
+                  </div>
+                </div>
+                </div>
+                <button class="close-button" @click="closeModal">Close</button>
             </div>
           </div>
         </teleport>
@@ -116,4 +141,57 @@
     border: 1px solid #ccc;
     text-align: left;
   }
+
+   /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* Close Button */
+.close-button {
+  display: block;
+  width: 50%;
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: center;
+}
+
+  /* Modal Content */
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    height: 400px;
+    max-width: 600px;
+    overflow-y: auto;
+  }
+
+  /* User Info */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    border: 2px solid #007bff;
+  }
+
 </style>
