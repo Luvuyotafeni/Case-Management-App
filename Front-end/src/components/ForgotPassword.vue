@@ -1,4 +1,26 @@
 <script setup>
+import AuthServices from '@/services/AuthService';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const email = ref();
+const loading = ref(false);
+const router = useRouter();
+
+const handleForgotPassword = async ()=>{
+    if (!email.value){
+        console.log("please enter email");
+        return;
+    }
+    try{
+        loading.value = true;
+        const response = await AuthServices.forgotPassword({email:email.value});
+        
+    } catch (error){
+        console.log("could not progress", error);
+    } finally{
+        loading.value= false;
+    }
+};
 
 </script>
 <template>
@@ -6,10 +28,10 @@
         <div class="forgot-container">
             <!-- Right Section -->
             <div class="forgot-left">
-                <form class="forgot-password-form" >
+                <form class="forgot-password-form" @submit.prevent="handleForgotPassword">
 
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email">
+                    <input type="email" id="email" placeholder="Enter your email" v-model="email">
 
                     <button type="submit">Forgot Password</button>
                     <div class="links">
