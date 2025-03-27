@@ -46,6 +46,15 @@ class AuthServices {
     }
   }
 
+  static async resetPassword(data){
+    try{
+      const response = await axios.post(`${AuthServices.BASE_URL}api/auth/reset-password`, data);
+      return response.data;
+    } catch(err){
+      throw err;
+    }
+  }
+
   
 }
 

@@ -2,53 +2,92 @@
 import AuthServices from '@/services/AuthService';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const email = ref();
+
+const email = ref('');
+const otp = ref('');
+const newPassword = ref('');
 const loading = ref(false);
+const step = ref('requestOtp'); // 'requestOtp' or 'resetPassword'
 const router = useRouter();
 
-const handleForgotPassword = async ()=>{
-    if (!email.value){
-        console.log("please enter email");
+const handleForgotPassword = async () => {
+    if (!email.value) {
+        console.log("Please enter your email.");
         return;
     }
-    try{
+    try {
         loading.value = true;
-        const response = await AuthServices.forgotPassword({email:email.value});
-        
-    } catch (error){
-        console.log("could not progress", error);
-    } finally{
-        loading.value= false;
+        await AuthServices.forgotPassword({ email: email.value });
+
+        // Switch to OTP verification step
+        step.value = 'resetPassword';
+    } catch (error) {
+        console.log("Could not send OTP", error);
+    } finally {
+        loading.value = false;
     }
 };
 
+const handleResetPassword = async () => {
+    if (!otp.value || !newPassword.value) {
+        console.log("Please enter OTP and new password.");
+        return;
+    }
+    try {
+        loading.value = true;
+        await AuthServices.resetPassword({
+            email: email.value,
+            otp: otp.value,
+            newPassword: newPassword.value
+        });
+
+        console.log("Password reset successful");
+        router.push('/login'); // Redirect to login after successful reset
+    } catch (error) {
+        console.log("Failed to reset password", error);
+    } finally {
+        loading.value = false;
+    }
+};
 </script>
+
 <template>
     <div class="forgot-password-page">
         <div class="forgot-container">
-            <!-- Right Section -->
             <div class="forgot-left">
-                <form class="forgot-password-form" @submit.prevent="handleForgotPassword">
+                <form class="forgot-password-form" @submit.prevent="step === 'requestOtp' ? handleForgotPassword() : handleResetPassword()">
+                    <h2 v-if="step === 'requestOtp'">Forgot Password</h2>
+                    <h2 v-else>Reset Password</h2>
 
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" v-model="email">
+                    <input type="email" id="email" placeholder="Enter your email" v-model="email" :disabled="step === 'resetPassword'">
 
-                    <button type="submit">Forgot Password</button>
+                    <div v-if="step === 'resetPassword'">
+                        <div>
+                            <label for="otp">OTP Pin</label>
+                            <input type="text" id="otp" placeholder="Enter OTP" v-model="otp">
+                        </div>
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password" v-model="newPassword">
+                    </div>
+
+                    <button type="submit" :disabled="loading">
+                        {{ loading ? "Processing..." : step === 'requestOtp' ? "Request OTP" : "Reset Password" }}
+                    </button>
+
                     <div class="links">
-                        <div><RouterLink to="/login">Have an account? Login</RouterLink></div>                      
+                        <RouterLink to="/login">Have an account? Login</RouterLink>
                     </div>
                 </form>
             </div>
-            <!-- Left Section -->
             <div class="forgot-right">
                 <img src="../assets/LawIcon.jpeg"/>
-                <h2>Forgot Password</h2>
+                <h2>{{ step === 'requestOtp' ? 'Forgot Password' : 'Reset Password' }}</h2>
             </div>
-
-            
         </div>
     </div>
 </template>
+
 <style scoped>
 /* Full Page Styling */
 .forgot-password-page {
@@ -92,7 +131,7 @@ const handleForgotPassword = async ()=>{
     font-weight: bold;
 }
 
-.forgot-right img{
+.forgot-right img {
     width: 150px;
 }
 
@@ -126,7 +165,7 @@ const handleForgotPassword = async ()=>{
     cursor: pointer;
 }
 
-.links a{
+.links a {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
