@@ -39,7 +39,7 @@ onMounted(fetchLawyerCases);
                             <tr>
                                 <th>Court Date</th>
                                 <th>Case Name</th>
-                                <th>Case User</th>
+                                <th>Client Name</th>
                                 <th>Court Venue</th>
                             </tr>
                         </thead>
@@ -94,7 +94,7 @@ onMounted(fetchLawyerCases);
   .dashboard{
     display: flex;
     flex-direction: column;
-    margin-left: 100px;
+    margin-left: 10px;
     margin-top: 100px;
     width: 100%;
   }
@@ -102,7 +102,7 @@ onMounted(fetchLawyerCases);
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    height: 50%;
+    height: 35%;
 }
 
 .assigned-cases {
@@ -113,7 +113,7 @@ onMounted(fetchLawyerCases);
     background: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 50%;
+    height: 90%;
 }
 
 .assigned-cases i {
@@ -128,6 +128,7 @@ onMounted(fetchLawyerCases);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex-grow: 1;
     margin-left: 20px;
+    height: 90%;
 }
 
 .upcoming-court-dates table {
