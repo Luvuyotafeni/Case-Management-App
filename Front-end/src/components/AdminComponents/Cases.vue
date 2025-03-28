@@ -3,42 +3,111 @@
     import Header from './Header.vue';
     import AdminServices from '@/services/AdminService';
     import CaseService from '@/services/CaseService';
+    import LawyersService from '@/services/LawyersService';
 
     const cases = ref([]);
-    const selectedCase = ref([]);
-    const showModal = ref (false);
+    const selectedCase = ref(null);
+    const showModal = ref(false);
     const loadingCase = ref(false);
-    const openEditModal = ref(false);
-
+    const lawyers = ref([]);
+    const showLawyerSelect = ref(false);
     
-    const fetchCases = async() => {
-        try{
+    const selectedLawyer = ref(null);
+    const selectedLawyerId = ref(null);
+    const assigningLawyer = ref(false);
+
+    const fetchCases = async () => {
+        try {
             cases.value = await AdminServices.getAllAdminCases();
-        } catch(error){
+        } catch (error) {
             console.log("Error fetching cases: ", error);
         }
     };
 
     const openModal = async (caseId) => {
-      try{
-        loadingCase.value = true;
-        selectedCase.value = await CaseService.getCaseById(caseId);
-        showModal.value =true;
-      } catch (error){
-        console.log("Error fetching the case details", error);
-      } finally{
-        loadingCase.value = false;
+        try {
+            loadingCase.value = true;
+            selectedCase.value = await CaseService.getCaseById(caseId);
+            showModal.value = true;
+            console.log(selectedCase.value.case)
+        } catch (error) {
+            console.log("Error fetching the case details", error);
+        } finally {
+            loadingCase.value = false;
+        }
+    };
+
+    const closeModal = () => {
+        showModal.value = false;
+        selectedCase.value = null;
+        showLawyerSelect.value = false;
+    };
+
+    const fetchLawyers = async () => {
+        try {
+            lawyers.value = await LawyersService.getAllLawyers();
+        } catch (error) {
+            console.log("Error fetching lawyers:", error);
+        }
+    };
+    const selectLawyer = async (lawyerId) => {
+      try {
+          // Fetch full lawyer details by ID
+          const fullLawyerDetails = await LawyersService.getLawyerById(lawyerId);
+          
+          // Update both selectedLawyer and selectedLawyerId
+          selectedLawyer.value = fullLawyerDetails;
+          selectedLawyerId.value = lawyerId;
+          
+          console.log('Selected Lawyer Details:', fullLawyerDetails);
+      } catch (error) {
+          console.error('Error fetching lawyer details:', error);
+          alert('Failed to fetch lawyer details');
+          selectedLawyer.value = null;
+          selectedLawyerId.value = null;
       }
     };
 
+    const assignLawyer = async () => {
+        // Validate both case and lawyer selection
+        if (!selectedLawyer.value || !selectedCase.value) {
+            console.error('No lawyer or case selected');
+            alert('Please select a lawyer and case');
+            return;
+        }
 
-    const closeModal = () => {
-      showModal.value = false;
-      selectedCase.value = null;
-    }
+        try {
+            assigningLawyer.value = true;
+            
+            // Use the confirmed lawyer ID and case ID
+            const response = await CaseService.assignLawyer(
+                selectedCase.value.caseId,  // Ensure this is the correct case ID
+                selectedLawyer.value.lawyerId  // Ensure this is the correct lawyer ID
+            );
+
+            console.log('Lawyer assignment response:', response);
+
+            // Update the case with the assigned lawyer
+            selectedCase.value.assignedlawyer = selectedLawyer.value;
+            
+            // Reset selection states
+            showLawyerSelect.value = false;
+            selectedLawyer.value = null;
+            selectedLawyerId.value = null;
+
+            // Optional: Refresh cases to reflect the update
+            await fetchCases();
+        } catch (error) {
+            console.error('Error assigning lawyer:', error);
+            alert('Failed to assign lawyer');
+        } finally {
+            assigningLawyer.value = false;
+        }
+      };
+    
 
     onMounted(fetchCases);
-    
+
 </script>
 <template>
   <div class="container">
@@ -114,15 +183,46 @@
 
 
           <hr />
+          <!-- Assigned Lawyer Section -->
           <div class="lawyer-info">
-            <h3> Assigned Lawyer</h3>
-            <div v-if="selectedCase?.assignedlawyer">
-                <p><strong>Name: </strong>{{ selectedCase.assignedlawyer.user.name  }}</p>
-                <p><strong>Email: </strong>{{ selectedCase.assignedlawyer.user.email  }}</p>
-                <p><strong>Phone: </strong>{{ selectedCase.assignedlawyer.user.phone  }}</p>
-                <p><strong>Specialization: </strong>{{ selectedCase.assignedlawyer.specialization }}</p>
-            </div>
+              <h3> Assigned Lawyer</h3>
+
+              <div v-if="selectedCase?.assignedlawyer">
+                  <p><strong>Name: </strong>{{ selectedCase.assignedlawyer.user.name }}</p>
+                  <p><strong>Email: </strong>{{ selectedCase.assignedlawyer.user.email }}</p>
+                  <p><strong>Phone: </strong>{{ selectedCase.assignedlawyer.user.phone }}</p>
+                  <p><strong>Specialization: </strong>{{ selectedCase.assignedlawyer.specialization }}</p>
+              </div>
+
+              <div v-else>
+                  <button class="assign-lawyer-button" @click="fetchLawyers(); showLawyerSelect = true">
+                      Assign Lawyer
+                  </button>
+                  
+                  <div v-if="showLawyerSelect">
+                    <select 
+                        v-model="selectedLawyerId" 
+                        @change="selectLawyer(selectedLawyerId)"
+                    >
+                        <option value="" disabled>Select a lawyer</option>
+                        <option 
+                            v-for="lawyer in lawyers" 
+                            :key="lawyer.lawyerId" 
+                            :value="lawyer.lawyerId"
+                        >
+                            {{ lawyer.user.name }} - {{ lawyer.specialization }}
+                        </option>
+                    </select>
+                    <button 
+                        @click="assignLawyer" 
+                        :disabled="assigningLawyer || !selectedLawyer"
+                    >
+                        {{ assigningLawyer ? 'Assigning...' : 'Confirm' }}
+                    </button>
+                </div>
+                              </div>
           </div>
+
           <hr />
 
           <!-- Documents Section -->
