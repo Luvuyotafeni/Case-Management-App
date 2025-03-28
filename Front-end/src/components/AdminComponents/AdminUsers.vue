@@ -60,7 +60,7 @@
                   <td>{{ user.name }}</td>
                   <td>{{ user.phone }}</td>
                   <td>{{ user.email }}</td>
-                  <td><button @click="openModal(user.userId)">See</button></td>
+                  <td><i class="bx bx-show" @click="openModal(user.userId)"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -88,7 +88,7 @@
                   </div>
                 </div>
                 </div>
-                <button class="close-button" @click="closeModal">Close</button>
+                <button class="close-button" @click="closeModal" >Close</button>
             </div>
           </div>
         </teleport>

@@ -1,40 +1,40 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import Header from "./Header.vue";
-import AdminServices from "@/services/AdminService";
-import LawyersService from "@/services/LawyersService";
+  import { ref, onMounted } from "vue";
+  import Header from "./Header.vue";
+  import AdminServices from "@/services/AdminService";
+  import LawyersService from "@/services/LawyersService";
 
-// Reactive state variables
-const totalCases = ref(0);
-const totalLawyers = ref(0);
-const allCases = ref([]);
-const allLawyers = ref([]);
+  // Reactive state variables
+  const totalCases = ref(0);
+  const totalLawyers = ref(0);
+  const allCases = ref([]);
+  const allLawyers = ref([]);
 
-// Fetching total cases
-const fetchTotalCases = async () => {
-  try {
-    allCases.value = await AdminServices.getAllAdminCases();
-    totalCases.value = allCases.value.length;
-  } catch (err) {
-    console.error("Error fetching cases:", err);
-  }
-};
+  // Fetching total cases
+  const fetchTotalCases = async () => {
+    try {
+      allCases.value = await AdminServices.getAllAdminCases();
+      totalCases.value = allCases.value.length;
+    } catch (err) {
+      console.error("Error fetching cases:", err);
+    }
+  };
 
-// Fetching total lawyers
-const fetchTotalLawyers = async () => {
-  try {
-    allLawyers.value = await LawyersService.getAllLawyers();
-    totalLawyers.value = allLawyers.value.length;
-  } catch (err) {
-    console.error("Error fetching lawyers:", err);
-  }
-};
+  // Fetching total lawyers
+  const fetchTotalLawyers = async () => {
+    try {
+      allLawyers.value = await LawyersService.getAllLawyers();
+      totalLawyers.value = allLawyers.value.length;
+    } catch (err) {
+      console.error("Error fetching lawyers:", err);
+    }
+  };
 
-// Fetch all data when the component is mounted
-onMounted(() => {
-  fetchTotalCases();
-  fetchTotalLawyers();
-});
+  // Fetch all data when the component is mounted
+  onMounted(() => {
+    fetchTotalCases();
+    fetchTotalLawyers();
+  });
 </script>
   <template>
       <div class="container">

@@ -71,6 +71,7 @@
                   <th>Admin Specialization</th>
                   <th>Admin Email</th>
                   <th>Admin Phone</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,6 +80,9 @@
                   <td>{{ admin.adminSpecificColumn }}</td>
                   <td>{{ admin.user.email }}</td>
                   <td>{{ admin.user.phone }}</td>
+                  <td>
+                    <i class="bx bx-show"></i>
+                  </td>
                 </tr>
               </tbody>
             </table>

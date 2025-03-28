@@ -72,6 +72,7 @@ import AdminServices from '@/services/AdminService';
                   <th>Specialization</th>
                   <th>Lawyer Phone</th>
                   <th>Lawyer Email</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,6 +81,9 @@ import AdminServices from '@/services/AdminService';
                   <td>{{ lawyer.specialization }}</td>
                   <td>{{ lawyer.user.phone }}</td>
                   <td>{{ lawyer.user.email }}</td>
+                  <td>
+                    <i class="bx bx-show" ></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
