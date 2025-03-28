@@ -69,6 +69,15 @@ class CaseService {
             throw err;
         }
     }
+    static async assignLawyer(caseId, lawyerId){
+        try{
+            const payload = {caseId, lawyerId};
+            const response = await axios.post(`${CaseService.BASE_URL}api/cases/assign-lawyer`, payload, this.getAuthHeader());
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+    }
 }
 
 export default CaseService;
