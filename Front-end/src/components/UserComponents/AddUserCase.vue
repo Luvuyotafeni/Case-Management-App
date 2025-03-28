@@ -51,6 +51,25 @@
       showCreateCaseModal.value =true;
     };
 
+    //Creating a case
+    const createCase = async ()=> {
+      try{
+        const caseData = {
+          ...newCase.value,
+          userId: userId
+        };
+
+        const response = await CaseService.createCase(caseData);
+
+        await fetchUserCases();
+        showCreateCaseModal.value= false;
+        alert('case created');
+      } catch (error){
+        console.log('error creatign  a case', error)
+        alert(`failed to create case ${error.response?.data || error.message}`);
+      }
+    }
+
     const openModal = async (caseId) => {
       try{
         loadingCase.value = true;
@@ -73,10 +92,7 @@
       openEditModal.value = false;
       selectedCase.value = null;
     };
-
-    const closeAddCaseModal =()=>{
-      openCreateModalCaseModal = false;
-    }
+    
 
 
     const openFileUploadModal = (caseId) => {
@@ -88,40 +104,41 @@
       fileToUpload.value = event.target.files[0];
     };
 
+    //UPLOADING A FILE
     const uploadFile = async () => {
-    if (!fileToUpload.value) {
-        alert('Please select a file to upload');
-        return;
-    }
+      if (!fileToUpload.value) {
+          alert('Please select a file to upload');
+          return;
+      }
 
-    try {
-        const formData = new FormData();
-        formData.append('file', fileToUpload.value);
-        formData.append('caseId', selectedCase.value.caseId);
+      try {
+          const formData = new FormData();
+          formData.append('file', fileToUpload.value);
+          formData.append('caseId', selectedCase.value.caseId);
 
-        console.log('Uploading file:', {
-            fileName: fileToUpload.value.name,
-            caseId: selectedCase.value.caseId
-        });
+          console.log('Uploading file:', {
+              fileName: fileToUpload.value.name,
+              caseId: selectedCase.value.caseId
+          });
 
-        const response = await CaseService.addFile(selectedCase.value.caseId, fileToUpload.value);
-        
-        console.log('Upload response:', response);
-        
-        alert('File uploaded successfully');
-        
-        // Refresh the case details
-        selectedCase.value = await CaseService.getCaseById(selectedCase.value.caseId);
-        
-        // Close the upload modal
-        openEditModal.value = false;
-        fileToUpload.value = null;
-    } catch (error) {
-        console.error('Full error details:', error);
-        console.error('Error response:', error.response);
-        alert(`Failed to upload file: ${error.response?.data || error.message}`);
-    }
-};
+          const response = await CaseService.addFile(selectedCase.value.caseId, fileToUpload.value);
+          
+          console.log('Upload response:', response);
+          
+          alert('File uploaded successfully');
+          
+          // Refresh the case details
+          selectedCase.value = await CaseService.getCaseById(selectedCase.value.caseId);
+          
+          // Close the upload modal
+          openEditModal.value = false;
+          fileToUpload.value = null;
+      } catch (error) {
+          console.error('Full error details:', error);
+          console.error('Error response:', error.response);
+          alert(`Failed to upload file: ${error.response?.data || error.message}`);
+      }
+    };
 
     onMounted(fetchUserCases);
 </script>
@@ -239,18 +256,18 @@
     <div v-if="showCreateCaseModal" class="modal-overlay">
       <div class="modal-content create-case-modal">
         <h2>Create New Case</h2>
-        <form>
+        <form @submit.prevent="createCase">
           <div class="form-group">
             <label>Case Name</label>
-            <input type="text" placeholder="Enter Case Name" required/>
+            <input v-model="newCase.caseName" type="text" placeholder="Enter Case Name" required/>
           </div>
           <div class="form-group">
             <label>Case Number</label>
-            <input type="text" placeholder="Enter Case Number" required/>
+            <input v-model="newCase.caseNumber" type="text" placeholder="Enter Case Number" required/>
           </div>
           <div class="form-group">
             <label>Case Type</label>
-            <select>
+            <select v-model="newCase.caseType">
               <option value=""> Select Case</option>
               <option value="Criminal"> Criminal</option>
               <option value="Civil"> Civil</option>
@@ -260,15 +277,15 @@
           </div>
           <div class="form-group">
             <label>Case Description</label>
-            <textarea placeholder="Enter Case Description"></textarea>
+            <textarea v-model="newCase.description" placeholder="Enter Case Description"></textarea>
           </div>
           <div class="form-group">
             <label>Station Name</label>
-            <input type="text" placeholder="Enter Station Name" required/>
+            <input v-model="newCase.stationName" type="text" placeholder="Enter Station Name" required/>
           </div>
           <div class="form-group">
             <label>Province</label>
-            <select>
+            <select v-model="newCase.province">
               <option value=""> Select Province</option>
               <option value="Eastern Cape">Eastern Cape</option>
               <option value="Free State"> Free State</option>
@@ -283,15 +300,15 @@
           </div>
           <div class="form-group">
             <label>Officer Name</label>
-            <input type="text" placeholder="Enter Officer Name" required/>
+            <input v-model="newCase.officerName" type="text" placeholder="Enter Officer Name" required/>
           </div>
           <div class="form-group">
             <label>Officer Contacts</label>
-            <input type="tel" placeholder="Enter Officer Contact Number" required/>
+            <input v-model="newCase.officerContact" type="tel" placeholder="Enter Officer Contact Number" required/>
           </div>
           <div class="form-group">
             <label>Occurence Date</label>
-            <input type="date" placeholder="Enter Case Name" required/>
+            <input v-model="newCase.occurenceDate" type="date" placeholder="Enter Case Name" required/>
           </div>
           <div class="form-actions">
             <button type="submit" class="upload-button"> Create Case</button>
@@ -305,7 +322,7 @@
   <!-- file upload modal -->
        <teleport to="body">
             <div v-if="openEditModal" class="modal-overlay">
-                <div class="modal-content">
+                <div class="modal-content upload-modal">
                     <h2>Upload Document</h2>
                     <div class="file-upload-section">
                         <input 
@@ -513,6 +530,10 @@
     cursor: pointer;
 }
 
+.upload-modal{
+  height: 300px;
+}
+
 .upload-button:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
@@ -549,7 +570,7 @@
   border-radius: 4px;
 }
 
-.form-group text{
+.form-group textarea{
   height: 100px;
 }
 
