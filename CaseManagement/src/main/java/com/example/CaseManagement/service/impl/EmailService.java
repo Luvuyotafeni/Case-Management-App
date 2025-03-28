@@ -43,7 +43,7 @@ public class EmailService {
         String body = "Dear "+ userName + "\n\n"+
                 "Thank you for submitting your case \""+ caseName+"\"(Casenumber: "+ caseNumber + "). \n\n "+
                 "We want to assure you that your case has been received and will be handled with the utmost responsibility and care.\n\n" +
-                "To proceed with the case processing, please upload all relevant documents and link them to this case through the 'Open Cases' section of your account.\n\n" +
+                "To proceed with the case processing, please upload all relevant documents and link them to this case through the 'Case Actions' cases table on you account.\n\n" +
                 "If you have any questions or need assistance, please don't hesitate to contact our support team.\n\n" +
                 "Best regards,\n" +
                 "The Case Management Team";

@@ -123,6 +123,7 @@
             <th>Username</th>
             <th>Case Name</th>
             <th>Case Type</th>
+            <th>Assigned Lawyer</th>
             <th>Station Name</th>
             <th>Province</th>
             <th>Action</th>
@@ -133,6 +134,7 @@
             <td>{{ caseItem.user.name }}</td>
             <td>{{ caseItem.caseName }}</td>
             <td>{{ caseItem.caseType }}</td>
+            <td>{{ caseItem.assignedlawyer?.user?.name}}</td>
             <td>{{ caseItem.stationName }}</td>
             <td>{{ caseItem.province }}</td>
             <td>
