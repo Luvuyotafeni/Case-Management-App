@@ -200,8 +200,75 @@
     </div>
   </teleport>
 
+  <!-- modal to create a case -->
+   <teleport to="body">
+    <div class="modal-overlay">
+      <div class="modal-content create-case-modal">
+        <h2>Create New Case</h2>
+        <form>
+          <div class="form-group">
+            <label>Case Name</label>
+            <input type="text" placeholder="Enter Case Name" required/>
+          </div>
+          <div class="form-group">
+            <label>Case Number</label>
+            <input type="text" placeholder="Enter Case Number" required/>
+          </div>
+          <div class="form-group">
+            <label>Case Type</label>
+            <select>
+              <option value=""> Select Case</option>
+              <option value="Criminal"> Criminal</option>
+              <option value="Civil"> Civil</option>
+              <option value="Family"> Family</option>
+              <option value="Corporate"> Corporate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Case Description</label>
+            <textarea placeholder="Enter Case Description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Station Name</label>
+            <input type="text" placeholder="Enter Station Name" required/>
+          </div>
+          <div class="form-group">
+            <label>Province</label>
+            <select>
+              <option value=""> Select Province</option>
+              <option value="Eastern Cape">Eastern Cape</option>
+              <option value="Free State"> Free State</option>
+              <option value="Gauteng"> Gauteng</option>
+              <option value="KwaZulu-Natal"> KwaZulu-Natal</option>
+              <option value="Limpopo"> Limpopo</option>
+              <option value="Mpumalanga"> Mpumalanga</option>
+              <option value="Northern Cape"> Northern Cape</option>
+              <option value="North West"> North West</option>
+              <option value="Western Cape"> Western Cape</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Officer Name</label>
+            <input type="text" placeholder="Enter Officer Name" required/>
+          </div>
+          <div class="form-group">
+            <label>Officer Contacts</label>
+            <input type="tel" placeholder="Enter Officer Contact Number" required/>
+          </div>
+          <div class="form-group">
+            <label>Occurence Date</label>
+            <input type="date" placeholder="Enter Case Name" required/>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="submit-button"> Create Case</button>
+            <button type="button" class="cancel-button" >Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+   </teleport>
+
   <!-- file upload modal -->
-       <!-- File Upload Modal -->
        <teleport to="body">
             <div v-if="openEditModal" class="modal-overlay">
                 <div class="modal-content">
