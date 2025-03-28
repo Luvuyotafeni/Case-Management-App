@@ -46,7 +46,7 @@
         province:'',
         officerName:'',
         officerContact:'',
-        occurenceDate:''
+        occurrenceDate:''
       };
       showCreateCaseModal.value =true;
     };
@@ -308,7 +308,7 @@
           </div>
           <div class="form-group">
             <label>Occurence Date</label>
-            <input v-model="newCase.occurenceDate" type="date" placeholder="Enter Case Name" required/>
+            <input v-model="newCase.occurrenceDate" type="date" placeholder="Enter Case Name" required/>
           </div>
           <div class="form-actions">
             <button type="submit" class="upload-button"> Create Case</button>
