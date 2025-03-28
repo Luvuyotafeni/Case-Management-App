@@ -12,6 +12,21 @@
     const openEditModal = ref(false);
     const fileToUpload = ref(null);
 
+    const showCreateCaseModal = ref(false);
+
+    const newCase = ref({
+      caseName:'',
+      caseNumber:'',
+      caseType:'',
+      description:'',
+      stationName:'',
+      province:'',
+      officerName:'',
+      officerContact:'',
+      occurenceDate:''
+
+    });
+
     const fetchUserCases = async ()=> {
         try{
             const response = await CaseService.getCasesByUserId(userId);
@@ -19,6 +34,21 @@
         } catch(error){
             console.log("error fetching cases", error);
         }
+    };
+
+    const openCreateModalCaseModal = () =>{
+      newCase.value ={
+        caseName:'',
+        caseNumber:'',
+        caseType:'',
+        description:'',
+        stationName:'',
+        province:'',
+        officerName:'',
+        officerContact:'',
+        occurenceDate:''
+      };
+      showCreateCaseModal.value =true;
     };
 
     const openModal = async (caseId) => {
@@ -43,6 +73,10 @@
       openEditModal.value = false;
       selectedCase.value = null;
     };
+
+    const closeAddCaseModal =()=>{
+      openCreateModalCaseModal = false;
+    }
 
 
     const openFileUploadModal = (caseId) => {
@@ -97,7 +131,7 @@
         <div class="dashboard">
       <div class="header">
         <h2>Cases</h2>
-        <button class="add-case">Add Case</button>
+        <button class="add-case" @click="openCreateModalCaseModal">Add Case</button>
       </div>
       <table>
         <thead>
@@ -202,7 +236,7 @@
 
   <!-- modal to create a case -->
    <teleport to="body">
-    <div class="modal-overlay">
+    <div v-if="showCreateCaseModal" class="modal-overlay">
       <div class="modal-content create-case-modal">
         <h2>Create New Case</h2>
         <form>
@@ -260,8 +294,8 @@
             <input type="date" placeholder="Enter Case Name" required/>
           </div>
           <div class="form-actions">
-            <button type="submit" class="submit-button"> Create Case</button>
-            <button type="button" class="cancel-button" >Cancel</button>
+            <button type="submit" class="upload-button"> Create Case</button>
+            <button type="button" class="cancel-button" @click="showCreateCaseModal = false">Cancel</button>
           </div>
         </form>
       </div>
@@ -491,5 +525,37 @@
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+/* ADDing case styles */
+.create-case-modal{
+  height:80vh;
+  width:50%;
+  overflow-y: auto;
+}
+
+.form-group{
+  margin-bottom: 15px;
+}
+.form-group label{
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.form-group input, select, textarea{
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group text{
+  height: 100px;
+}
+
+.form-actions{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 </style>
