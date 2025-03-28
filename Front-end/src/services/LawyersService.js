@@ -20,6 +20,16 @@ class LawyersService {
             throw err;
         }
     }
+
+    static async getLawyerById(lawyerId){
+        try{
+            const response = await axios.get(`${LawyersService.BASE_URL}api/lawyers/${lawyerId}`, this.getAuthHeaders());
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+
+    }
     
 
 }
