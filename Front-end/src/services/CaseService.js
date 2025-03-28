@@ -60,6 +60,15 @@ class CaseService {
             throw err;
         }
     }
+
+    static async createCase(caseData){
+        try{
+            const response = await axios.post(`${CaseService.BASE_URL}api/cases/create`, caseData, this.getAuthHeader());
+            return response.data;
+        } catch(err){
+            throw err;
+        }
+    }
 }
 
 export default CaseService;
