@@ -61,7 +61,19 @@
     }
 
     try {
-        await CaseService.addFile(selectedCase.value.caseId, fileToUpload.value);
+        const formData = new FormData();
+        formData.append('file', fileToUpload.value);
+        formData.append('caseId', selectedCase.value.caseId);
+
+        console.log('Uploading file:', {
+            fileName: fileToUpload.value.name,
+            caseId: selectedCase.value.caseId
+        });
+
+        const response = await CaseService.addFile(selectedCase.value.caseId, fileToUpload.value);
+        
+        console.log('Upload response:', response);
+        
         alert('File uploaded successfully');
         
         // Refresh the case details
@@ -71,8 +83,9 @@
         openEditModal.value = false;
         fileToUpload.value = null;
     } catch (error) {
-        console.error('Error uploading file', error);
-        alert('Failed to upload file');
+        console.error('Full error details:', error);
+        console.error('Error response:', error.response);
+        alert(`Failed to upload file: ${error.response?.data || error.message}`);
     }
 };
 

@@ -44,15 +44,19 @@ class CaseService {
             formData.append('file', file);
             formData.append('caseId', caseId);
     
+            console.log('Sending file upload request:', {
+                url: `${CaseService.BASE_URL}api/documents/upload`,
+                caseId: caseId,
+                fileName: file.name
+            });
+    
             const response = await axios.post(`${CaseService.BASE_URL}api/documents/upload`, formData, {
-                ...this.getAuthHeader(),
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                ...this.getAuthHeader()
             });
             return response.data;
         } catch (err){
-            console.error('File upload error:', err.response ? err.response.data : err.message);
+            console.error('File upload error:', err);
+            console.error('Error response:', err.response ? err.response.data : 'No response');
             throw err;
         }
     }
