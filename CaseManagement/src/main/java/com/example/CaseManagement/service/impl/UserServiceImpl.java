@@ -10,7 +10,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EmailVerificationService emailVerificationService;
+
+    @Autowired
+    private ImageKitService imageKitService;
 
     @Autowired
     private LawyerRepository lawyerRepository;
@@ -183,6 +188,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserBaseEntity> getUsersByRole(Role role) {
         return userBaseRepository.findByRole(role);
+    }
+
+    @Override
+    @Transactional
+    public UserEntity updateProfilePicture(Long userId, MultipartFile profilePicture) throws IOException {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+
+        // Get the authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserBaseEntity currentUser = userBaseRepository.findByEmail(authentication.getName());
+
+        // Check if the user is updating their own profile or is an admin
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin && !user.getUserId().equals(currentUser.getUserId())) {
+            throw new RuntimeException("You can only update your own profile picture");
+        }
+
+        // Delete the old profile picture if it exists
+        if (user.getImageKitProfileId() != null && !user.getImageKitProfileId().isEmpty()) {
+            imageKitService.deleteProfilePicture(user.getImageKitProfileId());
+        }
+
+        // Upload the new profile picture
+        ImageKitService.ImageUploadResponse response = imageKitService.uploadProfilePicture(profilePicture, userId);
+
+        // Update the user's profile picture URL and ImageKit file ID
+        user.setProfilePictureUrl(response.getFileUrl());
+        user.setImageKitProfileId(response.getFileId());
+
+        return userRepository.save(user);
     }
 
 

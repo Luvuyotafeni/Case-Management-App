@@ -2,6 +2,7 @@ package com.example.CaseManagement.service.impl;
 
 import com.example.CaseManagement.entity.DocumentEntity;
 import com.example.CaseManagement.repository.DocumentRepository;
+import com.example.CaseManagement.repository.UserBaseRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,7 @@ public class ImageKitService {
 
     @Autowired
     private  DocumentRepository documentRepository;
+
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -63,6 +65,66 @@ public class ImageKitService {
             return new ImageUploadResponse(imageKitResponse.getUrl(), imageKitResponse.getFileId());
         } else {
             throw new RuntimeException("Failed to upload image: " + response.getBody());
+        }
+
+    }
+
+    /**
+     * Uploads a profile picture to ImageKit and returns the URL and fileId.
+     */
+    public ImageUploadResponse uploadProfilePicture(MultipartFile file, Long userId) throws IOException {
+        String fileName = "profile_" + userId + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.set("Authorization", authHeader);
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", file.getResource());
+        body.add("fileName", fileName);
+        body.add("folder", "/profiles/" + userId);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://upload.imagekit.io/api/v1/files/upload",
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            ImageKitResponse imageKitResponse = objectMapper.readValue(response.getBody(), ImageKitResponse.class);
+            return new ImageUploadResponse(imageKitResponse.getUrl(), imageKitResponse.getFileId());
+        } else {
+            throw new RuntimeException("Failed to upload profile picture: " + response.getBody());
+        }
+    }
+
+    /**
+     * Deletes the previous profile picture if it exists
+     */
+    public void deleteProfilePicture(String fileId) {
+        if (fileId == null || fileId.isEmpty()) {
+            return; // No profile picture to delete
+        }
+
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((privateKey + ":").getBytes(StandardCharsets.UTF_8));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        try {
+            restTemplate.exchange(
+                    "https://api.imagekit.io/v1/files/" + fileId,
+                    HttpMethod.DELETE,
+                    requestEntity,
+                    String.class
+            );
+        } catch (Exception e) {
+            // Log error but don't stop the process if deletion fails
+            System.err.println("Failed to delete old profile picture: " + e.getMessage());
         }
     }
 
@@ -118,7 +180,8 @@ public class ImageKitService {
         private String fileUrl;
         private String fileId;
 
-        public ImageUploadResponse(String fileUrl, String fileId) {
+        public
+        ImageUploadResponse(String fileUrl, String fileId) {
             this.fileUrl = fileUrl;
             this.fileId = fileId;
         }

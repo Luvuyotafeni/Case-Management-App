@@ -19,10 +19,10 @@ public abstract class UserBaseEntity {
     private String email;
     private String phone;
     private String profilePictureUrl;
+    private String imageKitProfileId; // Added new field for ImageKit file ID
     private boolean isEmailVerified;
     private boolean twoStepVerification = false;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 }
