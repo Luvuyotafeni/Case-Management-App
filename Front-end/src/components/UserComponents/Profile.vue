@@ -1,4 +1,3 @@
-
 <script setup>
     import { onMounted, ref } from 'vue';
     import Header from './Header.vue';
