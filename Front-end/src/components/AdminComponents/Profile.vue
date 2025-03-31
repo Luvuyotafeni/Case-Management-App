@@ -15,6 +15,10 @@ const isSendingOtp = ref(false);
 const isVerifyingOtp = ref(false);
 const otpError = ref("");
 const otpSuccess = ref("");
+const isHoveringImage = ref(false);
+const imageInput = ref(null);
+const isUploading = ref(false);
+const uploadError = ref(null);
 
 // Fetch admin details on mount
 const fetchAdminDetails = async () => {
@@ -81,6 +85,47 @@ const closeProfileModal = () => {
   showProfileModal.value = false;
 };
 
+const handleImageHover = (isHovering) => {
+  isHoveringImage.value = isHovering;
+};
+
+const triggerImageUpload = () => {
+  // Trigger the hidden file input click
+  if (imageInput.value) {
+    imageInput.value.click();
+  }
+};
+
+const handleImageChange = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Check if file is an image
+  if (!file.type.match('image.*')) {
+    uploadError.value = 'Please select an image file';
+    return;
+  }
+
+  // Check file size (limit to 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    uploadError.value = 'Image size should be less than 5MB';
+    return;
+  }
+
+  try {
+    isUploading.value = true;
+    uploadError.value = null;
+    const response = await UsersServices.updateProfilePicture(userId, file);
+    // Update the user data with the new profile picture
+    admin.value = response;
+    isUploading.value = false;
+  } catch (error) {
+    console.error('Error uploading profile picture', error);
+    uploadError.value = 'Failed to upload image. Please try again.';
+    isUploading.value = false;
+  }
+ };
+
 onMounted(fetchAdminDetails);
 </script>
 
@@ -91,11 +136,33 @@ onMounted(fetchAdminDetails);
       <main class="dashboard">
         <div class="profile-card" v-if="admin">
           <div class="profile-header">
+            <div class="profile-img-container" 
+            @mouseenter="handleImageHover(true)" 
+            @mouseleave="handleImageHover(false)"
+            >
             <img
-              :src="admin.profileImage || 'https://via.placeholder.com/100'"
-              alt="User Avatar"
-              class="profile-img"
+            :src="admin.profilePictureUrl || 'https://example.com/default-avatar.png'"
+            alt="User Profile"
+            class="profile-img"
+            :class="{ 'img-uploading': isUploading }"
             />
+            <div class="profile-img-overlay" v-if="isHoveringImage && !isUploading">
+              <button @click="triggerImageUpload" class="change-img-btn">
+                Change Image
+              </button>
+            </div>
+            <div class="profile-img-overlay uploading" v-if="isUploading">
+              <div class="spinner"></div>
+              <span>Uploading...</span>
+            </div>
+            <input 
+            type="file" 
+            ref="imageInput" 
+            @change="handleImageChange" 
+            accept="image/*" 
+            class="hidden-input"
+            />
+          </div>
             <div class="profile-info">
               <h2>
                 {{ admin.name }}
@@ -131,40 +198,32 @@ onMounted(fetchAdminDetails);
       </main>
     </div>
 
-    <!-- profile modal -->
+    <!-- edit profile modal -->
     <teleport to="body" v-if="showProfileModal">
       <div class="modal-overlay">
         <div class="modal-content">
           <div class="modal-header">
-            <h2>Edit Admin</h2>
+            <h2>Edit Profile</h2>
           </div>
           <div class="form-group">
             <label>Name:</label>
-            <input
-              
-            />
+            <input v-model="admin.name" />
           </div>
           <div class="form-group">
             <label>Email:</label>
-            <input
-              
-            />
+            <input v-model="admin.email" />
           </div>
           <div class="form-group">
             <label>Phone:</label>
-            <input
-              
-            />
+            <input v-model="admin.phone" />
           </div>
           <div class="form-group">
             <label>Role:</label>
-            <input
-              
-            />
+            <input v-model="admin.role" readonly />
           </div>
           <div class="form-group">
             <label>Two step Verification:</label>
-            
+            <input type="checkbox" v-model="admin.twoStepVerification" />
           </div>
           <div class="modal-actions">
             <button type="submit" class="submit-btn">Save</button>
@@ -173,7 +232,6 @@ onMounted(fetchAdminDetails);
         </div>
       </div>
     </teleport>
-
      <!-- OTP Verification Modal -->
      <teleport to="body" v-if="showOtpModal">
       <div class="modal-overlay">
@@ -229,29 +287,95 @@ onMounted(fetchAdminDetails);
 
 /* Profile Card */
 .profile-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 700px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 500px;
 }
 
 .profile-header {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+.profile-img-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+    overflow: hidden;
 }
 
 .profile-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-right: 15px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
 }
 
-.profile-info h2 {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
+.img-uploading {
+    filter: blur(2px);
+}
+
+.profile-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+}
+
+.profile-img-container:hover .profile-img-overlay {
+    opacity: 1;
+}
+
+.uploading {
+    opacity: 1;
+    flex-direction: column;
+    color: white;
+}
+.change-img-btn {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.change-img-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hidden-input {
+    display: none;
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid white;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .verified {
