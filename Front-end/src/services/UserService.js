@@ -30,6 +30,18 @@ class UsersServices {
         }
     }
 
+    static async updateProfilePicture(userId, file){
+        try{
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await axios.post(`${UsersServices.BASE_URL}api/users/${userId}/profile-picture`, formData, {...this.getAuthHeaders()});
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+    }
+
 }
 
 export default UsersServices;
