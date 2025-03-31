@@ -291,14 +291,7 @@ import AdminServices from '@/services/AdminService';
   cursor: pointer;
 }
 
-.cancel-btn {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 
 .submit-btn:disabled,
 .cancel-btn:disabled {

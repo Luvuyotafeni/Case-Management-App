@@ -2,10 +2,17 @@
     import { onMounted, ref } from 'vue';
     import Header from './Header.vue';
     import UsersServices from '@/services/UserService';
+    import AuthServices from '@/services/AuthService';
 
     const lawyer = ref(null);
     const userId = sessionStorage.getItem("userId");
     const showProfileModal = ref(false);
+    const showOtpModal = ref(false);
+    const otpCode = ref("");
+    const isSendingOtp = ref(false);
+    const isVerifyingOtp = ref(false);
+    const otpError = ref("");
+    const otpSuccess = ref("");
     const isHoveringImage = ref(false);
     const imageInput = ref(null);
     const isUploading = ref(false);
@@ -22,6 +29,52 @@
             console.log("Error fetching Lawyer", error);
         }
     }
+
+    // Resend verification email
+    const resendVerification = async () => {
+    try {
+        isSendingOtp.value = true;
+        await AuthServices.resendVerification({ email: lawyer.value.email });
+        showOtpModal.value = true;
+    } catch (error) {
+        console.error("Error resending verification email:", error);
+    } finally {
+        isSendingOtp.value = false;
+    }
+    };
+
+    // Verify OTP
+    const verifyOtp = async () => {
+    try {
+        isVerifyingOtp.value = true;
+        const response = await AuthServices.verifyOtp({
+        email: lawyer.value.email,
+        otp: otpCode.value,
+        });
+
+        if (response.success) {
+        otpSuccess.value = "Email successfully verified!";
+        lawyer.value.emailVerified = true;
+        setTimeout(() => {
+            showOtpModal.value = false;
+            otpSuccess.value = "";
+        }, 2000);
+        } else {
+        otpError.value = "Invalid OTP. Please try again.";
+        }
+    } catch (error) {
+        otpError.value = "Error verifying OTP.";
+        console.error("OTP Verification Error:", error);
+    } finally {
+        isVerifyingOtp.value = false;
+    }
+    };
+    // Close OTP Modal
+    const closeOtpModal = () => {
+    showOtpModal.value = false;
+    otpCode.value = "";
+    otpError.value = "";
+    };
 
     const openProfileModal = async (userId)=>{
     showProfileModal.value=true
@@ -118,6 +171,14 @@
                         {{ lawyer.emailVerified ? "Verified" : "Not Verified" }}
                         </span>
                     </h2>
+                    <button
+                        v-if="!lawyer.emailVerified"
+                        @click="resendVerification"
+                        class="resend-btn"
+                        :disabled="isSendingOtp"
+                    >
+                        {{ isSendingOtp ? "Sending..." : "Resend Verification" }}
+                    </button>
                     </div>
                     <hr />
                     <div class="profile-details">
@@ -170,6 +231,37 @@
                 </div>
             </div>
         </teleport>
+
+         <!-- OTP Verification Modal -->
+     <teleport to="body" v-if="showOtpModal">
+      <div class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Enter OTP</h2>
+          </div>
+          <p class="modal-description">
+            Please enter the OTP sent to your email to verify your account.
+          </p>
+          <div class="form-group">
+            <input
+              v-model="otpCode"
+              type="text"
+              placeholder="Enter OTP"
+              class="otp-input"
+              maxlength="6"
+            />
+          </div>
+          <p v-if="otpError" class="error-text">{{ otpError }}</p>
+          <p v-if="otpSuccess" class="success-text">{{ otpSuccess }}</p>
+          <div class="modal-actions">
+            <button @click="verifyOtp" class="submit-btn" :disabled="isVerifyingOtp">
+              {{ isVerifyingOtp ? "Verifying..." : "Verify" }}
+            </button>
+            <button @click="closeOtpModal" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </teleport>
     </div>
 </template>
 <style scoped>
@@ -381,15 +473,6 @@
 
 .submit-btn {
     background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background-color: #f44336;
     color: white;
     border: none;
     padding: 10px 20px;

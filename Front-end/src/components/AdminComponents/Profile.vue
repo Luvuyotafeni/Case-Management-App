@@ -378,17 +378,6 @@ onMounted(fetchAdminDetails);
     100% { transform: rotate(360deg); }
 }
 
-.verified {
-  color: green;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
-.not-verified {
-  color: red;
-  font-weight: bold;
-  margin-left: 10px;
-}
 
 .profile-details p {
   margin: 10px 0;
@@ -480,14 +469,7 @@ onMounted(fetchAdminDetails);
   cursor: pointer;
 }
 
-.cancel-btn {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 
 .submit-btn:disabled,
 .cancel-btn:disabled {

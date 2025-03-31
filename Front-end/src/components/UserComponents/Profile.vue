@@ -278,12 +278,6 @@
     font-size: 20px;
 }
 
-.verified {
-    color: green;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
 .error-message {
     color: #f44336;
     font-size: 14px;
@@ -368,15 +362,6 @@
 
 .submit-btn {
     background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background-color: #f44336;
     color: white;
     border: none;
     padding: 10px 20px;
