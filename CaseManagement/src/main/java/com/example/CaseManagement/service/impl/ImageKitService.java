@@ -2,7 +2,6 @@ package com.example.CaseManagement.service.impl;
 
 import com.example.CaseManagement.entity.DocumentEntity;
 import com.example.CaseManagement.repository.DocumentRepository;
-import com.example.CaseManagement.repository.UserBaseRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
