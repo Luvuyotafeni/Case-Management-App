@@ -10,11 +10,13 @@ import com.example.CaseManagement.repository.UserBaseRepository;
 import com.example.CaseManagement.service.CourtDateService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Service
 public class CourtDateServiceImpl implements CourtDateService {
 
     @Autowired
@@ -132,6 +134,7 @@ public class CourtDateServiceImpl implements CourtDateService {
     }
 
     @Override
+    @Transactional
     public void deleteCourtDate(Long courtDateId, Long adminId) {
 
         CourtDateEntity courtDate = courtDateRepository.findById(courtDateId)

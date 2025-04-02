@@ -22,10 +22,13 @@ public class CourtNoteEntity {
 
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "cour_date_id")
     private  CourtDateEntity courtDate;
 
     @Column(length = 5000)
+    private String noteContent;
+
+    @Column(name = "created_bY")
     private Long createdByUserId;
 
     @Column(name = "created_by_role")
