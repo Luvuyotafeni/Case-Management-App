@@ -39,6 +39,14 @@ public class CaseEntity {
     @JsonManagedReference // Manages serialization
     private List<DocumentEntity> documents = new ArrayList<>();
 
+    @OneToMany(mappedBy = "relatedCase",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CourtDateEntity> courtDates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "relatedCase",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CourtNoteEntity> courtNotes = new ArrayList<>();
+
     @Column(name = "creation_date")
     private String creationDate;
 
