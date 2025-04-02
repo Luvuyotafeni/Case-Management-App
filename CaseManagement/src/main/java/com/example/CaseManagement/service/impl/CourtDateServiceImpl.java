@@ -161,26 +161,27 @@ public class CourtDateServiceImpl implements CourtDateService {
 
     @Override
     public CourtDateEntity getCourtDateById(Long courtDateId) {
-        return null;
+        return courtDateRepository.findById(courtDateId)
+                .orElseThrow(()-> new RuntimeException("Court date not found with Id"+  courtDateId));
     }
 
     @Override
     public List<CourtDateEntity> getCourtDatesByCaseId(Long caseId) {
-        return List.of();
+        return courtDateRepository.findByRelatedCase_CaseId(caseId);
     }
 
     @Override
     public List<CourtDateEntity> getCourtDatesByLawyerId(Long lawyerId) {
-        return List.of();
+        return courtDateRepository.findByRelatedCase_Assignedlawyer_LawyerId(lawyerId);
     }
 
     @Override
     public List<CourtDateEntity> getCourtDatesByUserId(Long userId) {
-        return List.of();
+        return courtDateRepository.findByRelatedCase_User_UserId(userId);
     }
 
     @Override
     public List<CourtDateEntity> getUpcomingCourtDates(LocalDateTime fromDate, LocalDateTime toDate) {
-        return List.of();
+        return courtDateRepository.findByScheduledDateTimeBetween(fromDate, toDate);
     }
 }
