@@ -134,6 +134,29 @@ public class CourtDateServiceImpl implements CourtDateService {
     @Override
     public void deleteCourtDate(Long courtDateId, Long adminId) {
 
+        CourtDateEntity courtDate = courtDateRepository.findById(courtDateId)
+                .orElseThrow(()-> new RuntimeException("court date not found with Id: " + courtDateId));
+
+        UserBaseEntity admin = userBaseRepository.findById(adminId)
+                .orElseThrow(()-> new RuntimeException("Admin nopt found with Id: "+ adminId));
+
+        if (!admin.getRole().equals(Role.ADMIN)){
+            throw new RuntimeException("User with Id: "+ admin+ "is not an admin");
+        }
+
+        courtDateRepository.delete(courtDate);
+
+        CaseEntity caseEntity = courtDate.getRelatedCase();
+        if (caseEntity.getUser() != null){
+            emailService.sendCourtDateCancellationNotification(
+                    caseEntity.getUser().getEmail(),
+                    caseEntity.getUser().getName(),
+                    caseEntity.getCaseName(),
+                    caseEntity.getCaseNumber(),
+                    courtDate.getScheduledDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+            );
+        }
+
     }
 
     @Override
