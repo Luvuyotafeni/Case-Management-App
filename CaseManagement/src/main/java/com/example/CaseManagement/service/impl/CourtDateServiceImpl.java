@@ -8,6 +8,7 @@ import com.example.CaseManagement.repository.CaseRepository;
 import com.example.CaseManagement.repository.CourtDateRepository;
 import com.example.CaseManagement.repository.UserBaseRepository;
 import com.example.CaseManagement.service.CourtDateService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class CourtDateServiceImpl implements CourtDateService {
     private DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Transactional
     public CourtDateEntity createCourtDate(Long caseId, LocalDateTime scheduledDateTime, String courtName, String CourtRoom, String judgeAssigned, String hearingType, Long adminId) {
 
         CaseEntity caseEntity = caseRepository.findById(caseId)
@@ -60,12 +62,73 @@ public class CourtDateServiceImpl implements CourtDateService {
         CourtDateEntity savedCourtDate = courtDateRepository.save(courtDate);
 
         if (caseEntity.getUser() !=null){
+            emailService.sendCourtDateNotification(
+                    caseEntity.getUser().getEmail(),
+                    caseEntity.getUser().getName(),
+                    caseEntity.getCaseName(),
+                    caseEntity.getCaseNumber(),
+                    scheduledDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    courtName,
+                    CourtRoom,
+                    hearingType
+            );
         }
+        return savedCourtDate;
     }
 
     @Override
+    @Transactional
     public CourtDateEntity updateCourtDate(Long courtDateId, LocalDateTime scheduledDateTime, String courtName, String courtRoom, String judgeAssigned, String hearingType, String status, Long adminId) {
-        return null;
+
+        CourtDateEntity courtDate = courtDateRepository.findById(courtDateId)
+                .orElseThrow(()-> new RuntimeException("Court Date not found with Id" + courtDateId));
+
+        UserBaseEntity admin = userBaseRepository.findById(adminId)
+                .orElseThrow(()-> new RuntimeException("Admin not found with Id: "+ adminId));
+
+        if (!admin.getRole().equals(Role.ADMIN)){
+            throw new RuntimeException("User with Id: "+ adminId + "is not and admin");
+        }
+
+        courtDate.setScheduledDateTime(scheduledDateTime);
+        courtDate.setCourtName(courtName);
+        courtDate.setCourtRoom(courtRoom);
+        courtDate.setJudgeAssigned(judgeAssigned);
+        courtDate.setHearingType(hearingType);
+        courtDate.setStatus(status);
+        courtDate.setLastUpdated(LocalDateTime.now().format(formatter));
+
+        CourtDateEntity updatedCourtDate = courtDateRepository.save(courtDate);
+
+        CaseEntity caseEntity = courtDate.getRelatedCase();
+        if (caseEntity.getUser() != null){
+            emailService.sendCourtDateUpdateNotification(
+                    caseEntity.getUser().getEmail(),
+                    caseEntity.getUser().getName(),
+                    caseEntity.getCaseName(),
+                    caseEntity.getCaseNumber(),
+                    scheduledDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    courtName,
+                    courtRoom,
+                    hearingType,
+                    status
+            );
+        }
+
+        if (caseEntity.getAssignedlawyer() != null && caseEntity.getAssignedlawyer().getUser() != null){
+            emailService.sendCourtDateUpdateNotification(
+                    caseEntity.getAssignedlawyer().getUser().getEmail(),
+                    caseEntity.getAssignedlawyer().getUser().getName(),
+                    caseEntity.getCaseName(),
+                    caseEntity.getCaseNumber(),
+                    scheduledDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    courtName,
+                    courtRoom,
+                    hearingType,
+                    status
+            );
+        }
+        return updatedCourtDate;
     }
 
     @Override
