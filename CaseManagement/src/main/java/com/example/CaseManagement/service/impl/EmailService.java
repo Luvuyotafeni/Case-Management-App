@@ -49,4 +49,68 @@ public class EmailService {
                 "The Case Management Team";
         sendEmail(to, subject, body);
     }
+
+    public void sendCourtDateNotification(String recipientEmail, String recipientName,
+                                          String caseName, String caseNumber,
+                                          String dateTime, String courtName,
+                                          String courtRoom, String hearingType){
+
+        String subject = "Court Date Scheduled for Case: " + caseNumber;
+
+        String content ="Dear "+ recipientName +"\n\n"+
+                "A court date has been scheduled for your case:\n" +
+                "Case Name: " + caseName + "\n" +
+                "Case Number: " + caseNumber + "\n\n" +
+                "Court Date Details:\n" +
+                "Date and Time: " + dateTime + "\n" +
+                "Court: " + courtName + "\n" +
+                "Court Room: " + courtRoom + "\n" +
+                "Hearing Type: " + hearingType + "\n\n" +
+                "Please ensure you are present for this court appearance.\n\n" +
+                "Regards,\n" +
+                "Case Management System";
+
+        sendEmail(recipientEmail, subject, content);
+
+    }
+
+    public void sendCourtDateUpdateNotification(String recipientEmail, String recipientName,
+                                                String caseName, String caseNumber,
+                                                String dateTime, String courtName,
+                                                String courtRoom, String hearingType,
+                                                String status) {
+        String subject = "Court Date Updated for Case: " + caseNumber;
+
+        String content = "Dear " + recipientName + ",\n\n" +
+                "A court date for your case has been updated:\n" +
+                "Case Name: " + caseName + "\n" +
+                "Case Number: " + caseNumber + "\n\n" +
+                "Updated Court Date Details:\n" +
+                "Date and Time: " + dateTime + "\n" +
+                "Court: " + courtName + "\n" +
+                "Court Room: " + courtRoom + "\n" +
+                "Hearing Type: " + hearingType + "\n" +
+                "Status: " + status + "\n\n" +
+                "Please make note of these changes and ensure you are prepared for this court appearance.\n\n" +
+                "Regards,\n" +
+                "Case Management System";
+
+        sendEmail(recipientEmail, subject, content);
+    }
+    public void sendCourtDateCancellationNotification(String recipientEmail, String recipientName,
+                                                      String caseName, String caseNumber,
+                                                      String dateTime) {
+        String subject = "Court Date Cancelled for Case: " + caseNumber;
+
+        String content = "Dear " + recipientName + ",\n\n" +
+                "A court date for your case has been cancelled:\n" +
+                "Case Name: " + caseName + "\n" +
+                "Case Number: " + caseNumber + "\n" +
+                "Date and Time: " + dateTime + "\n\n" +
+                "You will be notified if a new court date is scheduled.\n\n" +
+                "Regards,\n" +
+                "Case Management System";
+
+        sendEmail(recipientEmail, subject, content);
+    }
 }
