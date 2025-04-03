@@ -4,15 +4,19 @@ import com.example.CaseManagement.Dto.AddDocumentRequest;
 import com.example.CaseManagement.Dto.AssignLawyerRequest;
 import com.example.CaseManagement.Dto.CreateCaseRequest;
 import com.example.CaseManagement.entity.CaseEntity;
+import com.example.CaseManagement.entity.CourtDateEntity;
+import com.example.CaseManagement.entity.CourtNoteEntity;
 import com.example.CaseManagement.entity.DocumentEntity;
 import com.example.CaseManagement.service.CaseService;
 import com.example.CaseManagement.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cases")
@@ -118,6 +122,37 @@ public class CaseController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("An unexpected error occurred");
+        }
+    }
+
+
+    @GetMapping("/{caseId}/summary-with-court-info")
+    public ResponseEntity<Map<String, Object>> getCaseSummaryWithCourtInfo(@PathVariable Long caseId) {
+        try {
+            Map<String, Object> summary = caseService.getCaseSummaryWithCourtInfo(caseId);
+            return new ResponseEntity<>(summary, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{caseId}/court-dates")
+    public ResponseEntity<List<CourtDateEntity>> getCourtDatesByCaseId(@PathVariable Long caseId) {
+        try {
+            List<CourtDateEntity> courtDates = caseService.getCourtDatesByCaseId(caseId);
+            return new ResponseEntity<>(courtDates, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{caseId}/court-notes")
+    public ResponseEntity<List<CourtNoteEntity>> getCourtNotesByCaseId(@PathVariable Long caseId) {
+        try {
+            List<CourtNoteEntity> courtNotes = caseService.getCourtNotesByCaseId(caseId);
+            return new ResponseEntity<>(courtNotes, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
