@@ -1,8 +1,11 @@
 package com.example.CaseManagement.service;
 
 import com.example.CaseManagement.entity.CaseEntity;
+import com.example.CaseManagement.entity.CourtDateEntity;
+import com.example.CaseManagement.entity.CourtNoteEntity;
 import com.example.CaseManagement.entity.DocumentEntity;
 import java.util.List;
+import java.util.Map;
 
 public interface CaseService {
     CaseEntity createCase(String caseName, String caseNumber, String caseType, String description,
@@ -23,5 +26,12 @@ public interface CaseService {
     List<CaseEntity> getCasesByLawyerId(Long lawyerId);
 
     List<CaseEntity> getCasesByLawyerUserId(Long userId);
+
+    List<CourtDateEntity> getCourtDatesByCaseId(Long caseId);
+
+    List<CourtNoteEntity> getCourtNotesByCaseId(Long caseId);
+
+    // Get a comprehensive case summary with court dates and notes
+    Map<String, Object> getCaseSummaryWithCourtInfo(Long caseId);
 
 }

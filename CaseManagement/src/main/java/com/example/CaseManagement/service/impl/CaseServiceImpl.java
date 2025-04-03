@@ -1,15 +1,9 @@
 
 package com.example.CaseManagement.service.impl;
 
-import com.example.CaseManagement.entity.CaseEntity;
-import com.example.CaseManagement.entity.DocumentEntity;
-import com.example.CaseManagement.entity.LawyerEntity;
-import com.example.CaseManagement.entity.UserEntity;
+import com.example.CaseManagement.entity.*;
 import com.example.CaseManagement.enumaration.Role;
-import com.example.CaseManagement.repository.CaseRepository;
-import com.example.CaseManagement.repository.DocumentRepository;
-import com.example.CaseManagement.repository.LawyerRepository;
-import com.example.CaseManagement.repository.UserRepository;
+import com.example.CaseManagement.repository.*;
 import com.example.CaseManagement.service.CaseService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +11,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CaseServiceImpl implements CaseService {
 
     @Autowired
     private CaseRepository caseRepository;
+
+    @Autowired
+    private CourtDateRepository courtDateRepository;
+
+    @Autowired
+    private CourtNoteRepository courtNoteRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -162,4 +165,59 @@ public class CaseServiceImpl implements CaseService {
             throw new RuntimeException("Error fetching cases for lawyer user: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<CourtDateEntity> getCourtDatesByCaseId(Long caseId) {
+        return courtDateRepository.findByRelatedCase_CaseId(caseId);
+    }
+
+    @Override
+    public List<CourtNoteEntity> getCourtNotesByCaseId(Long caseId) {
+        return courtNoteRepository.findByRelatedCase_CaseId(caseId);
+    }
+
+    @Override
+    public Map<String, Object> getCaseSummaryWithCourtInfo(Long caseId) {
+        Map<String, Object> summary = new HashMap<>();
+
+        // Get case details
+        CaseEntity caseEntity = caseRepository.findById(caseId)
+                .orElseThrow(() -> new RuntimeException("Case not found with ID: " + caseId));
+
+        // Get documents
+        List<DocumentEntity> documents = documentRepository.findByRelatedCase_CaseId(caseId);
+
+        // Get court dates
+        List<CourtDateEntity> courtDates = courtDateRepository.findByRelatedCase_CaseId(caseId);
+
+        // Get court notes
+        List<CourtNoteEntity> courtNotes = courtNoteRepository.findByRelatedCase_CaseId(caseId);
+
+        // Organize notes by court date (if applicable)
+        Map<Long, List<CourtNoteEntity>> notesByCourtDate = new HashMap<>();
+        List<CourtNoteEntity> generalNotes = new ArrayList<>();
+
+        for (CourtNoteEntity note : courtNotes) {
+            if (note.getCourtDate() != null) {
+                Long courtDateId = note.getCourtDate().getCourtDateId();
+                if (!notesByCourtDate.containsKey(courtDateId)) {
+                    notesByCourtDate.put(courtDateId, new ArrayList<>());
+                }
+                notesByCourtDate.get(courtDateId).add(note);
+            } else {
+                generalNotes.add(note);
+            }
+        }
+
+        // Populate summary
+        summary.put("case", caseEntity);
+        summary.put("documents", documents);
+        summary.put("courtDates", courtDates);
+        summary.put("generalNotes", generalNotes);
+        summary.put("notesByCourtDate", notesByCourtDate);
+
+        return summary;
+    }
+
+
 }
