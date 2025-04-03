@@ -4,6 +4,7 @@ import com.example.CaseManagement.entity.CaseEntity;
 import com.example.CaseManagement.entity.CourtDateEntity;
 import com.example.CaseManagement.entity.CourtNoteEntity;
 import com.example.CaseManagement.entity.UserBaseEntity;
+import com.example.CaseManagement.enumaration.Role;
 import com.example.CaseManagement.repository.CaseRepository;
 import com.example.CaseManagement.repository.CourtDateRepository;
 import com.example.CaseManagement.repository.CourtNoteRepository;
@@ -75,36 +76,62 @@ public class CourtNoteServiceImpl implements CourtNoteService {
 
     @Override
     public CourtNoteEntity updateCourtNote(Long noteId, String noteContent, Long updatedById) {
-        return null;
+        CourtNoteEntity courtNote = courtNoteRepository.findById(noteId)
+                .orElseThrow(() -> new RuntimeException("Court Note not found with id: " + noteId));
+
+        UserBaseEntity user = userBaseRepository.findById(updatedById)
+                .orElseThrow(()-> new RuntimeException("User not found with Id : " + updatedById));
+
+        if (!courtNote.getCreatedByUserId().equals(updatedById) && !user.getRole().equals(Role.ADMIN)){
+            throw new RuntimeException("User with Id: " + updatedById + "does not have the permission to update this note");
+        }
+
+        courtNote.setNoteContent(noteContent);
+        courtNote.setLastUpdated(LocalDateTime.now().format(formatter));
+
+        return courtNoteRepository.save(courtNote);
     }
+
 
     @Override
     public void deleteCourtNote(Long noteId, Long adminId) {
+        CourtNoteEntity courtNote = courtNoteRepository.findById(noteId)
+                .orElseThrow(()-> new RuntimeException("Admin not found with ID: "+ adminId));
+
+        UserBaseEntity admin = userBaseRepository.findById(adminId)
+                .orElseThrow(()-> new RuntimeException("Admin not found with Id: "+ adminId));
+
+        if (!admin.getRole().equals(Role.ADMIN) && !courtNote.getCreatedByUserId().equals(adminId)){
+            throw new RuntimeException("User with Id: "+ adminId + "does not have the permission to delete this note");
+        }
+
+        courtNoteRepository.delete(courtNote);
 
     }
 
     @Override
     public CourtNoteEntity getCourtNoteById(Long noteId) {
-        return null;
+        return courtNoteRepository.findById(noteId)
+                .orElseThrow(()-> new RuntimeException("Court note not found with Id:" +noteId));
     }
 
     @Override
     public List<CourtNoteEntity> getCourtNotesByCaseId(Long caseId) {
-        return List.of();
+        return  courtNoteRepository.findByRelatedCase_CaseId(caseId);
     }
 
     @Override
     public List<CourtNoteEntity> getCourtNotesByCourtDateId(Long courtDateId) {
-        return List.of();
+        return courtNoteRepository.findByCourtDate_CourtDateId(courtDateId);
     }
 
     @Override
     public List<CourtNoteEntity> getCourtNotesByLawyerId(Long lawyerId) {
-        return List.of();
+        return courtNoteRepository.findByRelatedCase_Assignedlawyer_LawyerId(lawyerId);
     }
 
     @Override
     public List<CourtNoteEntity> getCourtNotesByUserId(Long userId) {
-        return List.of();
+        return courtNoteRepository.findByRelatedCase_User_UserId(userId);
     }
 }
