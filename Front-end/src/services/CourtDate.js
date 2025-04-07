@@ -12,6 +12,26 @@ class CourtDateService {
             },
         };
     }
+
+    static async createCourtDate(caseId, scheduledDateTime, CourtName, courtRoom, judgeAssigned, hearingType, adminId){
+        try{
+            const response = await axios.post(
+             `${CourtDateService.BASE_URL}/create`,{
+                caseId,
+                scheduledDateTime,
+                CourtName,
+                courtRoom,
+                judgeAssigned,
+                hearingType,
+                adminId
+             },
+             this.getAuthHeaders()   
+            );
+            return response.data;
+        } catch (err){
+            throw err;
+        }
+    }
 }
 
 export default CourtDateService;
