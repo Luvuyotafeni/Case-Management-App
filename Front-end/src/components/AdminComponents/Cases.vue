@@ -15,6 +15,7 @@
     const selectedLawyer = ref(null);
     const selectedLawyerId = ref(null);
     const assigningLawyer = ref(false);
+    const openAccordion = ref(null);
 
     const fetchCases = async () => {
         try {
@@ -23,6 +24,48 @@
             console.log("Error fetching cases: ", error);
         }
     };
+
+    // Function to toggle accordion
+      const toggleAccordion = (courtDateId) => {
+        openAccordion.value = openAccordion.value === courtDateId ? null : courtDateId;
+      };
+
+      // Function to get notes for a specific court date
+      const getCourtNotes = (courtDateId) => {
+        if (!selectedCase.value || !selectedCase.value.courtNotes) return [];
+        return selectedCase.value.courtNotes.filter(note => 
+          note.courtDate && note.courtDate.courtDateId === courtDateId
+        );
+      };
+
+      // Format date and time
+      const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        const date = new Date(dateString);
+        return date.toLocaleDateString();
+      };
+
+      const formatDateTime = (dateTimeString) => {
+        if (!dateTimeString) return "N/A";
+        const date = new Date(dateTimeString);
+        return date.toLocaleString();
+      };
+
+      // Get appropriate CSS class based on status
+      const getStatusClass = (status) => {
+        switch (status?.toLowerCase()) {
+          case 'scheduled':
+            return 'status-scheduled';
+          case 'completed':
+            return 'status-completed';
+          case 'postponed':
+            return 'status-postponed';
+          case 'cancelled':
+            return 'status-cancelled';
+          default:
+            return '';
+        }
+      };
 
     const openModal = async (caseId) => {
         try {
@@ -223,6 +266,66 @@
                     </button>
                 </div>
                               </div>
+          </div>
+
+          <hr/>
+
+          <!-- Court Dates Accordion Section -->
+          <div class="court-dates-section">
+            <h3>Court Dates</h3>
+            <p v-if="!selectedCase?.courtDates?.length">No court dates scheduled.</p>
+            <div v-else class="accordion">
+              <div 
+                v-for="courtDate in selectedCase.courtDates" 
+                :key="courtDate.courtDateId" 
+                class="accordion-item"
+              >
+                <div 
+                  class="accordion-header" 
+                  @click="toggleAccordion(courtDate.courtDateId)"
+                >
+                  <div class="accordion-title">
+                    <i class="bx bx-calendar"></i>
+                    {{ formatDate(courtDate.scheduledDateTime) }} - {{ courtDate.courtName }}
+                    <span class="status-badge" :class="getStatusClass(courtDate.status)">
+                      {{ courtDate.status }}
+                    </span>
+                  </div>
+                  <i 
+                    class="bx" 
+                    :class="openAccordion === courtDate.courtDateId ? 'bx-chevron-up' : 'bx-chevron-down'"
+                  ></i>
+                </div>
+                <div 
+                  class="accordion-content" 
+                  :class="{ 'active': openAccordion === courtDate.courtDateId }"
+                >
+                  <div class="court-date-details">
+                    <p><strong>Date & Time:</strong> {{ formatDateTime(courtDate.scheduledDateTime) }}</p>
+                    <p><strong>Court:</strong> {{ courtDate.courtName }}</p>
+                    <p v-if="courtDate.courtRoom"><strong>Court Room:</strong> {{ courtDate.courtRoom }}</p>
+                    <p><strong>Judge:</strong> {{ courtDate.judgeAssigned }}</p>
+                    <p><strong>Hearing Type:</strong> {{ courtDate.hearingType }}</p>
+                    <p><strong>Status:</strong> {{ courtDate.status }}</p>
+                  </div>
+                  
+                  <div class="court-notes">
+                    <h4>Court Notes</h4>
+                    <div v-if="getCourtNotes(courtDate.courtDateId).length > 0">
+                      <div 
+                        v-for="note in getCourtNotes(courtDate.courtDateId)" 
+                        :key="note.noteId"
+                        class="note-item"
+                      >
+                        <p>{{ note.noteContent }}</p>
+                        <small>Added by: {{ note.createdByRole }} on {{ formatDate(note.creationDate) }}</small>
+                      </div>
+                    </div>
+                    <p v-else>No notes available for this court date.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <hr />
