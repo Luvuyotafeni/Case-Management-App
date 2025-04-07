@@ -13,13 +13,13 @@ class CourtDateService {
         };
     }
 
-    static async createCourtDate(caseId, scheduledDateTime, CourtName, courtRoom, judgeAssigned, hearingType, adminId){
+    static async createCourtDate(caseId, scheduledDateTime, courtName, courtRoom, judgeAssigned, hearingType, adminId){
         try{
             const response = await axios.post(
-             `${CourtDateService.BASE_URL}/create`,{
+             `${CourtDateService.BASE_URL}api/court-dates/create`,{
                 caseId,
                 scheduledDateTime,
-                CourtName,
+                courtName,
                 courtRoom,
                 judgeAssigned,
                 hearingType,
