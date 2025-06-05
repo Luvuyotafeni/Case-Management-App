@@ -104,7 +104,7 @@ public class CaseController {
     @PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
     public ResponseEntity<?> getCaseByLawyerId(@PathVariable Long lawyerId){
         try{
-            List<CaseEntity> cases = caseService.getCasesByLawyerUserId(lawyerId);
+            List<CaseEntity> cases = caseService.getCasesByLawyerId(lawyerId);
             return ResponseEntity.ok(cases);
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
