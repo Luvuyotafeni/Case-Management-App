@@ -22,7 +22,13 @@ public class LawyerServiceImpl implements LawyerService {
     @Override
     public LawyerEntity getLawyerById(Long lawyerId) {
         return lawyerRepository.findById(lawyerId)
-                .orElseThrow(()-> new RuntimeException("Lawyer not found" + lawyerId));
+                .orElseThrow(()-> new RuntimeException("Lawyer not found with ID: " + lawyerId));
+    }
+
+    // New method to get lawyer by userId
+    public LawyerEntity getLawyerByUserId(Long userId) {
+        return lawyerRepository.findByUser_UserId(userId)
+                .orElseThrow(()-> new RuntimeException("Lawyer not found for user ID: " + userId));
     }
 
     @Override
@@ -45,12 +51,42 @@ public class LawyerServiceImpl implements LawyerService {
         userBaseRepository.save(user);
 
         return lawyerRepository.save(existingLawyer);
+    }
 
+    // New method to update lawyer by userId
+    public LawyerEntity updateLawyerByUserId(Long userId, LawyerEntity updatedLawyer) {
+        LawyerEntity existingLawyer = getLawyerByUserId(userId);
+
+        // Update lawyer-specific fields
+        if (updatedLawyer.getSpecialization() != null) {
+            existingLawyer.setSpecialization(updatedLawyer.getSpecialization());
+        }
+
+        // Update user base fields
+        UserBaseEntity user = existingLawyer.getUser();
+        if (updatedLawyer.getUser() != null) {
+            UserBaseEntity updatedUser = updatedLawyer.getUser();
+
+            user.setName(updatedUser.getName());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
+            user.setProfilePictureUrl(updatedUser.getProfilePictureUrl());
+        }
+
+        userBaseRepository.save(user);
+        return lawyerRepository.save(existingLawyer);
     }
 
     @Override
     public void deleteLawyer(Long lawyerId) {
         LawyerEntity lawyer = getLawyerById(lawyerId);
+        lawyerRepository.delete(lawyer);
+        userBaseRepository.delete(lawyer.getUser());
+    }
+
+    // New method to delete lawyer by userId
+    public void deleteLawyerByUserId(Long userId) {
+        LawyerEntity lawyer = getLawyerByUserId(userId);
         lawyerRepository.delete(lawyer);
         userBaseRepository.delete(lawyer.getUser());
     }

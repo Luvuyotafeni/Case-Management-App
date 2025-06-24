@@ -52,7 +52,7 @@ public class LawyerController {
 
     @PutMapping("/update/{lawyerId}")
     public ResponseEntity<LawyerEntity> updateLawyer(@PathVariable Long lawyerId, @RequestBody LawyerEntity updatedLayer){
-        LawyerEntity lawyer = lawyerService.updateLawyer(lawyerId, updatedLayer);
+        LawyerEntity lawyer = lawyerService.updateLawyerByUserId(lawyerId, updatedLayer);
         return ResponseEntity.ok(lawyer);
     }
 

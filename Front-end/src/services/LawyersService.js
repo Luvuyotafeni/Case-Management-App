@@ -33,7 +33,7 @@ class LawyersService {
 
     static async updateLawyer(lawyerId, lawyerData){
         try {
-            const response = await axios.put(`${LawyersService.BASE_URL}/api/lawyers/update/${lawyerId}`, lawyerData, this.getAuthHeaders());
+            const response = await axios.put(`${LawyersService.BASE_URL}api/lawyers/update/${lawyerId}`, lawyerData, this.getAuthHeaders());
             return response.data;
         } catch (err){
             throw err;

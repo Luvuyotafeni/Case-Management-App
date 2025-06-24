@@ -141,7 +141,7 @@ public class CourtDateServiceImpl implements CourtDateService {
                 .orElseThrow(()-> new RuntimeException("court date not found with Id: " + courtDateId));
 
         UserBaseEntity admin = userBaseRepository.findById(adminId)
-                .orElseThrow(()-> new RuntimeException("Admin nopt found with Id: "+ adminId));
+                .orElseThrow(()-> new RuntimeException("Admin not found with Id: "+ adminId));
 
         if (!admin.getRole().equals(Role.ADMIN)){
             throw new RuntimeException("User with Id: "+ admin+ "is not an admin");
