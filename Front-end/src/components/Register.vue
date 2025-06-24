@@ -2,6 +2,7 @@
 
     import AuthServices from '@/services/AuthService';
     import { ref } from 'vue';
+    import { toast } from 'vue3-toastify';
 
     const formData = ref({
         name: "",
@@ -23,7 +24,7 @@
             const response = await AuthServices.registerUser(user);
             return response;
         } catch(error){
-            console.log(error)
+            toast.error(error)
         }
     };
 </script>
