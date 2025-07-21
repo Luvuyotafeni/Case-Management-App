@@ -24,7 +24,7 @@
             router.push('/dashboard'); // Default user dashboard
         }
     } catch (error) {
-        toast.error(error);
+        toast.error("Invalid log in details");
     }
 };
 
