@@ -108,12 +108,7 @@
                             />
                         </div>
                         <div class="profile-info">
-                            <h2>{{ user.name }} <span
-                                :class="user.emailVerified ? 'verified' : 'not-verified'"
-                                >
-                                {{ user.emailVerified ? "Verified" : "Not Verified" }}
-                                </span>
-                            </h2>
+                            <h2>{{ user.name }} <span class="verified">Verified</span></h2>
                             <p v-if="uploadError" class="error-message">{{ uploadError }}</p>
                         </div>
                     </div>
