@@ -1,0 +1,145 @@
+*{
+  background-color: FFFFFF;
+}
+
+.not-verified {
+  color: red;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.verified {
+  color: green;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Court Dates Accordion Styling */
+.court-dates-section {
+  margin-top: 15px;
+}
+
+.accordion {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.accordion-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f4f4f4;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.accordion-header:hover {
+  background-color: #e4e4e4;
+}
+
+.accordion-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: #ffffff;
+}
+
+.accordion-content.active {
+  max-height: 500px;
+  padding: 15px;
+  border-top: 1px solid #ccc;
+}
+
+/* Court Date Details */
+.court-date-details {
+  margin-bottom: 15px;
+}
+
+/* Court Notes Styling */
+.court-notes {
+  border-top: 1px dashed #ccc;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.court-notes h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.note-item {
+  background-color: #f9f9f9;
+  border-left: 3px solid #007bff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+.note-item p {
+  margin: 0 0 5px 0;
+}
+
+.note-item small {
+  color: #666;
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* Status Badge Styling */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.status-scheduled {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-postponed {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+hr {
+  margin: 15px 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
