@@ -42,10 +42,9 @@ class UsersServices {
         }
     }
 
-    static async updateUser( userId, userData){
+    static async updateUser(){
         try{
-            const response = await axios.put(`${UsersServices.BASE_URL}api/users/${userId}`, userData, this.getAuthHeaders());
-            return response.data;
+
         } catch(err){
             throw err;
         }
