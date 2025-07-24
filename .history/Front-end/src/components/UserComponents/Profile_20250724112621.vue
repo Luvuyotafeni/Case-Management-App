@@ -445,26 +445,6 @@
     font-size: 20px;
 }
 
-.resend-btn {
-    margin-top: 5px;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.resend-btn:hover {
-    background-color: #0056b3;
-}
-
-.resend-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
 .error-message {
     color: #f44336;
     font-size: 14px;

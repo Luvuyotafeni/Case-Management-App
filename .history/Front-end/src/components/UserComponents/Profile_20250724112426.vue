@@ -287,10 +287,8 @@
                     <p v-if="updateError" class="error-text">{{ updateError }}</p>
                     <p v-if="updateSuccess" class="success-text">{{ updateSuccess }}</p>
                     <div class="modal-actions">
-                        <button @click="updateUser"  class="submit-btn" :disabled="isUpdatingUser">
-                            {{ isUpdatingUser ? "Saving.." : "Save" }}
-                        </button>
-                        <button @click="closeProfileModal" class="cancel-btn" :disabled="isUpdatingUser">Cancel</button>
+                        <button type="submit" class="submit-btn">Save</button>
+                        <button @click="closeProfileModal" class="cancel-btn">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -443,26 +441,6 @@
 
 .profile-info h2 {
     font-size: 20px;
-}
-
-.resend-btn {
-    margin-top: 5px;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.resend-btn:hover {
-    background-color: #0056b3;
-}
-
-.resend-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 
 .error-message {
