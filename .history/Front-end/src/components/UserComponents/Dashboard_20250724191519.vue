@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import Header from './Header.vue';
 import CaseService from '@/services/CaseService';
-import CourtDateService from '@/services/CourtDate';
+import CourtDateService from '@/services/CourtDateService';
 
 const cases = ref([]);
 const courtDates = ref([]);
@@ -192,7 +192,41 @@ onMounted(fetchData);
                     </table>
                 </div>
                 
-                
+                <!-- All Court Dates Section -->
+                <div class="court-dates-section">
+                    <h3>All My Court Dates</h3>
+                    <div v-if="courtDates.length === 0" class="no-data">
+                        <p>No court dates scheduled</p>
+                    </div>
+                    <table v-else>
+                        <thead>
+                            <tr>
+                                <th>Scheduled Date</th>
+                                <th>Case Name</th>
+                                <th>Court Name</th>
+                                <th>Court Room</th>
+                                <th>Judge Assigned</th>
+                                <th>Hearing Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="courtDate in courtDates" :key="courtDate.courtDateId">
+                                <td>{{ formatDate(courtDate.scheduledDateTime) }}</td>
+                                <td>{{ getCaseNameById(courtDate.relatedCase?.caseId) }}</td>
+                                <td>{{ courtDate.courtName }}</td>
+                                <td>{{ courtDate.courtRoom }}</td>
+                                <td>{{ courtDate.judgeAssigned }}</td>
+                                <td>{{ courtDate.hearingType }}</td>
+                                <td>
+                                    <span :class="'status-' + courtDate.status.toLowerCase().replace(' ', '-')">
+                                        {{ courtDate.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </template>
         </div>
     </div>
