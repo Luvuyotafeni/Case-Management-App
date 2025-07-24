@@ -32,15 +32,6 @@ class CourtDateService {
             throw err;
         }
     }
-
-    static async getCourtDatesByUserId(userId){
-        try{
-            const response = await axios.get(`${CourtDateService.BASE_URL}api/court-dates/user/${userId}`, this.getAuthHeaders());
-            return response.data;
-        } catch( err){
-            throw err;
-        }
-    }
 }
 
 export default CourtDateService;
