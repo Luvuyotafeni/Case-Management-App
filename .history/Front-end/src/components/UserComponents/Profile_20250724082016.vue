@@ -13,9 +13,6 @@
     const isSendingOtp = ref(false);
     const isVerifyingOtp = ref(false);
     const otpError = ref("");
-    const isUpdatingUser = ref(false);
-    const updateError = ref("");
-    const updateSuccess = ref("");
     const otpSuccess = ref("");
     const isHoveringImage = ref(false);
     const imageInput = ref(null);
@@ -77,76 +74,12 @@
     };
 
     const openProfileModal = async () => {
-
-        editUser.value ={
-            name: user.value.name,
-            email: user.value.email,
-            phone: user.value.phone,
-            role:user.value.role,
-            twoStepVerification: user.value.twoStepVerification
-        };
-        updateError.value = "";
-        updateSuccess.value = "";
         showProfileModal.value = true;
     };
 
     const closeProfileModal = () => {
         showProfileModal.value = false;
-        editUser.value = {};
-        updateError.value= "";
-        updateSuccess.value = "";
     };
-
-    // Updating a user
-    const updateUser = async () =>{
-        try {
-            isUpdatingUser.value= true;
-            updateError.value= "";
-
-            const updateData = {};
-            if (editUser.value.name !== user.value.name) {
-                updateData.name = editUser.value.name;
-            }
-            if (editUser.value.email !== user.value.email) {
-                updateData.email = editUser.value.email;
-            }
-            if (editUser.value.phone !== user.value.phone) {
-                updateData.phone = editUser.value.phone;
-            }
-            if (editUser.value.twoStepVerification !== user.value.twoStepVerification) {
-                updateData.twoStepVerification = editUser.value.twoStepVerification;
-            }
-
-            if(Object.keys(updateData).length === 0){
-                updateError.value = "No changes detected";
-                return;
-            }
-
-            const response = await UsersServices.updateUser(userId, updateData);
-
-            user.value = response;
-            updateSuccess.value = "Profile updated Successfully";
-
-            // If email was changed, show verification message
-            if (updateData.email) {
-                updateSuccess.value += " Please check your email for verification.";
-                user.value.emailVerified = false; // Email needs re-verification
-            }
-
-            setTimeout(()=> {
-                closeProfileModal();
-            }, 2000);
-        } catch (error){
-            console.error("Error updating User:", error);
-            if(error.response && error.response.data && error.response.data.message){
-                updateError.value = error.response.data.message;
-            } else {
-                updateError.value = "Failed to update profile. Please try again"
-            }
-        } finally{
-            isUpdatingUser.value = false;
-        }
-    }
 
     const handleImageHover = (isHovering) => {
         isHoveringImage.value = isHovering;

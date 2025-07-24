@@ -136,15 +136,6 @@
             setTimeout(()=> {
                 closeProfileModal();
             }, 2000);
-        } catch (error){
-            console.error("Error updating User:", error);
-            if(error.response && error.response.data && error.response.data.message){
-                updateError.value = error.response.data.message;
-            } else {
-                updateError.value = "Failed to update profile. Please try again"
-            }
-        } finally{
-            isUpdatingUser.value = false;
         }
     }
 
