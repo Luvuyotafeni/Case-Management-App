@@ -1,0 +1,140 @@
+# MySQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "casemanagement"
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+          readinessProbe:
+            exec:
+              command:
+                - mysql
+                - -h
+                - localhost
+                - -uroot
+                - -proot
+                - -e
+                - "SELECT 1"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+                - -uroot
+                - -proot
+            initialDelaySeconds: 60
+            periodSeconds: 30
+      volumes:
+        - name: mysql-storage
+          emptyDir: {} # Use persistent volume for production
+
+---
+# MySQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+  type: ClusterIP
+
+---
+# Case Management App Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: casemanagement-app
+  labels:
+    app: casemanagement-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: casemanagement-app
+  template:
+    metadata:
+      labels:
+        app: casemanagement-app
+    spec:
+      containers:
+        - name: casemanagement-app
+          image: luvuyotafeni012/casemanagement:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: "mysql-service"  # Updated to match MySQL service name
+            - name: DB_NAME
+              value: casemanagement
+            - name: DB_USERNAME
+              value: root
+            - name: DB_PASSWORD
+              value: root # Consider using secrets for production
+            # Spring Boot datasource properties
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-service:3306/casemanagement?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          # Add dependency on MySQL
+          dependsOn:
+            - mysql-service
+
+---
+# Case Management App Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: casemanagement-service
+spec:
+  selector:
+    app: casemanagement-app
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080  # Access via localhost:30080
+  type: NodePort

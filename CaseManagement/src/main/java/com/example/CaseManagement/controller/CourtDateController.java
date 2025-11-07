@@ -124,7 +124,7 @@ public class CourtDateController {
         try {
             List<CourtDateEntity> courtDates = courtDateService.getUpcomingCourtDates(fromDate, toDate);
             return new ResponseEntity<>(courtDates, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (Exception e) { 
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
