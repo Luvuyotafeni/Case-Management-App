@@ -1,33 +1,32 @@
 <script setup>
-import AuthServices from '@/services/AuthService';
-import { ref } from 'vue';
-import { toast } from 'vue3-toastify';
 
-const formData = ref({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-});
+    import AuthServices from '@/services/AuthService';
+    import { ref } from 'vue';
+    import { toast } from 'vue3-toastify';
 
-const handleRegister = async () => {
-    try {
-        // Create the user object inside the function to capture current form values
-        const user = {
-            name: formData.value.name,
-            email: formData.value.email,
-            phone: formData.value.phone,
-            password: formData.value.password
-        };
+    const formData = ref({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+    });
 
-        const response = await AuthServices.registerUser(user);
-        toast.success("Registration successful!");
-        return response;
-    } catch (error) {
-        toast.error(error.response?.data?.message || "Registration failed");
-        console.error(error);
+    const user = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password
     }
-};
+
+
+    const handleRegister = async ()=> {
+        try{
+            const response = await AuthServices.registerUser(user);
+            return response;
+        } catch(error){
+            toast.error(error)
+        }
+    };
 </script>
 
 <template>
