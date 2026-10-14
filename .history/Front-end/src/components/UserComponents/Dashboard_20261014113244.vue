@@ -193,7 +193,6 @@ onMounted(fetchData);
                 </div>
                 
                 
-            
             </template>
         </div>
     </div>

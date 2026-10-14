@@ -443,109 +443,49 @@ onMounted(fetchUserCases);
     </div>
 </template>
 <style scoped>
+/* ================================
+   MAIN CONTAINER
+================================ */
 .container {
-  max-width: 100%;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
-  padding: 0%;
-  background-color: #F9FAFB;
-}
-
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* Modal Content */
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 50%;
-  height: 700px;
-  overflow-y: auto;
-  max-width: 600px;
-}
-
-/* User Info */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.profile-picture {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px solid #007bff;
-}
-
-/* Case Details */
-.case-details {
-  margin-top: 10px;
-}
-
-/* Documents Section */
-.documents {
-  margin-top: 15px;
-}
-
-.documents ul {
-  list-style: none;
   padding: 0;
+  background-color: #F9FAFB;
+  box-sizing: border-box;
 }
 
-.documents li {
-  margin-bottom: 5px;
-}
-
-.documents a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+/* ================================
+   DASHBOARD
+================================ */
+.dashboard {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
+
+  /* Header.vue sidebar width */
+  margin-left: 280px;
+
+  margin-top: 100px;
+  width: calc(100% - 280px);
+  padding: 0 25px 30px;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
-.documents a:hover {
-  text-decoration: underline;
-}
-
-.bx-file {
-  font-size: 20px;
-}
-
-/* Close Button */
-.close-button {
-  display: block;
-  width: 50%;
-  text-align: center;
-  margin: 15px auto 0;
-  padding: 10px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
+/* ================================
+   PAGE HEADER
+================================ */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
   margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
 }
 
 .add-case {
@@ -555,16 +495,16 @@ onMounted(fetchUserCases);
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
-  margin-top: 100px;
-  width: 100%;
+.add-case:hover {
+  background-color: #ccc;
 }
 
+/* ================================
+   TABLE
+================================ */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -575,38 +515,180 @@ thead {
   background: #ddd;
 }
 
-td, th {
+td,
+th {
   padding: 10px;
   border: 1px solid #ccc;
   text-align: left;
+  white-space: nowrap;
 }
 
+/*
+ * Allows the table to remain readable
+ * instead of squeezing all columns.
+ */
+.dashboard > table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* ================================
+   MODAL OVERLAY
+================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  z-index: 1000;
+}
+
+/* ================================
+   GENERAL MODAL
+================================ */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+
+  width: 50%;
+  max-width: 600px;
+  height: 700px;
+
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ================================
+   CASE DETAILS
+================================ */
+.case-details {
+  margin-top: 10px;
+}
+
+.case-details p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* ================================
+   LAWYER INFORMATION
+================================ */
+.lawyer-info p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* ================================
+   DOCUMENTS
+================================ */
+.documents {
+  margin-top: 15px;
+}
+
+.documents ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.documents li {
+  margin-bottom: 8px;
+}
+
+.documents a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  word-break: break-word;
+}
+
+.documents a:hover {
+  text-decoration: underline;
+}
+
+.bx-file {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ================================
+   CLOSE BUTTON
+================================ */
+.close-button {
+  display: block;
+  width: 50%;
+  text-align: center;
+
+  margin: 15px auto 0;
+  padding: 10px;
+
+  background: #dc3545;
+  color: white;
+
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background: #c82333;
+}
+
+/* ================================
+   FILE UPLOAD
+================================ */
 .file-upload-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 15px;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .file-input {
   width: 90%;
   padding: 10px;
   margin: 10px;
+
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .file-preview {
+  width: 90%;
   margin: 10px 0;
   padding: 10px;
+
   background-color: #f4f4f4;
   border-radius: 5px;
+
+  box-sizing: border-box;
+  word-break: break-word;
 }
 
 .upload-actions {
   display: flex;
   gap: 10px;
+
   width: 100%;
   justify-content: center;
 }
@@ -614,14 +696,16 @@ td, th {
 .upload-button {
   background-color: #28a745;
   color: white;
+
   border: none;
   padding: 10px 15px;
+
   border-radius: 5px;
   cursor: pointer;
 }
 
-.upload-modal {
-  height: 300px;
+.upload-button:hover {
+  background-color: #218838;
 }
 
 .upload-button:disabled {
@@ -632,16 +716,30 @@ td, th {
 .cancel-button {
   background-color: #dc3545;
   color: white;
+
   border: none;
   padding: 10px 15px;
+
   border-radius: 5px;
   cursor: pointer;
 }
 
-/* ADDing case styles */
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.upload-modal {
+  height: 300px;
+}
+
+/* ================================
+   CREATE CASE MODAL
+================================ */
 .create-case-modal {
   height: 80vh;
   width: 50%;
+  max-width: 650px;
+
   overflow-y: auto;
 }
 
@@ -655,24 +753,38 @@ td, th {
   font-weight: bold;
 }
 
-.form-group input, select, textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 80%;
   padding: 8px;
+
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  box-sizing: border-box;
 }
 
 .form-group textarea {
   height: 100px;
+  resize: vertical;
 }
 
 .form-actions {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+
   margin-top: 20px;
 }
 
-/* Court Dates Accordion Styling */
+.form-actions button {
+  flex: 1;
+}
+
+/* ================================
+   COURT DATES ACCORDION
+================================ */
 .court-dates-section {
   margin-top: 15px;
 }
@@ -685,6 +797,7 @@ td, th {
 .accordion-item {
   border: 1px solid #ccc;
   border-radius: 5px;
+
   margin-bottom: 10px;
   overflow: hidden;
 }
@@ -693,9 +806,12 @@ td, th {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 10px 15px;
+
   background-color: #f4f4f4;
   cursor: pointer;
+
   transition: background-color 0.2s;
 }
 
@@ -707,30 +823,48 @@ td, th {
   display: flex;
   align-items: center;
   gap: 8px;
+
   font-weight: 500;
+  min-width: 0;
 }
 
 .accordion-content {
   max-height: 0;
   overflow: hidden;
+
   transition: max-height 0.3s ease-out;
+
   background-color: #ffffff;
 }
 
 .accordion-content.active {
   max-height: 500px;
   padding: 15px;
+
   border-top: 1px solid #ccc;
+  box-sizing: border-box;
+
+  overflow-y: auto;
 }
 
-/* Court Date Details */
+/* ================================
+   COURT DATE DETAILS
+================================ */
 .court-date-details {
   margin-bottom: 15px;
 }
 
-/* Court Notes Styling */
+.court-date-details p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* ================================
+   COURT NOTES
+================================ */
 .court-notes {
   border-top: 1px dashed #ccc;
+
   padding-top: 15px;
   margin-top: 15px;
 }
@@ -738,20 +872,25 @@ td, th {
 .court-notes h4 {
   margin-top: 0;
   margin-bottom: 10px;
+
   font-size: 16px;
   font-weight: bold;
 }
 
 .note-item {
   background-color: #f9f9f9;
+
   border-left: 3px solid #007bff;
+
   padding: 10px;
   margin-bottom: 10px;
+
   border-radius: 0 4px 4px 0;
 }
 
 .note-item p {
   margin: 0 0 5px 0;
+  line-height: 1.5;
 }
 
 .note-item small {
@@ -760,13 +899,19 @@ td, th {
   font-size: 12px;
 }
 
-/* Status Badge Styling */
+/* ================================
+   STATUS BADGES
+================================ */
 .status-badge {
   display: inline-block;
+
   padding: 2px 8px;
   border-radius: 12px;
+
   font-size: 12px;
   margin-left: 10px;
+
+  white-space: nowrap;
 }
 
 .status-scheduled {
@@ -789,9 +934,509 @@ td, th {
   color: #721c24;
 }
 
+/* ================================
+   HORIZONTAL RULE
+================================ */
 hr {
   margin: 15px 0;
+
   border: 0;
   border-top: 1px solid #ccc;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1440px+
+========================================================= */
+@media (min-width: 1440px) {
+  .dashboard {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    padding: 0 35px 40px;
+  }
+
+  .modal-content {
+    max-width: 700px;
+  }
+
+  .create-case-modal {
+    max-width: 700px;
+  }
+
+  td,
+  th {
+    padding: 12px;
+  }
+}
+
+
+/* =========================================================
+   LAPTOP
+   1024px - 1439px
+========================================================= */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .dashboard {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+
+    padding: 0 20px 30px;
+  }
+
+  .modal-content {
+    width: 65%;
+  }
+
+  .create-case-modal {
+    width: 65%;
+  }
+
+  td,
+  th {
+    padding: 9px;
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   TABLETS
+   768px - 1023px
+========================================================= */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+
+    margin-top: 85px;
+    padding: 0 15px 25px;
+  }
+
+  .header {
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 22px;
+  }
+
+  .add-case {
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .modal-content {
+    width: 80%;
+    max-width: 600px;
+  }
+
+  .create-case-modal {
+    width: 80%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   LARGE PHONES / SMALL TABLETS
+   481px - 767px
+========================================================= */
+@media (min-width: 481px) and (max-width: 767px) {
+  .dashboard {
+    margin-left: 0;
+    width: 100%;
+
+    margin-top: 80px;
+    padding: 0 15px 25px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 22px;
+  }
+
+  .add-case {
+    padding: 9px 12px;
+  }
+
+  /*
+   * The table stays wide enough to remain readable.
+   * The user can scroll horizontally.
+   */
+  .dashboard > table {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 15px;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-width: none;
+
+    height: 85vh;
+    padding: 15px;
+  }
+
+  .create-case-modal {
+    width: 95%;
+    height: 90vh;
+  }
+
+  .upload-modal {
+    width: 95%;
+    height: auto;
+    min-height: 280px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .close-button {
+    width: 100%;
+  }
+
+  /* Accordion */
+  .accordion-header {
+    padding: 10px;
+  }
+
+  .accordion-title {
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    margin-left: 0;
+    margin-top: 3px;
+  }
+
+  .accordion-content.active {
+    padding: 12px;
+  }
+
+  .court-date-details p {
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   360px - 480px
+========================================================= */
+@media (min-width: 360px) and (max-width: 480px) {
+  .dashboard {
+    margin-left: 0;
+    width: 100%;
+
+    margin-top: 72px;
+    padding: 0 10px 20px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 20px;
+  }
+
+  .add-case {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Table */
+  .dashboard > table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: none;
+
+    height: 90vh;
+    padding: 15px;
+
+    border-radius: 6px;
+  }
+
+  .modal-content h2 {
+    font-size: 20px;
+  }
+
+  .modal-content h3 {
+    font-size: 17px;
+  }
+
+  .create-case-modal {
+    width: 100%;
+    height: 92vh;
+  }
+
+  .upload-modal {
+    width: 100%;
+    height: auto;
+    min-height: 270px;
+  }
+
+  /* Forms */
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 9px;
+    font-size: 14px;
+  }
+
+  .form-group textarea {
+    height: 90px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* File upload */
+  .file-upload-section {
+    padding: 10px;
+  }
+
+  .file-input {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .file-preview {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+  }
+
+  .upload-actions button {
+    width: 100%;
+  }
+
+  /* Case details */
+  .case-details p,
+  .lawyer-info p,
+  .court-date-details p {
+    font-size: 14px;
+  }
+
+  /* Accordion */
+  .accordion-title {
+    font-size: 12px;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .accordion-header {
+    padding: 9px;
+  }
+
+  .accordion-content.active {
+    padding: 10px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    margin-left: 0;
+  }
+
+  .close-button {
+    width: 100%;
+  }
+
+  .documents a {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   Below 360px
+========================================================= */
+@media (max-width: 359px) {
+  .dashboard {
+    margin-left: 0;
+    width: 100%;
+
+    margin-top: 65px;
+    padding: 0 8px 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .header h2 {
+    font-size: 18px;
+  }
+
+  .add-case {
+    width: 100%;
+    padding: 9px;
+    font-size: 13px;
+  }
+
+  /* Table */
+  .dashboard > table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  td,
+  th {
+    padding: 7px;
+    font-size: 11px;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 5px;
+  }
+
+  .modal-content {
+    width: 100%;
+    height: 92vh;
+
+    padding: 12px;
+    border-radius: 5px;
+  }
+
+  .create-case-modal {
+    width: 100%;
+    height: 94vh;
+  }
+
+  .upload-modal {
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-content h3 {
+    font-size: 16px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button,
+  .upload-actions button {
+    width: 100%;
+  }
+
+  .accordion-title {
+    font-size: 11px;
+  }
+
+  .accordion-content.active {
+    padding: 8px;
+  }
+
+  .case-details p,
+  .lawyer-info p,
+  .court-date-details p {
+    font-size: 13px;
+  }
+
+  .close-button {
+    width: 100%;
+  }
 }
 </style>
