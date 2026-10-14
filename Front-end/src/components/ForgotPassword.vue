@@ -89,24 +89,31 @@ const handleResetPassword = async () => {
 </template>
 
 <style scoped>
-/* Full Page Styling */
+/* =========================================
+   BASE / DESKTOP STYLING
+   ========================================= */
+
 .forgot-password-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Container Styling */
+/* Container */
 .forgot-container {
     display: flex;
     width: 600px;
+    max-width: 100%;
     height: 500px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    overflow: hidden;
 }
 
-/* Left Section */
+/* Left Section - Form */
 .forgot-left {
     flex: 1;
     background-color: black;
@@ -115,12 +122,11 @@ const handleResetPassword = async () => {
     align-items: center;
     flex-direction: column;
     padding: 20px;
-    border-radius: 10px;
+    box-sizing: border-box;
 }
 
-/* Right Section */
+/* Right Section - Logo */
 .forgot-right {
-    border-radius: 10px;
     flex: 1;
     flex-direction: column;
     background-color: white;
@@ -133,43 +139,434 @@ const handleResetPassword = async () => {
 
 .forgot-right img {
     width: 150px;
+    max-width: 80%;
+    height: auto;
 }
 
-/* Form Styling */
+/* Form */
 .forgot-password-form {
     display: flex;
     flex-direction: column;
     width: 80%;
 }
 
+.forgot-password-form h2 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
 .forgot-password-form label {
+    display: block;
     color: white;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .forgot-password-form input {
+    width: 100%;
     padding: 8px;
     margin-bottom: 20px;
     background-color: #FFFFFF;
     border: none;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
-/* Button Styling */
+/* Disabled Email Input */
+.forgot-password-form input:disabled {
+    background-color: #e5e5e5;
+    cursor: not-allowed;
+}
+
+/* Button */
 .forgot-password-form button {
     background-color: #FFFFFF;
     border: none;
     padding: 10px;
     font-weight: bold;
     cursor: pointer;
+    border-radius: 4px;
+}
+
+.forgot-password-form button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Links */
+.links {
+    margin-top: 10px;
 }
 
 .links a {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     color: white;
+}
+
+
+/* =========================================
+   LARGE DESKTOPS
+   1440px and above
+   ========================================= */
+
+@media screen and (min-width: 1440px) {
+
+    .forgot-container {
+        width: 750px;
+        height: 550px;
+    }
+
+    .forgot-right {
+        font-size: 28px;
+    }
+
+    .forgot-right img {
+        width: 180px;
+    }
+
+    .forgot-left {
+        padding: 30px;
+    }
+
+    .forgot-password-form {
+        width: 85%;
+    }
+
+    .forgot-password-form h2 {
+        font-size: 27px;
+    }
+
+    .forgot-password-form label {
+        font-size: 17px;
+    }
+
+    .forgot-password-form input {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .forgot-password-form button {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .links a {
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================
+   LAPTOPS
+   1024px - 1439px
+   ========================================= */
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+
+    .forgot-container {
+        width: 650px;
+        height: 500px;
+    }
+
+    .forgot-right {
+        font-size: 24px;
+    }
+
+    .forgot-right img {
+        width: 150px;
+    }
+
+    .forgot-password-form {
+        width: 85%;
+    }
+}
+
+
+/* =========================================
+   TABLETS
+   768px - 1023px
+   ========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .forgot-container {
+        width: 90%;
+        max-width: 650px;
+        height: 500px;
+    }
+
+    .forgot-right {
+        font-size: 22px;
+    }
+
+    .forgot-right img {
+        width: 130px;
+    }
+
+    .forgot-left {
+        padding: 18px;
+    }
+
+    .forgot-password-form {
+        width: 90%;
+    }
+
+    .forgot-password-form h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .forgot-password-form label {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .forgot-password-form input {
+        padding: 9px;
+        margin-bottom: 18px;
+    }
+
+    .forgot-password-form button {
+        padding: 10px;
+    }
+
+    .links a {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   LARGE PHONES / SMALL TABLETS
+   481px - 767px
+   ========================================= */
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+
+    .forgot-password-page {
+        padding: 20px;
+    }
+
+    .forgot-container {
+        flex-direction: column-reverse;
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        min-height: 600px;
+    }
+
+    /* Logo section moves to top */
+    .forgot-right {
+        flex: none;
+        width: 100%;
+        height: 200px;
+        padding: 20px;
+        font-size: 22px;
+        box-sizing: border-box;
+    }
+
+    .forgot-right img {
+        width: 100px;
+    }
+
+    .forgot-right h2 {
+        margin: 10px 0 0;
+    }
+
+    /* Form underneath */
+    .forgot-left {
+        flex: 1;
+        width: 100%;
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+
+    .forgot-password-form {
+        width: 85%;
+    }
+
+    .forgot-password-form h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .forgot-password-form label {
+        margin-bottom: 7px;
+    }
+
+    .forgot-password-form input {
+        padding: 10px;
+        margin-bottom: 16px;
+    }
+
+    .forgot-password-form button {
+        padding: 11px;
+    }
+
+    .links a {
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   MOBILE PHONES
+   360px - 480px
+   ========================================= */
+
+@media screen and (min-width: 360px) and (max-width: 480px) {
+
+    .forgot-password-page {
+        min-height: 100vh;
+        height: auto;
+        padding: 15px;
+    }
+
+    .forgot-container {
+        flex-direction: column-reverse;
+        width: 100%;
+        height: auto;
+        min-height: 570px;
+    }
+
+    /* Logo */
+    .forgot-right {
+        flex: none;
+        width: 100%;
+        height: 170px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .forgot-right img {
+        width: 80px;
+    }
+
+    .forgot-right h2 {
+        font-size: 22px;
+        margin: 7px 0 0;
+    }
+
+    /* Form */
+    .forgot-left {
+        flex: 1;
+        width: 100%;
+        padding: 25px 15px;
+        box-sizing: border-box;
+    }
+
+    .forgot-password-form {
+        width: 90%;
+    }
+
+    .forgot-password-form h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .forgot-password-form label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .forgot-password-form input {
+        padding: 10px;
+        margin-bottom: 14px;
+        font-size: 14px;
+    }
+
+    .forgot-password-form button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .links {
+        margin-top: 8px;
+    }
+
+    .links a {
+        margin-top: 8px;
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   Below 360px
+   ========================================= */
+
+@media screen and (max-width: 359px) {
+
+    .forgot-password-page {
+        min-height: 100vh;
+        height: auto;
+        padding: 10px;
+    }
+
+    .forgot-container {
+        flex-direction: column-reverse;
+        width: 100%;
+        height: auto;
+        min-height: 540px;
+    }
+
+    /* Logo */
+    .forgot-right {
+        flex: none;
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .forgot-right img {
+        width: 70px;
+    }
+
+    .forgot-right h2 {
+        font-size: 20px;
+        margin: 5px 0 0;
+    }
+
+    /* Form */
+    .forgot-left {
+        flex: 1;
+        width: 100%;
+        padding: 20px 10px;
+        box-sizing: border-box;
+    }
+
+    .forgot-password-form {
+        width: 92%;
+    }
+
+    .forgot-password-form h2 {
+        font-size: 19px;
+        margin-bottom: 16px;
+    }
+
+    .forgot-password-form label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .forgot-password-form input {
+        padding: 9px;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+
+    .forgot-password-form button {
+        padding: 9px;
+        font-size: 13px;
+    }
+
+    .links a {
+        font-size: 12px;
+    }
 }
 </style>

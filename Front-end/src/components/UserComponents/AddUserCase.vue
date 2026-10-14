@@ -192,7 +192,7 @@ onMounted(fetchUserCases);
       <table>
         <thead>
           <tr>
-            <td>Case Number</td>
+            <th>Case Number</th>
             <th>Case Name</th>
             <th>Case Type</th>
             <th>Station Name</th>
@@ -446,13 +446,18 @@ onMounted(fetchUserCases);
 .container {
   max-width: 100%;
   height: 100vh;
+  margin-left: 300px;
   display: flex;
   flex-direction: row;
-  padding: 0%;
-  background-color: #F9FAFB;
+  padding: 0;
+  background-color: #f9fafb;
+  box-sizing: border-box;
 }
 
-/* Modal Overlay */
+/* =========================
+   MODALS
+   ========================= */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -464,9 +469,9 @@ onMounted(fetchUserCases);
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  box-sizing: border-box;
 }
 
-/* Modal Content */
 .modal-content {
   background: white;
   padding: 20px;
@@ -475,9 +480,9 @@ onMounted(fetchUserCases);
   height: 700px;
   overflow-y: auto;
   max-width: 600px;
+  box-sizing: border-box;
 }
 
-/* User Info */
 .user-info {
   display: flex;
   align-items: center;
@@ -491,12 +496,10 @@ onMounted(fetchUserCases);
   border: 2px solid #007bff;
 }
 
-/* Case Details */
 .case-details {
   margin-top: 10px;
 }
 
-/* Documents Section */
 .documents {
   margin-top: 15px;
 }
@@ -527,7 +530,6 @@ onMounted(fetchUserCases);
   font-size: 20px;
 }
 
-/* Close Button */
 .close-button {
   display: block;
   width: 50%;
@@ -541,11 +543,23 @@ onMounted(fetchUserCases);
   cursor: pointer;
 }
 
+.close-button:hover {
+  background: #c82333;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
 }
 
 .add-case {
@@ -557,13 +571,26 @@ onMounted(fetchUserCases);
   cursor: pointer;
 }
 
+.add-case:hover {
+  background-color: #ccc;
+}
+
+/* =========================
+   DASHBOARD
+   ========================= */
+
 .dashboard {
   display: flex;
   flex-direction: column;
   margin-left: 20px;
   margin-top: 100px;
   width: 100%;
+  box-sizing: border-box;
 }
+
+/* =========================
+   TABLE
+   ========================= */
 
 table {
   width: 100%;
@@ -575,11 +602,24 @@ thead {
   background: #ddd;
 }
 
-td, th {
+td,
+th {
   padding: 10px;
   border: 1px solid #ccc;
   text-align: left;
 }
+
+th {
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* =========================
+   FILE UPLOAD
+   ========================= */
 
 .file-upload-section {
   display: flex;
@@ -595,6 +635,7 @@ td, th {
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .file-preview {
@@ -602,6 +643,9 @@ td, th {
   padding: 10px;
   background-color: #f4f4f4;
   border-radius: 5px;
+  width: 90%;
+  box-sizing: border-box;
+  word-break: break-word;
 }
 
 .upload-actions {
@@ -620,8 +664,8 @@ td, th {
   cursor: pointer;
 }
 
-.upload-modal {
-  height: 300px;
+.upload-button:hover {
+  background-color: #218838;
 }
 
 .upload-button:disabled {
@@ -638,7 +682,18 @@ td, th {
   cursor: pointer;
 }
 
-/* ADDing case styles */
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.upload-modal {
+  height: 300px;
+}
+
+/* =========================
+   CREATE CASE
+   ========================= */
+
 .create-case-modal {
   height: 80vh;
   width: 50%;
@@ -655,15 +710,19 @@ td, th {
   font-weight: bold;
 }
 
-.form-group input, select, textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 80%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .form-group textarea {
   height: 100px;
+  resize: vertical;
 }
 
 .form-actions {
@@ -672,7 +731,10 @@ td, th {
   margin-top: 20px;
 }
 
-/* Court Dates Accordion Styling */
+/* =========================
+   COURT DATES
+   ========================= */
+
 .court-dates-section {
   margin-top: 15px;
 }
@@ -723,12 +785,10 @@ td, th {
   border-top: 1px solid #ccc;
 }
 
-/* Court Date Details */
 .court-date-details {
   margin-bottom: 15px;
 }
 
-/* Court Notes Styling */
 .court-notes {
   border-top: 1px dashed #ccc;
   padding-top: 15px;
@@ -760,7 +820,10 @@ td, th {
   font-size: 12px;
 }
 
-/* Status Badge Styling */
+/* =========================
+   STATUS BADGES
+   ========================= */
+
 .status-badge {
   display: inline-block;
   padding: 2px 8px;
@@ -789,9 +852,665 @@ td, th {
   color: #721c24;
 }
 
+/* =========================
+   HR
+   ========================= */
+
 hr {
   margin: 15px 0;
   border: 0;
   border-top: 1px solid #ccc;
+}
+
+/* =========================================================
+   LARGE DESKTOP - 1440px+
+   ========================================================= */
+
+@media (min-width: 1440px) {
+  .container {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+  }
+
+  .dashboard {
+    margin-left: 20px;
+    width: calc(100% - 20px);
+    padding-right: 30px;
+  }
+
+  .modal-content {
+    width: 50%;
+    max-width: 700px;
+  }
+
+  .create-case-modal {
+    width: 50%;
+    max-width: 700px;
+  }
+}
+
+/* =========================================================
+   LAPTOP - 1024px to 1439px
+   ========================================================= */
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .container {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+  }
+
+  .dashboard {
+    margin-left: 15px;
+    width: calc(100% - 15px);
+    padding-right: 20px;
+  }
+
+  .header {
+    margin-bottom: 18px;
+  }
+
+  .header h2 {
+    font-size: 22px;
+  }
+
+  .add-case {
+    padding: 9px 13px;
+    font-size: 14px;
+  }
+
+  td,
+  th {
+    padding: 9px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 65%;
+    max-width: 600px;
+  }
+
+  .create-case-modal {
+    width: 65%;
+  }
+}
+
+/* =========================================================
+   TABLET - 768px to 1023px
+   ========================================================= */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+  }
+
+  .dashboard {
+    margin-left: 15px;
+    margin-top: 85px;
+    width: calc(100% - 15px);
+    padding-right: 15px;
+  }
+
+  .header {
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 21px;
+  }
+
+  .add-case {
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+
+  /* Allow table to scroll horizontally */
+  .dashboard > table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 850px;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .modal-overlay {
+    padding: 15px;
+  }
+
+  .modal-content {
+    width: 80%;
+    max-width: 600px;
+  }
+
+  .create-case-modal {
+    width: 80%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   LARGE MOBILE / SMALL TABLET - 481px to 767px
+   ========================================================= */
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .container {
+    margin-left: 0;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .dashboard {
+    margin-left: 0;
+    margin-top: 80px;
+    width: 100%;
+    padding: 0 15px 25px;
+    box-sizing: border-box;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 22px;
+  }
+
+  .add-case {
+    padding: 9px 13px;
+    font-size: 14px;
+  }
+
+  /* Horizontal table scrolling */
+  .dashboard > table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 850px;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    padding: 15px;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-width: none;
+    height: 85vh;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .modal-content h2 {
+    font-size: 21px;
+  }
+
+  .modal-content h3 {
+    font-size: 17px;
+  }
+
+  .create-case-modal {
+    width: 95%;
+    height: 90vh;
+  }
+
+  /* Forms */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* Upload modal */
+  .upload-modal {
+    width: 95%;
+    height: auto;
+    min-height: 280px;
+  }
+
+  .file-upload-section {
+    padding: 15px;
+  }
+
+  .file-input {
+    width: 100%;
+    margin: 5px 0;
+    box-sizing: border-box;
+  }
+
+  .file-preview {
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+  }
+
+  .upload-actions button {
+    width: 100%;
+  }
+
+  .close-button {
+    width: 100%;
+  }
+
+  /* Accordion */
+  .accordion-header {
+    padding: 10px;
+  }
+
+  .accordion-title {
+    font-size: 13px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    margin-left: 0;
+    margin-top: 3px;
+  }
+
+  .accordion-content.active {
+    padding: 12px;
+  }
+
+  .court-date-details p {
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   MOBILE - 360px to 480px
+   ========================================================= */
+
+@media (min-width: 360px) and (max-width: 480px) {
+  .container {
+    margin-left: 0;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .dashboard {
+    margin-left: 0;
+    margin-top: 72px;
+    width: 100%;
+    padding: 0 10px 20px;
+    box-sizing: border-box;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .add-case {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Horizontal table scrolling */
+  .dashboard > table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 850px;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: none;
+    height: 90vh;
+    padding: 15px;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .modal-content h2 {
+    font-size: 20px;
+  }
+
+  .modal-content h3 {
+    font-size: 17px;
+  }
+
+  .case-details p,
+  .lawyer-info p,
+  .court-date-details p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Create case modal */
+  .create-case-modal {
+    width: 100%;
+    height: 92vh;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 9px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .form-group textarea {
+    height: 90px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* Upload modal */
+  .upload-modal {
+    width: 100%;
+    height: auto;
+    min-height: 270px;
+  }
+
+  .file-upload-section {
+    padding: 10px;
+  }
+
+  .file-input {
+    width: 100%;
+    margin: 5px 0;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .file-preview {
+    width: 100%;
+    font-size: 13px;
+    word-break: break-word;
+    box-sizing: border-box;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .upload-actions button {
+    width: 100%;
+  }
+
+  /* Accordion */
+  .accordion-header {
+    padding: 9px;
+  }
+
+  .accordion-title {
+    font-size: 12px;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .accordion-content.active {
+    padding: 10px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    margin-left: 0;
+  }
+
+  .documents a {
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .close-button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE - BELOW 360px
+   ========================================================= */
+
+@media (max-width: 359px) {
+  .container {
+    margin-left: 0;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .dashboard {
+    margin-left: 0;
+    margin-top: 65px;
+    width: 100%;
+    padding: 0 8px 15px;
+    box-sizing: border-box;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .header h2 {
+    font-size: 18px;
+  }
+
+  .add-case {
+    width: 100%;
+    padding: 9px;
+    font-size: 13px;
+  }
+
+  /* Horizontal table scrolling */
+  .dashboard > table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    max-width: 850px;
+  }
+
+  td,
+  th {
+    padding: 7px;
+    font-size: 4px;
+    white-space: nowrap;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 5px;
+  }
+
+  .modal-content {
+    width: 100%;
+    height: 92vh;
+    padding: 12px;
+    border-radius: 5px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-content h3 {
+    font-size: 16px;
+  }
+
+  /* Create case */
+  .create-case-modal {
+    width: 100%;
+    height: 94vh;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .form-group textarea {
+    height: 90px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* Upload */
+  .upload-modal {
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+  }
+
+  .file-upload-section {
+    padding: 8px;
+  }
+
+  .file-input {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .file-preview {
+    width: 100%;
+    font-size: 12px;
+    word-break: break-word;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+  }
+
+  .upload-actions button {
+    width: 100%;
+  }
+
+  /* Accordion */
+  .accordion-title {
+    font-size: 11px;
+  }
+
+  .accordion-content.active {
+    padding: 8px;
+  }
+
+  .case-details p,
+  .lawyer-info p,
+  .court-date-details p {
+    font-size: 13px;
+  }
+
+  .status-badge {
+    font-size: 9px;
+    margin-left: 0;
+  }
+
+  .close-button {
+    width: 100%;
+  }
 }
 </style>

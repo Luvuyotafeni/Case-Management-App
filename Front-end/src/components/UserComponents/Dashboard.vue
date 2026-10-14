@@ -199,95 +199,782 @@ onMounted(fetchData);
 </template>
 
 <style scoped>
+
+/* =========================================
+   BASE / DESKTOP
+   ========================================= */
+
 .container {
     max-width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
+    margin-left: 300px;
     flex-direction: row;
-    padding: 0%;
+    padding: 0;
     background-color: #F9FAFB;
-  }
+    box-sizing: border-box;
+}
 
-  .dashboard{
+
+/* Dashboard */
+
+.dashboard {
     display: flex;
     flex-direction: column;
+
     margin-left: 10px;
     margin-top: 100px;
-    width: 100%;
-  }
-  .top-section {
+
+    width: calc(100% - 10px);
+
+    padding: 0 20px 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   TOP SECTION
+   ========================================= */
+
+.top-section {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+
     margin-bottom: 20px;
-    height: 35%;
+
+    min-height: 250px;
 }
+
+
+/* =========================================
+   TOTAL CASES CARD
+   ========================================= */
 
 .assigned-cases {
     display: flex;
     align-items: center;
-    gap: 10px;
+
+    gap: 15px;
+
     padding: 20px;
+
     background: white;
+
     border-radius: 8px;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 90%;
+
+    min-width: 220px;
+
+    box-sizing: border-box;
 }
 
+
 .assigned-cases i {
-    font-size: 24px;
+    font-size: 28px;
     color: #4A90E2;
 }
 
+
+.case-info h3 {
+    margin: 0 0 5px;
+}
+
+
+.case-count {
+    margin: 0;
+
+    font-size: 32px;
+    font-weight: bold;
+
+    color: #000428;
+}
+
+
+/* =========================================
+   UPCOMING COURT DATES
+   ========================================= */
+
 .upcoming-court-dates {
     background: white;
+
     padding: 20px;
+
     border-radius: 8px;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex-grow: 1;
-    margin-left: 20px;
-    height: 90%;
+
+    flex: 1;
+
+    min-width: 0;
+
+    box-sizing: border-box;
 }
+
+
+.upcoming-court-dates h3 {
+    margin-top: 0;
+}
+
 
 .upcoming-court-dates table {
     width: 100%;
+
     border-collapse: collapse;
+
+    min-width: 750px;
 }
 
-.upcoming-court-dates th, .upcoming-court-dates td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
+
+/* =========================================
+   BOTTOM SECTION
+   ========================================= */
 
 .bottom-section {
     margin-top: 20px;
+
     background: white;
+
     padding: 20px;
+
     border-radius: 8px;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    box-sizing: border-box;
 }
 
-.bottom-section ul {
-    list-style-type: none;
-    padding: 0;
+
+.bottom-section h3 {
+    margin-top: 0;
 }
 
-.bottom-section li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-table{
+
+.bottom-section table {
     width: 100%;
-    border-collapse: collapse;
-    background: white;
-  }
 
-  thead{
+    border-collapse: collapse;
+
+    min-width: 900px;
+}
+
+
+/* =========================================
+   TABLES
+   ========================================= */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: white;
+}
+
+
+thead {
     background: #ddd;
-  }
-  td, th{
+}
+
+
+td,
+th {
     padding: 10px;
+
     border: 1px solid #ccc;
+
     text-align: left;
-  }
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   TABLE SCROLLING
+   ========================================= */
+
+.upcoming-court-dates,
+.bottom-section {
+    overflow-x: auto;
+}
+
+
+/* =========================================
+   STATUS STYLING
+   ========================================= */
+
+[class^="status-"] {
+    font-weight: bold;
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+   1440px+
+   ========================================= */
+
+@media screen and (min-width: 1440px) {
+
+    .dashboard {
+        margin-left: 20px;
+        margin-top: 110px;
+
+        padding: 0 30px 40px;
+    }
+
+
+    .top-section {
+        gap: 25px;
+
+        min-height: 280px;
+    }
+
+
+    .assigned-cases {
+        min-width: 260px;
+
+        padding: 25px;
+    }
+
+
+    .assigned-cases i {
+        font-size: 32px;
+    }
+
+
+    .case-count {
+        font-size: 38px;
+    }
+
+
+    .upcoming-court-dates {
+        padding: 25px;
+    }
+
+
+    .bottom-section {
+        padding: 25px;
+    }
+
+
+    td,
+    th {
+        padding: 12px;
+    }
+}
+
+
+/* =========================================
+   LAPTOP
+   1024px - 1439px
+   ========================================= */
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+
+    .dashboard {
+        margin-left: 10px;
+        margin-top: 90px;
+
+        padding: 0 15px 30px;
+    }
+
+
+    .top-section {
+        gap: 15px;
+
+        min-height: 230px;
+    }
+
+
+    .assigned-cases {
+        min-width: 200px;
+
+        padding: 18px;
+    }
+
+
+    .case-count {
+        font-size: 28px;
+    }
+
+
+    .upcoming-court-dates {
+        padding: 18px;
+    }
+
+
+    .bottom-section {
+        padding: 18px;
+    }
+
+
+    td,
+    th {
+        padding: 8px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   TABLET
+   768px - 1023px
+   ========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .dashboard {
+        margin-left: 10px;
+        margin-top: 80px;
+
+        padding: 0 12px 25px;
+    }
+
+
+    .top-section {
+        gap: 12px;
+
+        min-height: 210px;
+    }
+
+
+    .assigned-cases {
+        min-width: 170px;
+
+        padding: 15px;
+
+        gap: 10px;
+    }
+
+
+    .assigned-cases i {
+        font-size: 23px;
+    }
+
+
+    .case-info h3 {
+        font-size: 15px;
+    }
+
+
+    .case-count {
+        font-size: 25px;
+    }
+
+
+    .upcoming-court-dates {
+        padding: 15px;
+    }
+
+
+    .upcoming-court-dates h3 {
+        font-size: 17px;
+    }
+
+
+    .bottom-section {
+        padding: 15px;
+    }
+
+
+    td,
+    th {
+        padding: 7px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   LARGE MOBILE / SMALL TABLET
+   481px - 767px
+   ========================================= */
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+
+    .container {
+        display: block;
+
+        width: 100%;
+
+        min-height: 100vh;
+    }
+
+
+    .dashboard {
+        width: 100%;
+
+        margin-left: 0;
+
+        /*
+         * Header is 60px on mobile.
+         * Give dashboard space underneath it.
+         */
+        margin-top: 80px;
+
+        padding: 0 15px 30px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* Stack top cards */
+
+    .top-section {
+        flex-direction: column;
+
+        gap: 15px;
+
+        height: auto;
+
+        min-height: 0;
+
+        margin-bottom: 15px;
+    }
+
+
+    /* Total cases */
+
+    .assigned-cases {
+        width: 100%;
+
+        min-width: 0;
+
+        height: auto;
+
+        min-height: 110px;
+
+        padding: 20px;
+    }
+
+
+    .assigned-cases i {
+        font-size: 28px;
+    }
+
+
+    .case-count {
+        font-size: 30px;
+    }
+
+
+    /* Court dates */
+
+    .upcoming-court-dates {
+        width: 100%;
+
+        margin-left: 0;
+
+        height: auto;
+
+        padding: 15px;
+
+        box-sizing: border-box;
+    }
+
+
+    .upcoming-court-dates h3 {
+        font-size: 18px;
+    }
+
+
+    /* Bottom cases */
+
+    .bottom-section {
+        width: 100%;
+
+        margin-top: 15px;
+
+        padding: 15px;
+
+        box-sizing: border-box;
+    }
+
+
+    .bottom-section h3 {
+        font-size: 18px;
+    }
+
+
+    /* Tables can scroll horizontally */
+
+    .upcoming-court-dates table {
+        min-width: 750px;
+    }
+
+
+    .bottom-section table {
+        min-width: 900px;
+    }
+
+
+    td,
+    th {
+        padding: 8px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   360px - 480px
+   ========================================= */
+
+@media screen and (min-width: 360px) and (max-width: 480px) {
+
+    .container {
+        display: block;
+
+        width: 100%;
+
+        min-height: 100vh;
+    }
+
+
+    .dashboard {
+        width: 100%;
+
+        margin-left: 0;
+
+        /*
+         * Mobile Header = 56px
+         */
+        margin-top: 72px;
+
+        padding: 0 10px 25px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* Stack everything */
+
+    .top-section {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+        height: auto;
+
+        min-height: 0;
+
+        margin-bottom: 12px;
+    }
+
+
+    /* Total Cases */
+
+    .assigned-cases {
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 100px;
+
+        height: auto;
+
+        padding: 15px;
+    }
+
+
+    .assigned-cases i {
+        font-size: 25px;
+    }
+
+
+    .case-info h3 {
+        font-size: 16px;
+    }
+
+
+    .case-count {
+        font-size: 28px;
+    }
+
+
+    /* Court Dates */
+
+    .upcoming-court-dates {
+        width: 100%;
+
+        margin-left: 0;
+
+        height: auto;
+
+        padding: 12px;
+
+        box-sizing: border-box;
+    }
+
+
+    .upcoming-court-dates h3 {
+        font-size: 16px;
+
+        margin-bottom: 12px;
+    }
+
+
+    /* Cases */
+
+    .bottom-section {
+        width: 100%;
+
+        margin-top: 12px;
+
+        padding: 12px;
+
+        box-sizing: border-box;
+    }
+
+
+    .bottom-section h3 {
+        font-size: 16px;
+    }
+
+
+    /* Horizontal scrolling tables */
+
+    .upcoming-court-dates table {
+        min-width: 750px;
+    }
+
+
+    .bottom-section table {
+        min-width: 900px;
+    }
+
+
+    td,
+    th {
+        padding: 7px;
+
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   BELOW 360px
+   ========================================= */
+
+@media screen and (max-width: 359px) {
+
+    .header-wrapper {
+
+        min-height: 50px;
+    }
+
+    .container {
+        display: block;
+        margin-left: 0;
+        width: 100%;
+    }
+
+
+    .dashboard {
+        width: 100%;
+
+        margin-left: 0;
+
+        /*
+         * Mobile header = 52px
+         */
+        margin-top: 0;
+
+        padding: 0 8px 20px;
+    }
+
+
+    .top-section {
+        flex-direction: column;
+
+        gap: 10px;
+
+        height: auto;
+
+        min-height: 0;
+    }
+
+
+    .assigned-cases {
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 90px;
+
+        padding: 12px;
+    }
+
+
+    .assigned-cases i {
+        font-size: 22px;
+    }
+
+
+    .case-info h3 {
+        font-size: 14px;
+    }
+
+
+    .case-count {
+        font-size: 25px;
+    }
+
+
+    .upcoming-court-dates {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding: 10px;
+    }
+
+
+    .upcoming-court-dates h3 {
+        font-size: 15px;
+    }
+
+
+    .bottom-section {
+        width: 100%;
+
+        margin-top: 10px;
+
+        padding: 10px;
+    }
+
+
+    .bottom-section h3 {
+        font-size: 15px;
+    }
+
+
+    .upcoming-court-dates table {
+        min-width: 700px;
+    }
+
+
+    .bottom-section table {
+        min-width: 850px;
+    }
+
+
+    td,
+    th {
+        padding: 6px;
+
+        font-size: 11px;
+    }
+}
+
 </style>

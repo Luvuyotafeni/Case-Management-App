@@ -66,24 +66,31 @@ const handleRegister = async () => {
 </template>
 
 <style scoped>
-/* Full Page Styling */
+/* =========================================
+   BASE / DESKTOP STYLING
+   ========================================= */
+
 .registerPage {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Container Styling */
+/* Container */
 .register-container {
     display: flex;
     width: 600px;
+    max-width: 100%;
     height: 500px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    overflow: hidden;
 }
 
-/* Left Section */
+/* Left Section - Form */
 .register-left {
     flex: 1;
     background-color: black;
@@ -92,12 +99,11 @@ const handleRegister = async () => {
     align-items: center;
     flex-direction: column;
     padding: 20px;
-    border-radius: 10px;
+    box-sizing: border-box;
 }
 
-/* Right Section */
+/* Right Section - Logo */
 .register-right {
-    border-radius: 10px;
     flex: 1;
     flex-direction: column;
     background-color: white;
@@ -108,11 +114,13 @@ const handleRegister = async () => {
     font-weight: bold;
 }
 
-.register-right img{
+.register-right img {
     width: 150px;
+    max-width: 80%;
+    height: auto;
 }
 
-/* Form Styling */
+/* Form */
 .register-form {
     display: flex;
     flex-direction: column;
@@ -126,27 +134,370 @@ const handleRegister = async () => {
 }
 
 .register-form input {
+    width: 100%;
     padding: 8px;
     margin-bottom: 20px;
     background-color: #FFFFFF;
     border: none;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
-/* Button Styling */
+/* Button */
 .register-form button {
     background-color: #FFFFFF;
     border: none;
     padding: 10px;
     font-weight: bold;
     cursor: pointer;
+    border-radius: 4px;
 }
 
-.links a{
+/* Links */
+.links {
+    margin-top: 10px;
+}
+
+.links a {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     color: white;
+}
+
+
+/* =========================================
+   LARGE DESKTOPS
+   1440px and above
+   ========================================= */
+
+@media screen and (min-width: 1440px) {
+
+    .register-container {
+        width: 750px;
+        height: 550px;
+    }
+
+    .register-right {
+        font-size: 28px;
+    }
+
+    .register-right img {
+        width: 180px;
+    }
+
+    .register-left {
+        padding: 30px;
+    }
+
+    .register-form {
+        width: 85%;
+    }
+
+    .register-form label {
+        font-size: 17px;
+    }
+
+    .register-form input {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .register-form button {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .links a {
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================
+   LAPTOPS
+   1024px - 1439px
+   ========================================= */
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+
+    .register-container {
+        width: 650px;
+        height: 500px;
+    }
+
+    .register-right {
+        font-size: 24px;
+    }
+
+    .register-right img {
+        width: 150px;
+    }
+
+    .register-form {
+        width: 85%;
+    }
+}
+
+
+/* =========================================
+   TABLETS
+   768px - 1023px
+   ========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .register-container {
+        width: 90%;
+        max-width: 650px;
+        height: 500px;
+    }
+
+    .register-right {
+        font-size: 22px;
+    }
+
+    .register-right img {
+        width: 130px;
+    }
+
+    .register-left {
+        padding: 18px;
+    }
+
+    .register-form {
+        width: 90%;
+    }
+
+    .register-form label {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .register-form input {
+        padding: 9px;
+        margin-bottom: 18px;
+    }
+
+    .register-form button {
+        padding: 10px;
+    }
+
+    .links a {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   LARGE PHONES / SMALL TABLETS
+   481px - 767px
+   ========================================= */
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+
+    .registerPage {
+        padding: 20px;
+    }
+
+    .register-container {
+        flex-direction: column-reverse;
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        min-height: 650px;
+    }
+
+    /* Logo appears on top */
+    .register-right {
+        flex: none;
+        width: 100%;
+        height: 200px;
+        padding: 20px;
+        font-size: 22px;
+        box-sizing: border-box;
+    }
+
+    .register-right img {
+        width: 100px;
+    }
+
+    .register-right h2 {
+        margin: 10px 0 0;
+    }
+
+    /* Form appears underneath */
+    .register-left {
+        flex: 1;
+        width: 100%;
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+
+    .register-form {
+        width: 85%;
+    }
+
+    .register-form label {
+        margin-bottom: 7px;
+    }
+
+    .register-form input {
+        padding: 10px;
+        margin-bottom: 16px;
+    }
+
+    .register-form button {
+        padding: 11px;
+    }
+
+    .links a {
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   MOBILE PHONES
+   360px - 480px
+   ========================================= */
+
+@media screen and (min-width: 360px) and (max-width: 480px) {
+
+    .registerPage {
+        min-height: 100vh;
+        height: auto;
+        padding: 15px;
+    }
+
+    .register-container {
+        flex-direction: column-reverse;
+        width: 100%;
+        height: auto;
+        min-height: 620px;
+    }
+
+    .register-right {
+        flex: none;
+        width: 100%;
+        height: 170px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .register-right img {
+        width: 80px;
+    }
+
+    .register-right h2 {
+        font-size: 22px;
+        margin: 7px 0 0;
+    }
+
+    .register-left {
+        flex: 1;
+        width: 100%;
+        padding: 25px 15px;
+        box-sizing: border-box;
+    }
+
+    .register-form {
+        width: 90%;
+    }
+
+    .register-form label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .register-form input {
+        padding: 10px;
+        margin-bottom: 14px;
+        font-size: 14px;
+    }
+
+    .register-form button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .links {
+        margin-top: 8px;
+    }
+
+    .links a {
+        margin-top: 8px;
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   Below 360px
+   ========================================= */
+
+@media screen and (max-width: 359px) {
+
+    .registerPage {
+        min-height: 100vh;
+        height: auto;
+        padding: 10px;
+    }
+
+    .register-container {
+        flex-direction: column-reverse;
+        width: 100%;
+        height: auto;
+        min-height: 580px;
+    }
+
+    .register-right {
+        flex: none;
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .register-right img {
+        width: 70px;
+    }
+
+    .register-right h2 {
+        font-size: 20px;
+        margin: 5px 0 0;
+    }
+
+    .register-left {
+        flex: 1;
+        width: 100%;
+        padding: 20px 10px;
+        box-sizing: border-box;
+    }
+
+    .register-form {
+        width: 92%;
+    }
+
+    .register-form label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .register-form input {
+        padding: 9px;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+
+    .register-form button {
+        padding: 9px;
+        font-size: 13px;
+    }
+
+    .links a {
+        font-size: 12px;
+    }
 }
 </style>
