@@ -1393,7 +1393,7 @@ hr {
   }
 
   table {
-    min-width: 850px;
+    max-width: 850px;
   }
 
   td,
