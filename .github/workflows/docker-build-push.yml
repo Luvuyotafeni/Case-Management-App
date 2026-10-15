@@ -6,36 +6,91 @@ on:
       - main
 
 jobs:
-    build-and-push:
-        name: Build and Push Docker Image
-        runs-on: ubuntu-latest
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ==========================================================
+      # 1. CHECKOUT APPLICATION REPOSITORY
+      # ==========================================================
+
+      - name: Checkout application code
+        uses: actions/checkout@v4
 
 
-        steps:
-            # chechout source code
-            - name: Checkout code
-              uses: actions/checkout@v4
-            
+      # ==========================================================
+      # 2. LOGIN TO DOCKER HUB
+      # ==========================================================
 
-            # login to Docker Hub
-            - name: Log in to Docker Hub
-              uses: docker/login-action@v3
-              with:
-                username: ${{ secrets.DOCKER_USERNAME }}
-                password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-            #  set up docker buildx
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
-            
-            # build and push docker image
-            - name: Build and Push Docker Image
-              uses: docker/build-push-action@v6
-              with:
-                context: ./CaseManagement
-                file: ./CaseManagement/Dockerfile
-                push: true
-                tags:  |
-                    ${{ secrets.DOCKER_USERNAME }}/case-management-app:latest
-                    ${{ secrets.DOCKER_USERNAME }}/case-management-app:${{ github.sha }}
 
+      # ==========================================================
+      # 3. SET UP DOCKER BUILDX
+      # ==========================================================
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+
+      # ==========================================================
+      # 4. BUILD AND PUSH DOCKER IMAGE
+      # ==========================================================
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./CaseManagement
+          file: ./CaseManagement/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/case-management-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/case-management-app:${{ github.sha }}
+
+
+      # ==========================================================
+      # 5. CHECKOUT DEVOPS REPOSITORY
+      # ==========================================================
+
+      - name: Checkout DevOps repository
+        uses: actions/checkout@v4
+        with:
+          repository: Luvuyotafeni/Case-Management-App-DevOps
+          token: ${{ secrets.DEVOPS_REPO_TOKEN }}
+          path: devops
+
+
+      # ==========================================================
+      # 6. UPDATE IMAGE TAG IN KUBERNETES DEPLOYMENT
+      # ==========================================================
+
+      - name: Update Docker Image Tag
+        working-directory: devops
+        run: |
+          sed -i "s|^[[:space:]]*image:.*|          image: ${{ secrets.DOCKER_USERNAME }}/case-management-app:${{ github.sha }}|" case-management-deplyment.yaml
+
+          echo "Updated Docker image:"
+          grep "image:" case-management-deplyment.yaml
+
+
+      # ==========================================================
+      # 7. COMMIT AND PUSH KUBERNETES CHANGE
+      # ==========================================================
+
+      - name: Commit and Push Changes
+        working-directory: devops
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add case-management-deplyment.yaml
+
+          git diff --cached --quiet || git commit -m "Update Docker image tag to ${{ github.sha }}"
+
+          git push origin main
